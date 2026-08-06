@@ -18,7 +18,7 @@ let fish = {
 
     x:250,
     y:250,
-    dx:speed,
+    dx:10,
     dy:0
 
 };
