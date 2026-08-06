@@ -8,7 +8,7 @@ canvas.height = 500;
 // VITESSE DU POISSON
 const speed = 10;
 
-
+  
 let score = 0;
 
 
