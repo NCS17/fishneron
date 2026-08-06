@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bubulle Snake 🐟</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="game-container">
+
+    <h1>🐟 Bubulle Snake</h1>
+    <p>Aide Bubulle à manger les algues 🌿</p>
+
+    <div class="score">
+        Score : <span id="score">0</span>
+        | Record : <span id="highscore">0</span>
+    </div>
+
+    <canvas id="game"></canvas>
+
+    <div class="buttons">
+        <button onclick="changeDirection('UP')">⬆️</button>
+        <div>
+            <button onclick="changeDirection('LEFT')">⬅️</button>
+            <button onclick="changeDirection('DOWN')">⬇️</button>
+            <button onclick="changeDirection('RIGHT')">➡️</button>
+        </div>
+    </div>
+
+    <div id="gameover">
+        <h2>🌊 Bubulle est fatigué...</h2>
+        <p>Score : <span id="finalScore"></span></p>
+        <button onclick="restartGame()">Rejouer 🐠</button>
+    </div>
+
+</div>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
