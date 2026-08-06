@@ -6,7 +6,7 @@ canvas.height = 500;
 
 
 // VITESSE DU POISSON
-const speed = 4;
+const speed = 10;
 
 
 let score = 0;
@@ -175,11 +175,10 @@ function getFishImage(){
 
 function newAlgae(){
 
-    algae.x = Math.floor(Math.random()*23)*20 + 20;
 
-    algae.y = Math.floor(Math.random()*23)*20 + 20;
+    algae.x = Math.floor(Math.random()*25)*20;
 
-}
+    algae.y = Math.floor(Math.random()*25)*20;
 
 
 }
