@@ -14,6 +14,7 @@ let score = 0;
 
 // Poisson 
 
+
 let fish = {
     x: 250,
     y: 250,
