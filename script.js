@@ -1,239 +1,270 @@
-const canvas = document.getElementById("game");
-const ctx = canvas.getContext("2d");
-
-canvas.width = 400;
-canvas.height = 400;
+const canvas=document.getElementById("game");
+const ctx=canvas.getContext("2d");
 
 
-let poisson;
-let algue;
-let direction;
-let score;
-let vitesse;
-let jeu;
+canvas.width=500;
+canvas.height=500;
 
 
-let highscore = localStorage.getItem("bubulleRecord") || 0;
 
-document.getElementById("highscore").innerHTML = highscore;
-
-
-function startGame(){
-
-    poisson=[
-        {x:200,y:200}
-    ];
-
-    algue={
-        x:Math.floor(Math.random()*20)*20,
-        y:Math.floor(Math.random()*20)*20
-    };
+let score=0;
 
 
-    direction="RIGHT";
-    score=0;
-    vitesse=120;
 
-    document.getElementById("score").innerHTML=score;
+let fish={
 
-    document.getElementById("gameover").style.display="none";
+x:250,
+
+y:250,
+
+dx:20,
+
+dy:0
+
+};
 
 
-    clearInterval(jeu);
-    jeu=setInterval(update,vitesse);
+
+let algae={
+
+x:100,
+
+y:100
+
+};
+
+
+
+let emoji="🐟";
+
+
+
+// CONTROLES CLAVIER
+
+document.addEventListener("keydown",move);
+
+
+
+// CONTROLES TELEPHONE
+
+document.getElementById("up")
+.onclick=()=>changeDirection(0,-20);
+
+document.getElementById("down")
+.onclick=()=>changeDirection(0,20);
+
+document.getElementById("left")
+.onclick=()=>changeDirection(-20,0);
+
+document.getElementById("right")
+.onclick=()=>changeDirection(20,0);
+
+
+
+function move(e){
+
+
+if(e.key==="ArrowUp")
+changeDirection(0,-20);
+
+
+if(e.key==="ArrowDown")
+changeDirection(0,20);
+
+
+if(e.key==="ArrowLeft")
+changeDirection(-20,0);
+
+
+if(e.key==="ArrowRight")
+changeDirection(20,0);
+
+
 }
 
 
 
-function draw(){
+function changeDirection(x,y){
 
-    ctx.clearRect(0,0,400,400);
+fish.dx=x;
+
+fish.dy=y;
+
+}
 
 
-    // algue
-    ctx.font="25px Arial";
-    ctx.fillText("🌿", algue.x, algue.y+20);
 
 
-    // poisson
-    poisson.forEach((partie,index)=>{
 
-        if(index===0){
-            ctx.fillText("🐟", partie.x, partie.y+20);
-        }
-        else{
-            ctx.fillText("🟠", partie.x, partie.y+20);
-        }
+function evolution(){
 
-    });
+
+if(score<2)
+
+emoji="🐟 Poisson rouge";
+
+
+else if(score<4)
+
+emoji="🐠 Poisson combattant";
+
+
+else if(score<8)
+
+emoji="🐬 Dauphin";
+
+
+else if(score<10)
+
+emoji="🦈 Requin";
+
+
+else if(score<17)
+
+emoji="🦈 Grand requin";
+
+
+else
+
+emoji="🦖 Megalodon";
+
+
+
+document.getElementById("level").innerHTML=emoji;
 
 
 }
+
+
+
+
+
+function newAlgae(){
+
+
+algae.x=Math.floor(Math.random()*25)*20;
+
+algae.y=Math.floor(Math.random()*25)*20;
+
+
+}
+
+
 
 
 
 function update(){
 
-    let tete={
-        x:poisson[0].x,
-        y:poisson[0].y
-    };
 
+fish.x+=fish.dx;
 
-    if(direction==="UP")
-        tete.y-=20;
-
-    if(direction==="DOWN")
-        tete.y+=20;
-
-    if(direction==="LEFT")
-        tete.x-=20;
-
-    if(direction==="RIGHT")
-        tete.x+=20;
+fish.y+=fish.dy;
 
 
 
-    // collision mur
+// passage des murs
 
-    if(
-        tete.x<0 ||
-        tete.y<0 ||
-        tete.x>=400 ||
-        tete.y>=400
-    ){
-        endGame();
-        return;
-    }
+if(fish.x<0)
+
+fish.x=480;
 
 
-    // collision corps
+if(fish.x>480)
 
-    poisson.forEach(partie=>{
+fish.x=0;
 
-        if(
-            partie.x===tete.x &&
-            partie.y===tete.y
-        ){
-            endGame();
-        }
 
-    });
+if(fish.y<0)
+
+fish.y=480;
+
+
+if(fish.y>480)
+
+fish.y=0;
 
 
 
-    poisson.unshift(tete);
+
+// manger algue
+
+if(
+
+fish.x===algae.x &&
+
+fish.y===algae.y
+
+){
+
+
+score++;
+
+
+document.getElementById("score").innerHTML=
+
+"Algues : "+score;
 
 
 
-    // mange algue
-
-    if(
-        tete.x===algue.x &&
-        tete.y===algue.y
-    ){
-
-        score++;
-
-        document.getElementById("score").innerHTML=score;
+evolution();
 
 
-        algue={
-            x:Math.floor(Math.random()*20)*20,
-            y:Math.floor(Math.random()*20)*20
-        };
+newAlgae();
 
-
-        if(score%5===0 && vitesse>50){
-
-            vitesse-=10;
-            clearInterval(jeu);
-            jeu=setInterval(update,vitesse);
-
-        }
-
-    }
-
-    else{
-
-        poisson.pop();
-
-    }
-
-
-    draw();
 
 }
 
 
 
-function changeDirection(dir){
+}
 
-    if(dir==="UP" && direction!=="DOWN")
-        direction="UP";
 
-    if(dir==="DOWN" && direction!=="UP")
-        direction="DOWN";
 
-    if(dir==="LEFT" && direction!=="RIGHT")
-        direction="LEFT";
 
-    if(dir==="RIGHT" && direction!=="LEFT")
-        direction="RIGHT";
+
+function draw(){
+
+
+ctx.clearRect(0,0,500,500);
+
+
+
+ctx.font="35px Arial";
+
+
+ctx.fillText("🌿",
+
+algae.x,
+
+algae.y+25);
+
+
+
+ctx.font="40px Arial";
+
+
+ctx.fillText(
+
+emoji.split(" ")[0],
+
+fish.x,
+
+fish.y+30
+
+);
+
+
+
+update();
+
+
+requestAnimationFrame(draw);
+
 
 }
 
 
 
-document.addEventListener("keydown",e=>{
+newAlgae();
 
-    if(e.key==="ArrowUp")
-        changeDirection("UP");
-
-    if(e.key==="ArrowDown")
-        changeDirection("DOWN");
-
-    if(e.key==="ArrowLeft")
-        changeDirection("LEFT");
-
-    if(e.key==="ArrowRight")
-        changeDirection("RIGHT");
-
-});
-
-
-
-function endGame(){
-
-    clearInterval(jeu);
-
-
-    if(score>highscore){
-
-        highscore=score;
-
-        localStorage.setItem(
-            "bubulleRecord",
-            highscore
-        );
-
-    }
-
-
-    document.getElementById("finalScore").innerHTML=score;
-
-    document.getElementById("gameover").style.display="block";
-
-}
-
-
-
-function restartGame(){
-
-    startGame();
-
-}
-
-
-
-startGame();
+draw();
