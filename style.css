@@ -1,66 +1,108 @@
-body {
-    margin: 0;
-    background: linear-gradient(#008acb, #003b70);
-    font-family: Arial, sans-serif;
-    color: white;
-    text-align: center;
-    overflow: hidden;
+*{
+    box-sizing:border-box;
+}
+
+body{
+
+    margin:0;
+    min-height:100vh;
+
+    background:linear-gradient(#4bd3ff,#004c80);
+
+    color:white;
+
+    font-family:Arial;
+
+    text-align:center;
+
+    overflow:hidden;
 }
 
 
-.game-container {
-    margin-top: 20px;
+h1{
+
+    font-size:32px;
+    margin:15px;
+
 }
 
 
-h1 {
-    font-size: 40px;
-}
+p{
 
-
-.score {
-    font-size: 22px;
-    margin-bottom: 15px;
-}
-
-
-canvas {
-    background:
-    radial-gradient(circle at 20% 20%, white 3px, transparent 4px),
-    radial-gradient(circle at 80% 50%, white 3px, transparent 4px),
-    linear-gradient(#009fe3,#004b8d);
-
-    border: 5px solid white;
-    border-radius: 20px;
-}
-
-
-.buttons button {
-    margin: 5px;
-    font-size: 25px;
-    padding: 10px 15px;
-    border-radius: 15px;
-    border: none;
-    cursor: pointer;
-}
-
-
-#gameover {
-    display:none;
-    position:absolute;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%);
-    background:#003b70;
-    padding:30px;
-    border-radius:20px;
-    border:3px solid white;
-}
-
-
-#gameover button {
-    padding:12px;
-    border-radius:10px;
-    border:none;
     font-size:18px;
+
+}
+
+
+#info{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:30px;
+
+    font-size:18px;
+
+    margin-bottom:10px;
+
+}
+
+
+canvas{
+
+    width:90vw;
+
+    max-width:500px;
+
+    aspect-ratio:1;
+
+    background:#008ac4;
+
+    border:5px solid white;
+
+    border-radius:20px;
+
+}
+
+
+
+#controls{
+
+    margin-top:15px;
+
+}
+
+
+
+button{
+
+    width:65px;
+
+    height:55px;
+
+    margin:5px;
+
+    font-size:25px;
+
+    border-radius:15px;
+
+    border:none;
+
+    background:white;
+
+}
+
+
+button:active{
+
+    transform:scale(0.9);
+
+}
+
+
+#message{
+
+    font-size:16px;
+
 }
