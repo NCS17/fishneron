@@ -10,7 +10,7 @@ const speed = 10;
 
    
 let score = 0;
-
+ 
 
 // Poisson  
 
