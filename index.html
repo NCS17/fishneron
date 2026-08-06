@@ -1,42 +1,43 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bubulle Snake 🐟</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Henneron's Fish</title>
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<div class="game-container">
+<h1>🐟 Henneron's Fish</h1>
 
-    <h1>🐟 Bubulle Snake</h1>
-    <p>Aide Bubulle à manger les algues 🌿</p>
+<p>Aide ton poisson à évoluer en mangeant des algues 🌿</p>
 
-    <div class="score">
-        Score : <span id="score">0</span>
-        | Record : <span id="highscore">0</span>
-    </div>
+<div id="info">
+    <div id="score">Algues : 0</div>
+    <div id="level">🐟 Poisson rouge</div>
+</div>
 
-    <canvas id="game"></canvas>
 
-    <div class="buttons">
-        <button onclick="changeDirection('UP')">⬆️</button>
-        <div>
-            <button onclick="changeDirection('LEFT')">⬅️</button>
-            <button onclick="changeDirection('DOWN')">⬇️</button>
-            <button onclick="changeDirection('RIGHT')">➡️</button>
-        </div>
-    </div>
+<canvas id="game"></canvas>
 
-    <div id="gameover">
-        <h2>🌊 Bubulle est fatigué...</h2>
-        <p>Score : <span id="finalScore"></span></p>
-        <button onclick="restartGame()">Rejouer 🐠</button>
-    </div>
+
+<div id="controls">
+
+<button id="up">⬆️</button>
+
+<div>
+<button id="left">⬅️</button>
+<button id="down">⬇️</button>
+<button id="right">➡️</button>
+</div>
 
 </div>
+
+
+<p id="message">
+Mange les algues et deviens le roi des océans 🌊
+</p>
 
 
 <script src="script.js"></script>
