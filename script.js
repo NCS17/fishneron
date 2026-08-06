@@ -5,7 +5,7 @@ canvas.width = 500;
 canvas.height = 500;
 
 
-// Vitesse du poisson
+// VITESSE DU POISSON
 const speed = 10;
 
 
@@ -15,44 +15,34 @@ let score = 0;
 // Poisson
 
 let fish = {
-
-    x:250,
-    y:250,
-    dx:10,
-    dy:0
-
+    x: 250,
+    y: 250,
+    dx: speed,
+    dy: 0
 };
 
 
 
-// Images des évolutions
+// IMAGES DES EVOLUTIONS
 
 let fishImages = {
 
     rouge: new Image(),
-
     nemo: new Image(),
-
     aile: new Image(),
-
     whale: new Image(),
-
     octo: new Image()
 
 };
 
 
-// Noms de tes PNG
+// CHEMIN VERS TES PNG
 
-fishImages.rouge.src = "images/rouge.png";
-
-fishImages.nemo.src = "images/nemo.png";
-
-fishImages.aile.src = "images/aile.png";
-
-fishImages.whale.src = "images/whale.png";
-
-fishImages.octo.src = "images/octo.png";
+fishImages.rouge.src = "fishImages/rouge.png";
+fishImages.nemo.src = "fishImages/nemo.png";
+fishImages.aile.src = "fishImages/aile.png";
+fishImages.whale.src = "fishImages/whale.png";
+fishImages.octo.src = "fishImages/octo.png";
 
 
 
@@ -61,32 +51,32 @@ fishImages.octo.src = "images/octo.png";
 
 let algae = {
 
-    x:100,
-    y:100
+    x: 100,
+    y: 100
 
 };
 
 
 
 
-// Contrôles clavier
+// CONTROLES CLAVIER
 
 document.addEventListener("keydown", function(e){
 
 
-    if(e.key==="ArrowUp")
+    if(e.key === "ArrowUp")
         changeDirection(0,-speed);
 
 
-    if(e.key==="ArrowDown")
+    if(e.key === "ArrowDown")
         changeDirection(0,speed);
 
 
-    if(e.key==="ArrowLeft")
+    if(e.key === "ArrowLeft")
         changeDirection(-speed,0);
 
 
-    if(e.key==="ArrowRight")
+    if(e.key === "ArrowRight")
         changeDirection(speed,0);
 
 
@@ -95,23 +85,27 @@ document.addEventListener("keydown", function(e){
 
 
 
-// Contrôles téléphone
 
-document.getElementById("up").onclick =
-()=>changeDirection(0,-speed);
+// CONTROLES TELEPHONE
 
-
-document.getElementById("down").onclick =
-()=>changeDirection(0,speed);
+document.getElementById("up").onclick = function(){
+    changeDirection(0,-speed);
+};
 
 
-document.getElementById("left").onclick =
-()=>changeDirection(-speed,0);
+document.getElementById("down").onclick = function(){
+    changeDirection(0,speed);
+};
 
 
-document.getElementById("right").onclick =
-()=>changeDirection(speed,0);
+document.getElementById("left").onclick = function(){
+    changeDirection(-speed,0);
+};
 
+
+document.getElementById("right").onclick = function(){
+    changeDirection(speed,0);
+};
 
 
 
@@ -119,8 +113,8 @@ document.getElementById("right").onclick =
 
 function changeDirection(x,y){
 
-    fish.dx=x;
-    fish.dy=y;
+    fish.dx = x;
+    fish.dy = y;
 
 }
 
@@ -130,45 +124,44 @@ function changeDirection(x,y){
 
 
 
-// Choix de l'évolution
+// CHOIX DU POISSON SELON LES ALGUES
 
 function getFishImage(){
 
 
-    // 0 à 1 algue
-    if(score < 2)
+    if(score < 2){
 
         return fishImages.rouge;
 
+    }
 
 
-    // 2 à 3 algues
-    else if(score < 4)
+    else if(score < 4){
 
         return fishImages.nemo;
 
+    }
 
 
-    // 4 à 7 algues
-    else if(score < 8)
+    else if(score < 8){
 
         return fishImages.aile;
 
+    }
 
 
-    // 8 à 16 algues
-    else if(score < 17)
+    else if(score < 17){
 
         return fishImages.whale;
 
+    }
 
 
-    // 17+ algues
-
-    else
+    else{
 
         return fishImages.octo;
 
+    }
 
 }
 
@@ -177,6 +170,8 @@ function getFishImage(){
 
 
 
+
+// NOUVELLE ALGUE
 
 function newAlgae(){
 
@@ -194,6 +189,7 @@ function newAlgae(){
 
 
 
+// LOGIQUE DU JEU
 
 function update(){
 
@@ -204,41 +200,44 @@ function update(){
 
 
 
-    // Traverser les murs façon Snake
+    // SORTIE DU CARRE = RETOUR DE L'AUTRE COTE
 
-    if(fish.x < 0)
+    if(fish.x < 0){
 
-        fish.x = 480;
+        fish.x = canvas.width - 20;
+
+    }
 
 
-
-    if(fish.x > 480)
+    if(fish.x > canvas.width){
 
         fish.x = 0;
 
+    }
 
 
-    if(fish.y < 0)
+    if(fish.y < 0){
 
-        fish.y = 480;
+        fish.y = canvas.height - 20;
+
+    }
 
 
-
-    if(fish.y > 480)
+    if(fish.y > canvas.height){
 
         fish.y = 0;
 
+    }
 
 
 
 
-    // Manger algue
+    // MANGER L'ALGUE
 
     if(
 
-        Math.abs(fish.x - algae.x) < 20 &&
-
-        Math.abs(fish.y - algae.y) < 20
+        Math.abs(fish.x - algae.x) < 25 &&
+        Math.abs(fish.y - algae.y) < 25
 
     ){
 
@@ -248,7 +247,6 @@ function update(){
 
         document.getElementById("score").innerHTML =
         "Algues : " + score;
-
 
 
         newAlgae();
@@ -266,26 +264,28 @@ function update(){
 
 
 
+// AFFICHAGE
+
 function draw(){
 
 
-    ctx.clearRect(0,0,500,500);
+    ctx.clearRect(0,0,canvas.width,canvas.height);
 
 
 
-    // Algue
+    // ALGUE
 
-    ctx.font="35px Arial";
+    ctx.font = "35px Arial";
 
     ctx.fillText(
         "🌿",
         algae.x,
-        algae.y+25
+        algae.y + 25
     );
 
 
 
-    // Poisson
+    // IMAGE DU POISSON
 
     let img = getFishImage();
 
@@ -310,12 +310,10 @@ function draw(){
     update();
 
 
-
     requestAnimationFrame(draw);
 
 
 }
-
 
 
 
