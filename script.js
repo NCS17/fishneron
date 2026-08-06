@@ -175,10 +175,11 @@ function getFishImage(){
 
 function newAlgae(){
 
+    algae.x = Math.floor(Math.random()*23)*20 + 20;
 
-    algae.x = Math.floor(Math.random()*25)*20;
+    algae.y = Math.floor(Math.random()*23)*20 + 20;
 
-    algae.y = Math.floor(Math.random()*25)*20;
+}
 
 
 }
