@@ -12,7 +12,7 @@ const speed = 10;
 let score = 0;
 
 
-// Poisson 
+// Poisson  
 
 
 let fish = {
