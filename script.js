@@ -1,8 +1,11 @@
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
 
+
 canvas.width = 500;
 canvas.height = 500;
+
+
 
 
 // =======================
@@ -12,17 +15,25 @@ canvas.height = 500;
 
 let score = 0;
 
+
 let coins =
 Number(localStorage.getItem("coins"))
 ||
 0;
 
 
+
 let speed = 5;
+
 
 const maxSpeed = 12;
 
+
 let gameOver = false;
+
+
+
+
 
 
 
@@ -31,7 +42,6 @@ let gameOver = false;
 // =======================
 // SYSTEME SKINS
 // =======================
-
 
 
 let currentSkin =
@@ -53,13 +63,12 @@ name:"🐟 Poisson rouge",
 
 price:0,
 
-size:70,
+owned:true,
 
-owned:true
+size:70
 
 
 },
-
 
 
 
@@ -71,14 +80,13 @@ name:"🐠 Nemo",
 
 price:10,
 
-size:70,
-
 owned:
-localStorage.getItem("nemoOwned")==="true"
+localStorage.getItem("nemoOwned")==="true",
+
+size:70
 
 
 },
-
 
 
 
@@ -90,10 +98,10 @@ name:"🐋 Baleine",
 
 price:30,
 
-size:80,
-
 owned:
-localStorage.getItem("whaleOwned")==="true"
+localStorage.getItem("whaleOwned")==="true",
+
+size:80
 
 
 }
@@ -111,8 +119,307 @@ localStorage.getItem("whaleOwned")==="true"
 
 
 // =======================
-// ACHAT SKIN
+// IMAGES SKINS
 // =======================
+
+
+let fishImages = {
+
+
+
+rouge:new Image(),
+
+
+nemo:new Image(),
+
+
+whale:new Image()
+
+
+
+};
+
+
+
+
+fishImages.rouge.src =
+"./fishImages/rouge.png";
+
+
+
+fishImages.nemo.src =
+"./fishImages/nemo.png";
+
+
+
+fishImages.whale.src =
+"./fishImages/whale.png";
+
+
+
+
+
+
+
+
+
+
+// =======================
+// IMAGE ALGUE
+// =======================
+
+
+let algaeImage = new Image();
+
+
+
+algaeImage.src =
+"./fishImages/algae.png";
+
+
+
+
+
+
+
+
+
+// =======================
+// IMAGE PIECE
+// =======================
+
+
+let coinImage = new Image();
+
+
+
+coinImage.src =
+"./fishImages/coin.png";
+
+
+
+
+
+
+
+
+
+// =======================
+// IMAGE REQUIN
+// =======================
+
+
+let sharkImage = new Image();
+
+
+
+sharkImage.src =
+"./fishImages/shark.png";
+
+
+
+
+
+
+
+
+
+// =======================
+// POISSON
+// =======================
+
+
+let fish = {
+
+
+x:250,
+
+
+y:250,
+
+
+dx:speed,
+
+
+dy:0,
+
+
+direction:"right"
+
+
+};
+
+
+
+
+
+
+
+
+
+
+// =======================
+// REQUIN
+// =======================
+
+
+let shark = {
+
+
+x:600,
+
+
+y:200,
+
+
+dx:-5,
+
+
+dy:0
+
+
+};
+
+
+
+let sharkActive=false;
+
+
+let sharkTimer=0;
+
+
+let lastSharkScore=0;
+
+
+
+
+
+
+
+
+
+// =======================
+// ALGUE
+// =======================
+
+
+let algae = {
+
+
+x:100,
+
+
+y:100
+
+
+};
+
+
+
+
+
+
+function newAlgae(){
+
+
+
+algae.x =
+Math.floor(
+Math.random()*25
+)
+*
+20;
+
+
+
+algae.y =
+Math.floor(
+Math.random()*25
+)
+*
+20;
+
+
+
+}
+
+
+
+
+
+
+
+
+// =======================
+// SKIN
+// =======================
+
+
+
+function getFishImage(){
+
+
+return fishImages[currentSkin];
+
+
+}
+
+
+
+
+
+
+function getFishSize(){
+
+
+return skinData[currentSkin].size;
+
+
+}
+
+
+
+
+
+
+
+
+
+function equipSkin(skin){
+
+
+
+if(
+skinData[skin]
+&&
+skinData[skin].owned
+){
+
+
+
+localStorage.setItem(
+"skin",
+skin
+);
+
+
+
+location.reload();
+
+
+
+}
+
+
+
+}
+
+
+
+
+
+
+
 
 
 function buySkin(skin){
@@ -132,8 +439,6 @@ return;
 
 
 
-
-// déjà possédé
 
 if(data.owned){
 
@@ -183,257 +488,36 @@ skin+"Owned",
 
 
 
-equipSkin(skin);
-
-
 
 alert(
-"🎉 Skin débloqué !"
+"🎉 Skin acheté !"
 );
 
 
 
+
+equipSkin(skin);
+
+
+
 }
-
-
 
 else{
 
 
 alert(
-"🪙 Pas assez de pièces !"
-);
-
-
-}
-
-
-
-}
-
-
-
-
-
-
-
-function equipSkin(skin){
-
-
-
-if(
-skinData[skin]
-&&
-skinData[skin].owned
-){
-
-
-
-localStorage.setItem(
-"skin",
-skin
+"🪙 Pas assez de pièces"
 );
 
 
 
-location.reload();
-
-
-
 }
 
 
 
 }
-
-
-
-
-
-
-
-
-
-function getFishImage(){
-
-
-return fishImages[currentSkin];
-
-
-}
-
-
-
-
-function getFishSize(){
-
-
-return skinData[currentSkin].size;
-
-
-}
-
-
-
-
-
-
-
-
 // =======================
-// IMAGES
-// =======================
-
-
-let fishImages={
-
-
-rouge:new Image(),
-
-
-nemo:new Image(),
-
-
-whale:new Image()
-
-
-
-};
-
-
-
-fishImages.rouge.src =
-"./fishImages/rouge.png";
-
-
-
-fishImages.nemo.src =
-"./fishImages/nemo.png";
-
-
-
-fishImages.whale.src =
-"./fishImages/whale.png";
-
-
-
-
-
-
-let algaeImage = new Image();
-
-
-algaeImage.src =
-"./fishImages/algae.png";
-
-
-
-
-
-
-
-// =======================
-// POISSON
-// =======================
-
-
-let fish = {
-
-
-x:250,
-
-y:250,
-
-dx:speed,
-
-dy:0,
-
-direction:"right"
-
-
-};
-
-
-
-
-
-
-
-
-// =======================
-// REQUIN ENNEMI
-// =======================
-
-
-let shark = {
-
-
-x:600,
-
-y:200,
-
-dx:-5,
-
-dy:0
-
-
-};
-
-
-
-let sharkImage = new Image();
-
-
-sharkImage.src =
-"./fishImages/shark.png";
-
-
-let sharkActive=false;
-
-
-let sharkTimer=0;
-
-
-let lastSharkScore=0;
-
-
-
-
-
-
-
-
-// =======================
-// ALGUE
-// =======================
-
-
-let algae={
-
-
-x:100,
-
-y:100
-
-
-};
-
-
-
-function newAlgae(){
-
-
-algae.x =
-Math.floor(Math.random()*25)*20;
-
-
-algae.y =
-Math.floor(Math.random()*25)*20;
-
-
-}
-// =======================
-// MISE A JOUR AFFICHAGE SCORE
+// AFFICHAGE PIECES
 // =======================
 
 
@@ -451,16 +535,22 @@ if(coinBox){
 
 
 coinBox.innerHTML =
+
 "🪙 Pièces : "
+
 +
+
 coins;
 
 
+
+}
+
+
+
 }
 
 
-
-}
 
 
 
@@ -485,7 +575,10 @@ return;
 
 fish.dx=x;
 
+
 fish.dy=y;
+
+
 
 
 
@@ -502,6 +595,8 @@ fish.direction="right";
 
 
 }
+
+
 
 
 
@@ -558,12 +653,14 @@ speed,
 
 
 
+
 // =======================
-// TELEPHONE
+// CONTROLES TELEPHONE
 // =======================
 
 
 function addTouch(id,x,y){
+
 
 
 let button =
@@ -572,6 +669,7 @@ document.getElementById(id);
 
 
 if(button){
+
 
 
 button.addEventListener(
@@ -597,6 +695,7 @@ y
 
 
 }
+
 
 
 
@@ -635,6 +734,8 @@ speed,
 
 
 
+
+
 // =======================
 // UPDATE JEU
 // =======================
@@ -661,6 +762,7 @@ return;
 
 fish.x += fish.dx;
 
+
 fish.y += fish.dy;
 
 
@@ -672,18 +774,24 @@ fish.y += fish.dy;
 
 
 // =======================
-// CREATION REQUIN
+// APPARITION REQUIN
 // =======================
 
 
 if(
 
 
-score > 0 &&
+score > 0
 
-score % 5 === 0 &&
+&&
 
-score !== lastSharkScore &&
+score % 5 === 0
+
+&&
+
+score !== lastSharkScore
+
+&&
 
 sharkActive===false
 
@@ -756,6 +864,8 @@ shark.y += shark.dy;
 
 
 
+
+
 if(Math.random()<0.03){
 
 
@@ -786,6 +896,7 @@ shark.dy*=-1;
 
 
 
+
 if(shark.y>410){
 
 
@@ -804,7 +915,7 @@ shark.dy*=-1;
 
 
 if(
-Date.now()-sharkTimer>6000
+Date.now()-sharkTimer > 6000
 ){
 
 
@@ -812,6 +923,7 @@ sharkActive=false;
 
 
 }
+
 
 
 
@@ -827,7 +939,7 @@ sharkActive=false;
 
 
 // =======================
-// TELEPORTATION
+// TELEPORTATION POISSON
 // =======================
 
 
@@ -908,11 +1020,7 @@ Math.abs(
 
 
 
-
-
 ){
-
-
 
 
 
@@ -920,22 +1028,18 @@ score++;
 
 
 
-
-
-// AJOUT PIECES 🪙
+// =======================
+// PIECE GAGNEE
+// =======================
 
 
 coins++;
-
-
 
 
 localStorage.setItem(
 "coins",
 coins
 );
-
-
 
 
 
@@ -957,6 +1061,7 @@ maxSpeed
 
 
 
+
 if(fish.dx>0)
 
 fish.dx=speed;
@@ -966,6 +1071,8 @@ fish.dx=speed;
 if(fish.dx<0)
 
 fish.dx=-speed;
+
+
 
 
 
@@ -986,7 +1093,6 @@ fish.dy=-speed;
 
 
 
-
 let scoreBox =
 document.getElementById(
 "score"
@@ -994,24 +1100,31 @@ document.getElementById(
 
 
 
-
-
 if(scoreBox){
+
 
 
 scoreBox.innerHTML =
 
 
 "🌿 Algues : "
+
 +
+
 score
+
 +
+
 " | ⚡ "
+
 +
+
 speed.toFixed(1);
 
 
+
 }
+
 
 
 
@@ -1023,6 +1136,7 @@ newAlgae();
 
 
 }
+
 
 
 
@@ -1054,7 +1168,6 @@ let dx =
 
 
 
-
 let dy =
 
 
@@ -1075,7 +1188,9 @@ let distance =
 
 Math.sqrt(
 
-dx*dx+
+dx*dx
+
++
 
 dy*dy
 
@@ -1086,30 +1201,116 @@ dy*dy
 
 
 
-
-
 if(distance<55){
+
 
 
 endGame();
 
 
-}
-
-
 
 }
+
+
+
+}
+
 
 
 
 
 }
 // =======================
-// AFFICHAGE DU JEU
+// GAME OVER
+// =======================
+
+
+async function endGame(){
+
+
+
+if(gameOver)
+
+return;
+
+
+
+gameOver=true;
+
+
+
+await saveScore();
+
+
+
+
+
+let box =
+document.getElementById(
+"gameOver"
+);
+
+
+
+let final =
+document.getElementById(
+"finalScore"
+);
+
+
+
+if(final){
+
+
+
+final.innerHTML =
+
+
+"Score : "
+
++
+
+score
+
++
+
+" 🌿";
+
+
+
+}
+
+
+
+
+
+if(box){
+
+
+box.style.display="block";
+
+
+}
+
+
+
+}
+
+
+
+
+
+
+
+
+
+// =======================
+// AFFICHAGE
 // =======================
 
 
 function draw(){
+
 
 
 ctx.clearRect(
@@ -1118,6 +1319,8 @@ ctx.clearRect(
 canvas.width,
 canvas.height
 );
+
+
 
 
 
@@ -1136,10 +1339,12 @@ ctx.createLinearGradient(
 );
 
 
+
 gradient.addColorStop(
 0,
 "#4bd3ff"
 );
+
 
 
 gradient.addColorStop(
@@ -1149,8 +1354,10 @@ gradient.addColorStop(
 
 
 
+
 ctx.fillStyle =
 gradient;
+
 
 
 ctx.fillRect(
@@ -1165,8 +1372,70 @@ ctx.fillRect(
 
 
 
+
+
+
+
 // =======================
-// ALGUE PNG
+// PIECES HUD
+// =======================
+
+
+if(
+coinImage.complete
+&&
+coinImage.naturalWidth>0
+){
+
+
+
+ctx.drawImage(
+
+coinImage,
+
+15,
+
+15,
+
+35,
+
+35
+
+);
+
+
+
+}
+
+
+
+ctx.fillStyle="white";
+
+ctx.font="25px Arial";
+
+
+
+ctx.fillText(
+
+coins,
+
+60,
+
+42
+
+);
+
+
+
+
+
+
+
+
+
+
+// =======================
+// ALGUE
 // =======================
 
 
@@ -1180,15 +1449,22 @@ algaeImage.naturalWidth>0
 
 ctx.drawImage(
 
+
 algaeImage,
+
 
 algae.x,
 
+
 algae.y,
+
 
 70,
 
+
 70
+
+
 
 );
 
@@ -1202,8 +1478,10 @@ algae.y,
 
 
 
+
+
 // =======================
-// REQUIN ENNEMI
+// REQUIN
 // =======================
 
 
@@ -1217,15 +1495,22 @@ sharkImage.complete
 
 ctx.drawImage(
 
+
 sharkImage,
+
 
 shark.x,
 
+
 shark.y,
+
 
 150,
 
+
 95
+
+
 
 );
 
@@ -1239,8 +1524,10 @@ shark.y,
 
 
 
+
+
 // =======================
-// POISSON SKIN
+// POISSON
 // =======================
 
 
@@ -1264,18 +1551,23 @@ img.naturalWidth>0
 
 
 
+
+
 if(
 fish.direction==="left"
 ){
 
 
+
 ctx.save();
+
 
 
 ctx.scale(
 -1,
 1
 );
+
 
 
 
@@ -1295,12 +1587,15 @@ size
 
 
 
+
 ctx.restore();
+
 
 
 }
 
 else{
+
 
 
 ctx.drawImage(
@@ -1343,10 +1638,15 @@ fish.y+50
 
 
 
+
+
+
+
 update();
 
 
 requestAnimationFrame(draw);
+
 
 
 }
@@ -1364,8 +1664,8 @@ requestAnimationFrame(draw);
 // =======================
 
 
-
 function openLocker(){
+
 
 
 let locker =
@@ -1387,13 +1687,17 @@ loadLocker();
 }
 
 
+
 }
 
 
 
 
 
+
+
 function closeLocker(){
+
 
 
 let locker =
@@ -1412,6 +1716,7 @@ locker.style.display="none";
 }
 
 
+
 }
 
 
@@ -1420,11 +1725,6 @@ locker.style.display="none";
 
 
 
-
-
-// =======================
-// GENERATION BOUTIQUE
-// =======================
 
 
 function loadLocker(){
@@ -1438,7 +1738,6 @@ document.getElementById(
 
 
 
-
 if(!container)
 
 return;
@@ -1447,7 +1746,9 @@ return;
 
 
 
+
 container.innerHTML="";
+
 
 
 
@@ -1472,8 +1773,7 @@ document.createElement(
 
 
 
-box.className =
-"skin";
+box.className="skin";
 
 
 
@@ -1481,24 +1781,25 @@ box.className =
 
 
 
-let image =
+
+let img =
 document.createElement(
 "img"
 );
 
 
 
-image.src =
+img.src =
 fishImages[skin].src;
 
 
 
-image.style.width =
+img.style.width =
 "70px";
 
 
 
-image.style.height =
+img.style.height =
 "70px";
 
 
@@ -1506,14 +1807,16 @@ image.style.height =
 
 
 
-let name =
+
+
+let title =
 document.createElement(
 "h3"
 );
 
 
 
-name.innerHTML =
+title.innerHTML =
 data.name;
 
 
@@ -1522,7 +1825,8 @@ data.name;
 
 
 
-let info =
+
+let price =
 document.createElement(
 "p"
 );
@@ -1531,11 +1835,10 @@ document.createElement(
 
 
 
-
 if(data.owned){
 
 
-info.innerHTML =
+price.innerHTML =
 "✅ Possédé";
 
 
@@ -1544,7 +1847,7 @@ info.innerHTML =
 else{
 
 
-info.innerHTML =
+price.innerHTML =
 "🔒 "
 +
 data.price
@@ -1576,11 +1879,7 @@ if(currentSkin===skin){
 
 
 button.innerHTML =
-"Équipé";
-
-
-button.disabled=true;
-
+"✅ Équipé";
 
 
 }
@@ -1592,7 +1891,6 @@ button.innerHTML =
 "Équiper";
 
 
-
 }
 
 else{
@@ -1602,7 +1900,6 @@ button.innerHTML =
 "Acheter";
 
 
-
 }
 
 
@@ -1612,9 +1909,8 @@ button.innerHTML =
 
 
 
+
 button.onclick=function(){
-
-
 
 
 
@@ -1637,7 +1933,6 @@ buySkin(skin);
 
 
 
-
 };
 
 
@@ -1646,18 +1941,16 @@ buySkin(skin);
 
 
 
-box.appendChild(image);
+box.appendChild(img);
 
 
-box.appendChild(name);
+box.appendChild(title);
 
 
-box.appendChild(info);
+box.appendChild(price);
 
 
 box.appendChild(button);
-
-
 
 
 
@@ -1682,177 +1975,8 @@ container.appendChild(box);
 
 
 // =======================
-// CLASSEMENT
-// =======================
-
-
-
-async function showRanking(){
-
-
-
-let ranking =
-document.getElementById(
-"ranking"
-);
-
-
-let list =
-document.getElementById(
-"rankingList"
-);
-
-
-
-
-
-if(
-!ranking
-||
-!list
-)
-
-return;
-
-
-
-
-
-ranking.style.display =
-"block";
-
-
-
-list.innerHTML =
-"Chargement...";
-
-
-
-
-
-
-
-try{
-
-
-
-const q =
-query(
-
-collection(db,"scores"),
-
-orderBy(
-"score",
-"desc"
-),
-
-limit(10)
-
-);
-
-
-
-
-
-const result =
-await getDocs(q);
-
-
-
-
-
-
-list.innerHTML="";
-
-
-
-let place=1;
-
-
-
-
-
-
-result.forEach(doc=>{
-
-
-
-let data =
-doc.data();
-
-
-
-let li =
-document.createElement(
-"li"
-);
-
-
-
-li.innerHTML =
-
-
-place
-+
-" 🐟 "
-+
-data.pseudo
-+
-" : "
-+
-data.score
-+
-" 🌿";
-
-
-
-
-
-list.appendChild(li);
-
-
-
-place++;
-
-
-
-});
-
-
-
-
-
-
-}
-
-catch(error){
-
-
-console.log(error);
-
-
-list.innerHTML =
-"Erreur classement";
-
-
-}
-
-
-
-}
-
-
-
-
-
-
-
-
-
-// =======================
 // BOUTONS
 // =======================
-
 
 
 let lockerBtn =
@@ -1870,7 +1994,6 @@ openLocker;
 
 
 }
-
 
 
 
@@ -1897,50 +2020,6 @@ closeLocker;
 
 
 
-
-let rankingBtn =
-document.getElementById(
-"rankingBtn"
-);
-
-
-
-if(rankingBtn){
-
-
-rankingBtn.onclick =
-showRanking;
-
-
-}
-
-
-
-
-
-
-
-let refreshRanking =
-document.getElementById(
-"refreshRanking"
-);
-
-
-
-if(refreshRanking){
-
-
-refreshRanking.onclick =
-showRanking;
-
-
-}
-
-
-
-
-
-
 let restartBtn =
 document.getElementById(
 "restartBtn"
@@ -1951,16 +2030,21 @@ document.getElementById(
 if(restartBtn){
 
 
+
 restartBtn.onclick=function(){
+
 
 
 location.reload();
 
 
+
 };
 
 
+
 }
+
 
 
 
@@ -1974,10 +2058,13 @@ location.reload();
 // =======================
 
 
+
 updateCoinsDisplay();
 
 
+
 newAlgae();
+
 
 
 draw();
