@@ -223,24 +223,29 @@ function update(){
 
 
 
-    // APPARITION DU REQUIN APRES 5 ALGUES
+    
 
- if(score >= 5 && !sharkActive){
- if(score >= 10 && !sharkActive){
- if(score >= 15 && !sharkActive){
-    if(score >= 20 && !sharkActive){
-        sharkActive = true;
+// APPARITION DU REQUIN TOUTES LES 5 ALGUES
 
-        sharkTimer = Date.now();
+if(
+    score >= 5 &&
+    score % 5 === 0 &&
+    score !== lastSharkScore &&
+    !sharkActive
+){
+
+    sharkActive = true;
+
+    lastSharkScore = score;
+
+    sharkTimer = Date.now();
 
 
-        shark.x = canvas.width + 50;
+    shark.x = canvas.width + 50;
 
-        shark.y = Math.random() * 300;
+    shark.y = Math.random() * 300;
 
-
-    }
-
+}
 
 
     // MOUVEMENT DU REQUIN
