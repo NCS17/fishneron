@@ -19,7 +19,8 @@ let fish = {
     x: 250,
     y: 250,
     dx: speed,
-    dy: 5
+    dy: 0,
+    direction: "right"
 };
 
 
@@ -117,8 +118,16 @@ function changeDirection(x,y){
     fish.dx = x;
     fish.dy = y;
 
-}
+    // Orientation du poisson
+    if(x > 0){
+        fish.direction = "right";
+    }
 
+    if(x < 0){
+        fish.direction = "left";
+    }
+
+}
 
 
 
@@ -285,14 +294,35 @@ function draw(currentTime){
         ctx.fillText("🌿", algae.x, algae.y + 25);
 
         // IMAGE DU POISSON
-        let img = getFishImage();
+        if(fish.direction === "left"){
 
-        ctx.drawImage(
-            img,
-            fish.x,
-            fish.y,
-            70,
-            70
+    ctx.save();
+
+    // retourne l'image horizontalement
+    ctx.scale(-1,1);
+
+    ctx.drawImage(
+        img,
+        -fish.x - 70,
+        fish.y,
+        70,
+        70
+    );
+
+    ctx.restore();
+
+}
+else{
+
+    ctx.drawImage(
+        img,
+        fish.x,
+        fish.y,
+        70,
+        70
+    );
+
+}
         );
 
         update();
