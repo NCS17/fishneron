@@ -27,7 +27,6 @@ Aide ton poisson à évoluer en mangeant les algues 🌿
 
 
 
-
 <div class="score">
 
 <span id="score">
@@ -40,9 +39,7 @@ Algues : 0
 
 
 
-
 <canvas id="game"></canvas>
-
 
 
 
@@ -57,7 +54,6 @@ Algues : 0
 <button id="up">
 ⬆️
 </button>
-
 
 
 <div>
@@ -89,7 +85,6 @@ Algues : 0
 
 
 
-
 <!-- GAME OVER -->
 
 
@@ -99,15 +94,21 @@ Algues : 0
 <h2>🦈 Bubulle s'est fait manger !</h2>
 
 
-<p id="finalScore">
-
-</p>
+<p id="finalScore"></p>
 
 
 
 <button id="restartBtn">
 
 Rejouer 🐟
+
+</button>
+
+
+
+<button id="rankingBtn">
+
+🏆 Voir le classement
 
 </button>
 
@@ -132,21 +133,21 @@ Rejouer 🐟
 
 
 
-<button id="rankingBtn">
+<ol id="rankingList">
+
+<li>
+Clique sur actualiser pour voir les scores
+</li>
+
+</ol>
+
+
+
+<button id="refreshRanking">
 
 Actualiser le classement 🏆
 
 </button>
-
-
-
-<ol id="rankingList">
-
-<li>
-Le classement apparaîtra ici...
-</li>
-
-</ol>
 
 
 
@@ -168,7 +169,6 @@ Le classement apparaîtra ici...
 
 import { initializeApp } 
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-
 
 
 import {
@@ -196,33 +196,23 @@ from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
 
-
-
 const firebaseConfig = {
 
 
 apiKey: "AIzaSyBvcKnfsjvwvAjkfZ-mysvUartZSm3GK3E",
 
-
 authDomain: "henneron-s-fish.firebaseapp.com",
-
 
 projectId: "henneron-s-fish",
 
-
 storageBucket: "henneron-s-fish.firebasestorage.app",
 
-
 messagingSenderId: "126418087769",
-
 
 appId: "1:126418087769:web:f1c68acad749ab5299a648"
 
 
 };
-
-
-
 
 
 
@@ -235,21 +225,19 @@ const db = getFirestore(app);
 
 
 
+window.db=db;
 
+window.collection=collection;
 
-window.db = db;
+window.addDoc=addDoc;
 
-window.collection = collection;
+window.query=query;
 
-window.addDoc = addDoc;
+window.orderBy=orderBy;
 
-window.query = query;
+window.limit=limit;
 
-window.orderBy = orderBy;
-
-window.limit = limit;
-
-window.getDocs = getDocs;
+window.getDocs=getDocs;
 
 
 
@@ -258,10 +246,6 @@ window.getDocs = getDocs;
 
 
 
-
-
-
-<!-- SCRIPT DU JEU -->
 
 
 <script src="script.js"></script>
