@@ -1,16 +1,13 @@
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
 
-
 canvas.width = 500;
 canvas.height = 500;
-
 
 
 // =======================
 // VARIABLES
 // =======================
-
 
 let score = 0;
 
@@ -23,13 +20,10 @@ let gameOver = false;
 
 
 
-
 // =======================
 // SYSTEME SKINS
 // =======================
 
-
-// skin sauvegardé
 
 let currentSkin = 
 localStorage.getItem("skin")
@@ -39,47 +33,46 @@ localStorage.getItem("skin")
 
 
 
-
-// paramètres des skins
+// Taille réelle de chaque skin
+// (adaptée aux PNG)
 
 const skinData = {
 
 
 rouge:{
-    size:70,
-    name:"Poisson rouge"
+size:70,
+name:"Poisson rouge"
 },
 
 
 nemo:{
-    size:70,
-    name:"Nemo"
+size:70,
+name:"Nemo"
 },
 
 
 ballon:{
-    size:65,
-    name:"Poisson ballon"
+size:60,
+name:"Poisson ballon"
 },
 
 
 requin:{
-    size:90,
-    name:"Petit requin"
+size:65,
+name:"Petit requin"
 },
 
 
 whale:{
-    size:80,
-    name:"Baleine"
+size:75,
+name:"Baleine"
 },
 
 
 octo:{
-    size:40,
-    name:"Pieuvre"
+size:35,
+name:"Pieuvre"
 }
-
 
 
 };
@@ -89,10 +82,8 @@ octo:{
 
 
 
-
-
 // =======================
-// IMAGES SKINS
+// CHARGEMENT IMAGES
 // =======================
 
 
@@ -112,10 +103,7 @@ whale:new Image(),
 octo:new Image()
 
 
-
 };
-
-
 
 
 
@@ -150,9 +138,6 @@ fishImages.octo.src =
 
 
 
-// vérification images
-
-
 Object.keys(fishImages).forEach(
 skin=>{
 
@@ -166,7 +151,6 @@ skin
 );
 
 
-
 };
 
 
@@ -175,10 +159,9 @@ fishImages[skin].onerror=function(){
 
 
 console.log(
-"❌ Image introuvable :",
+"❌ Erreur chargement :",
 skin+".png"
 );
-
 
 
 };
@@ -195,8 +178,9 @@ skin+".png"
 
 
 
+
 // =======================
-// ALGUE IMAGE
+// ALGUIE PNG
 // =======================
 
 
@@ -213,22 +197,19 @@ algaeImage.src =
 
 
 
-
 // =======================
-// CHOIX SKIN
+// SKIN
 // =======================
 
 
 function equipSkin(skin){
 
 
-
 if(
-skinData[skin]
-&&
 fishImages[skin]
+&&
+skinData[skin]
 ){
-
 
 
 localStorage.setItem(
@@ -237,26 +218,13 @@ skin
 );
 
 
-
-console.log(
-"Skin équipé :",
-skin
-);
-
-
-
-// refresh automatique
-
 location.reload();
 
 
-
 }
 
 
-
 }
-
 
 
 
@@ -272,27 +240,13 @@ return fishImages[currentSkin];
 
 
 
-
 function getFishSize(){
-
-
-if(
-skinData[currentSkin]
-){
 
 
 return skinData[currentSkin].size;
 
 
 }
-
-
-return 70;
-
-
-}
-
-
 
 
 
@@ -322,11 +276,7 @@ dy:0,
 direction:"right"
 
 
-
 };
-
-
-
 
 
 
@@ -341,7 +291,6 @@ direction:"right"
 async function saveScore(){
 
 
-
 try{
 
 
@@ -350,8 +299,6 @@ let pseudo = prompt(
 "🦈 GAME OVER !\n\nPseudo ? 🐟"
 
 );
-
-
 
 
 
@@ -370,23 +317,18 @@ pseudo="Anonyme";
 
 
 
-
 await addDoc(
 
 collection(db,"scores"),
-
 
 {
 
 
 pseudo:pseudo,
 
-
 score:score,
 
-
 date:new Date()
-
 
 
 }
@@ -397,8 +339,6 @@ date:new Date()
 
 
 }
-
-
 
 catch(error){
 
@@ -431,16 +371,12 @@ x:600,
 
 y:200,
 
-
 dx:-5,
-
 
 dy:0
 
 
 };
-
-
 
 
 
@@ -453,18 +389,11 @@ sharkImage.src =
 
 
 
-
-
 let sharkActive=false;
-
 
 let sharkTimer=0;
 
-
 let lastSharkScore=0;
-
-
-
 
 
 
@@ -480,7 +409,6 @@ let algae={
 
 x:100,
 
-
 y:100
 
 
@@ -494,21 +422,11 @@ function newAlgae(){
 
 
 algae.x =
-Math.floor(
-Math.random()*25
-)
-*
-20;
-
+Math.floor(Math.random()*25)*20;
 
 
 algae.y =
-Math.floor(
-Math.random()*25
-)
-*
-20;
-
+Math.floor(Math.random()*25)*20;
 
 
 }
@@ -550,11 +468,10 @@ fish.direction="right";
 
 
 
-
-
 document.addEventListener(
 "keydown",
 function(e){
+
 
 
 if(e.key==="ArrowUp")
@@ -602,7 +519,6 @@ speed,
 
 
 
-
 // =======================
 // CONTROLES TELEPHONE
 // =======================
@@ -627,7 +543,6 @@ function(e){
 e.preventDefault();
 
 
-
 changeDirection(
 x,
 y
@@ -647,11 +562,13 @@ y
 
 
 
+
 addTouch(
 "up",
 0,
 -speed
 );
+
 
 
 addTouch(
@@ -661,11 +578,13 @@ speed
 );
 
 
+
 addTouch(
 "left",
 -speed,
 0
 );
+
 
 
 addTouch(
@@ -683,7 +602,7 @@ speed,
 
 
 // =======================
-// UPDATE JEU
+// UPDATE
 // =======================
 
 
@@ -693,7 +612,6 @@ function update(){
 if(gameOver)
 
 return;
-
 
 
 
@@ -715,9 +633,8 @@ fish.y += fish.dy;
 
 
 
-
 // =======================
-// APPARITION REQUIN
+// CREATION REQUIN
 // =======================
 
 
@@ -731,8 +648,8 @@ score !== lastSharkScore &&
 
 sharkActive === false
 
-
 ){
+
 
 
 sharkActive=true;
@@ -780,13 +697,13 @@ Math.random()*3-1.5;
 
 
 
-
 // =======================
 // MOUVEMENT REQUIN
 // =======================
 
 
 if(sharkActive){
+
 
 
 shark.x += shark.dx;
@@ -806,7 +723,6 @@ Math.random()*4-2;
 
 
 }
-
 
 
 
@@ -845,12 +761,8 @@ shark.dy*=-1;
 
 
 
-
-
 if(
-Date.now()-sharkTimer
->
-6000
+Date.now()-sharkTimer > 6000
 ){
 
 
@@ -861,9 +773,7 @@ sharkActive=false;
 
 
 
-
 }
-
 
 
 
@@ -901,6 +811,7 @@ fish.y=canvas.height;
 if(fish.y>canvas.height)
 
 fish.y=0;
+
 
 
 
@@ -962,6 +873,8 @@ maxSpeed
 
 
 
+
+
 if(fish.dx>0)
 
 fish.dx=speed;
@@ -999,7 +912,6 @@ document.getElementById(
 
 
 
-
 if(scoreBox){
 
 
@@ -1028,9 +940,8 @@ newAlgae();
 
 
 
-
-
 }
+
 
 
 
@@ -1077,8 +988,6 @@ let dy =
 
 
 
-
-
 let distance =
 
 
@@ -1095,13 +1004,11 @@ dy*dy
 
 
 
-
-
 if(distance < 55){
 
 
 
-// pouvoir skin requin
+// pouvoir du skin requin
 
 
 if(currentSkin==="requin"){
@@ -1109,7 +1016,7 @@ if(currentSkin==="requin"){
 
 
 console.log(
-"🦈 Le skin requin protège !"
+"🦈 Protection utilisée !"
 );
 
 
@@ -1141,8 +1048,8 @@ endGame();
 
 
 
-
 }
+
 
 
 
@@ -1166,7 +1073,6 @@ async function endGame(){
 if(gameOver)
 
 return;
-
 
 
 
@@ -1197,8 +1103,6 @@ let final =
 document.getElementById(
 "finalScore"
 );
-
-
 
 
 
@@ -1243,7 +1147,6 @@ box.style.display="block";
 function draw(){
 
 
-
 ctx.clearRect(
 0,
 0,
@@ -1254,9 +1157,8 @@ canvas.height
 
 
 
-
 // =======================
-// FOND OCEAN
+// FOND OCEAN FIXE
 // =======================
 
 
@@ -1286,14 +1188,12 @@ ctx.fillStyle =
 gradient;
 
 
-
 ctx.fillRect(
 0,
 0,
 500,
 500
 );
-
 
 
 
@@ -1328,10 +1228,7 @@ algae.y,
 );
 
 
-
 }
-
-
 
 
 
@@ -1351,7 +1248,6 @@ sharkImage.complete
 ){
 
 
-
 ctx.drawImage(
 
 sharkImage,
@@ -1367,7 +1263,6 @@ shark.y,
 );
 
 
-
 }
 
 
@@ -1381,7 +1276,6 @@ shark.y,
 // =======================
 // POISSON SKIN
 // =======================
-
 
 
 let img =
@@ -1402,8 +1296,6 @@ img.complete
 &&
 img.naturalWidth>0
 ){
-
-
 
 
 
@@ -1440,14 +1332,11 @@ size
 
 
 
-
 ctx.restore();
 
 
 
 }
-
-
 
 else{
 
@@ -1473,11 +1362,22 @@ size
 
 
 
+}
+
+else{
+
+
+ctx.font="50px Arial";
+
+
+ctx.fillText(
+"🐟",
+fish.x,
+fish.y+50
+);
 
 
 }
-
-
 
 
 
@@ -1503,7 +1403,6 @@ requestAnimationFrame(draw);
 
 
 
-
 // =======================
 // CASIER
 // =======================
@@ -1513,7 +1412,6 @@ requestAnimationFrame(draw);
 function openLocker(){
 
 
-
 let locker =
 document.getElementById(
 "locker"
@@ -1524,17 +1422,17 @@ document.getElementById(
 if(locker){
 
 
-locker.style.display =
-"block";
+locker.style.display="block";
 
 
-
-}
-
+loadLocker();
 
 
 }
 
+
+
+}
 
 
 
@@ -1542,7 +1440,6 @@ locker.style.display =
 function closeLocker(){
 
 
-
 let locker =
 document.getElementById(
 "locker"
@@ -1553,10 +1450,7 @@ document.getElementById(
 if(locker){
 
 
-
-locker.style.display =
-"none";
-
+locker.style.display="none";
 
 
 }
@@ -1574,7 +1468,7 @@ locker.style.display =
 
 
 // =======================
-// APERCU SKINS CASIER
+// APERCU SKINS
 // =======================
 
 
@@ -1586,6 +1480,7 @@ let container =
 document.getElementById(
 "skinList"
 );
+
 
 
 
@@ -1604,6 +1499,7 @@ container.innerHTML="";
 
 
 
+
 Object.keys(fishImages).forEach(
 skin=>{
 
@@ -1616,8 +1512,23 @@ document.createElement(
 
 
 
-div.className =
-"skin";
+div.className="skin";
+
+
+
+
+
+if(currentSkin===skin){
+
+
+div.classList.add(
+"equipped"
+);
+
+
+}
+
+
 
 
 
@@ -1635,10 +1546,43 @@ fishImages[skin].src;
 
 
 
-img.width=70;
 
 
-img.height=70;
+// taille aperçu casier
+
+let previewSize =
+skinData[skin].size;
+
+
+
+if(previewSize>80)
+
+previewSize=80;
+
+
+
+img.style.width =
+previewSize+"px";
+
+
+img.style.height =
+previewSize+"px";
+
+
+
+
+
+let name =
+document.createElement(
+"p"
+);
+
+
+name.innerHTML =
+skinData[skin].name;
+
+
+
 
 
 
@@ -1651,9 +1595,23 @@ document.createElement(
 
 
 
+if(currentSkin===skin){
+
 
 button.innerHTML =
-"Choisir";
+"✅ Équipé";
+
+
+}
+
+else{
+
+
+button.innerHTML =
+"Équiper";
+
+
+}
 
 
 
@@ -1662,9 +1620,7 @@ button.innerHTML =
 button.onclick=function(){
 
 
-
 equipSkin(skin);
-
 
 
 };
@@ -1673,13 +1629,10 @@ equipSkin(skin);
 
 
 
-
 div.appendChild(img);
 
 
-div.appendChild(
-document.createElement("br")
-);
+div.appendChild(name);
 
 
 div.appendChild(button);
@@ -1690,15 +1643,13 @@ container.appendChild(div);
 
 
 
-
-
 });
 
 
 
+
+
 }
-
-
 
 
 
@@ -1715,7 +1666,6 @@ container.appendChild(div);
 
 
 async function showRanking(){
-
 
 
 let ranking =
@@ -1746,9 +1696,9 @@ return;
 
 
 
+
 ranking.style.display =
 "block";
-
 
 
 
@@ -1762,24 +1712,26 @@ list.innerHTML =
 
 
 
-
 try{
 
 
 
 const q = query(
 
+
 collection(db,"scores"),
+
 
 orderBy(
 "score",
 "desc"
 ),
 
+
 limit(10)
 
-);
 
+);
 
 
 
@@ -1803,7 +1755,6 @@ let place=1;
 
 
 
-
 result.forEach(doc=>{
 
 
@@ -1814,13 +1765,10 @@ doc.data();
 
 
 
-
 let li =
 document.createElement(
 "li"
 );
-
-
 
 
 
@@ -1843,7 +1791,6 @@ data.score
 
 
 
-
 list.appendChild(li);
 
 
@@ -1860,10 +1807,7 @@ place++;
 
 }
 
-
-
 catch(error){
-
 
 
 console.log(error);
@@ -1877,9 +1821,9 @@ list.innerHTML =
 
 
 
-
-
 }
+
+
 
 
 
@@ -1892,6 +1836,48 @@ list.innerHTML =
 // =======================
 // BOUTONS
 // =======================
+
+
+let lockerBtn =
+document.getElementById(
+"lockerBtn"
+);
+
+
+
+if(lockerBtn){
+
+
+lockerBtn.onclick =
+openLocker;
+
+
+}
+
+
+
+
+
+let closeLockerBtn =
+document.getElementById(
+"closeLocker"
+);
+
+
+
+if(closeLockerBtn){
+
+
+closeLockerBtn.onclick =
+closeLocker;
+
+
+}
+
+
+
+
+
 
 
 
@@ -1941,64 +1927,6 @@ showRanking;
 
 
 
-let lockerBtn =
-document.getElementById(
-"lockerBtn"
-);
-
-
-
-if(lockerBtn){
-
-
-
-lockerBtn.onclick=function(){
-
-
-openLocker();
-
-
-loadLocker();
-
-
-};
-
-
-
-}
-
-
-
-
-
-
-
-let closeLockerBtn =
-document.getElementById(
-"closeLocker"
-);
-
-
-
-if(closeLockerBtn){
-
-
-
-closeLockerBtn.onclick =
-closeLocker;
-
-
-
-}
-
-
-
-
-
-
-
-
-
 let restartBtn =
 document.getElementById(
 "restartBtn"
@@ -2016,13 +1944,10 @@ restartBtn.onclick=function(){
 location.reload();
 
 
-
 };
 
 
-
 }
-
 
 
 
