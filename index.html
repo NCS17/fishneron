@@ -95,12 +95,19 @@ Mange les algues et deviens le roi des océans 🌊
 
 <script type="module">
 
-
 import { initializeApp } from 
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 
-import { getFirestore, collection, addDoc } from 
+import { 
+getFirestore,
+collection,
+addDoc,
+query,
+orderBy,
+limit,
+getDocs
+} from 
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
@@ -109,24 +116,17 @@ import { getFirestore, collection, addDoc } from
 
 const firebaseConfig = {
 
-
     apiKey: "AIzaSyBvcKnfsjvwvAjkfZ-mysvUartZSm3GK3E",
-
 
     authDomain: "henneron-s-fish.firebaseapp.com",
 
-
     projectId: "henneron-s-fish",
-
 
     storageBucket: "henneron-s-fish.firebasestorage.app",
 
-
     messagingSenderId: "126418087769",
 
-
     appId: "1:126418087769:web:f1c68acad749ab5299a648"
-
 
 };
 
@@ -137,8 +137,9 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 
-
 const db = getFirestore(app);
+
+
 
 
 
@@ -150,20 +151,14 @@ window.collection = collection;
 
 window.addDoc = addDoc;
 
+window.query = query;
+
+window.orderBy = orderBy;
+
+window.limit = limit;
+
+window.getDocs = getDocs;
+
 
 
 </script>
-
-
-
-
-
-<!-- JEU -->
-
-<script src="script.js"></script>
-
-
-
-</body>
-
-</html>
