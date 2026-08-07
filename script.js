@@ -33,7 +33,7 @@ let shark = {
 };
 
 let sharkImage = new Image();
-sharkImage.src = "fishImages/shark.png";
+sharkImage.src = "./fishImages/shark.png";
 
 
 let sharkActive = false;
@@ -225,9 +225,10 @@ function update(){
 
     // APPARITION DU REQUIN APRES 5 ALGUES
 
- if(score >= 0 && !sharkActive){
-
-
+ if(score >= 5 && !sharkActive){
+ if(score >= 10 && !sharkActive){
+ if(score >= 15 && !sharkActive){
+    if(score >= 20 && !sharkActive){
         sharkActive = true;
 
         sharkTimer = Date.now();
@@ -235,7 +236,7 @@ function update(){
 
         shark.x = canvas.width + 50;
 
-        shark.y = Math.random() * 400;
+        shark.y = Math.random() * 300;
 
 
     }
