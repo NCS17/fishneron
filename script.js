@@ -267,54 +267,44 @@ function update(){
 
 // AFFICHAGE
 
-function draw(){
 
+   let lastTime = 0;
 
-    ctx.clearRect(0,0,canvas.width,canvas.height);
+function draw(currentTime){
 
+    if (!lastTime) lastTime = currentTime;
 
+    const deltaTime = currentTime - lastTime;
 
-    // ALGUE
+    if(deltaTime >= 16){ // ≈60 FPS
 
-    ctx.font = "35px Arial";
+        ctx.clearRect(0,0,canvas.width,canvas.height);
 
-    ctx.fillText(
-        "🌿",
-        algae.x,
-        algae.y + 25
-    );
+        // ALGUE
+        ctx.font = "35px Arial";
+        ctx.fillText("🌿", algae.x, algae.y + 25);
 
+        // IMAGE DU POISSON
+        let img = getFishImage();
 
+        ctx.drawImage(
+            img,
+            fish.x,
+            fish.y,
+            70,
+            70
+        );
 
-    // IMAGE DU POISSON
+        update();
 
-    let img = getFishImage();
-
-
-
-    ctx.drawImage(
-
-        img,
-
-        fish.x,
-
-        fish.y,
-
-        70,
-
-        70
-
-    );
-
-
-
-    update();
-
+        lastTime = currentTime;
+    }
 
     requestAnimationFrame(draw);
-
-
 }
+
+newAlgae();
+requestAnimationFrame(draw);
 
 
 
