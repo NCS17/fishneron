@@ -13,14 +13,13 @@ let score = 0;
 
 
 // Poisson
-
 let fish = {
     x: 250,
     y: 250,
     dx: speed,
-    dy: 0
+    dy: 0,
+    direction: "right"
 };
-
 
 
 // IMAGES DES EVOLUTIONS
@@ -294,24 +293,38 @@ function draw(){
 
     // IMAGE DU POISSON
 
-    let img = getFishImage();
+    // IMAGE DU POISSON
 
+let img = getFishImage();
 
+if(fish.direction === "left"){
+
+    ctx.save();
+
+    ctx.scale(-1,1);
 
     ctx.drawImage(
-
         img,
-
-        fish.x,
-
+        -fish.x - 70,
         fish.y,
-
         70,
-
         70
-
     );
 
+    ctx.restore();
+
+}
+else{
+
+    ctx.drawImage(
+        img,
+        fish.x,
+        fish.y,
+        70,
+        70
+    );
+
+}
 
 
     update();
