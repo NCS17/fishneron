@@ -769,21 +769,27 @@ ctx.clearRect(0,0,canvas.width,canvas.height);
 
 drawOceanBackground();
 
-// ALGUE
+drawOceanBackground();
 
-ctx.font="35px Arial";
+
+// =======================
+// ALGUE TOUJOURS VISIBLE
+// =======================
+
+ctx.save();
+
+ctx.shadowColor="black";
+ctx.shadowBlur=5;
+
+ctx.font="40px Arial";
 
 ctx.fillText(
-
 "🌿",
-
 algae.x,
-
-algae.y+25
-
+algae.y+30
 );
 
-
+ctx.restore();
 
 
 
