@@ -15,6 +15,9 @@ const maxSpeed = 12;
 
 let score = 0;
 
+let gameOver = false;
+
+
 
 
 // =======================
@@ -23,25 +26,47 @@ let score = 0;
 
 async function saveScore(){
 
-    let pseudo = prompt("Entre ton pseudo 🐟");
 
-    if(!pseudo || pseudo.trim() === ""){
-        pseudo = "Anonyme";
+    try{
+
+
+        let pseudo = prompt("Entre ton pseudo 🐟");
+
+
+        if(!pseudo || pseudo.trim()===""){
+
+            pseudo="Anonyme";
+
+        }
+
+
+
+        await addDoc(collection(db,"scores"),{
+
+
+            pseudo:pseudo,
+
+            score:score,
+
+            date:new Date()
+
+
+        });
+
+
+
+    }
+
+    catch(error){
+
+        console.log("Erreur Firebase :",error);
+
     }
 
 
-    await addDoc(collection(db,"scores"),{
-
-        pseudo: pseudo,
-
-        score: score,
-
-        date: new Date()
-
-    });
-
-
 }
+
+
 
 
 
@@ -49,12 +74,15 @@ async function saveScore(){
 // POISSON
 // =======================
 
+
 let fish = {
 
     x:250,
+
     y:250,
 
     dx:speed,
+
     dy:0,
 
     direction:"right"
@@ -65,27 +93,31 @@ let fish = {
 
 
 
+
+
 // =======================
 // REQUIN
 // =======================
 
 
-let shark = {
+let shark={
 
     x:600,
+
     y:200,
 
     dx:-5,
+
     dy:0
 
 };
 
 
 
-let sharkImage = new Image();
+
+let sharkImage=new Image();
 
 sharkImage.src="./fishImages/shark.png";
-
 
 
 let sharkActive=false;
@@ -97,12 +129,16 @@ let lastSharkScore=0;
 
 
 
+
+
+
 // =======================
 // IMAGES POISSON
 // =======================
 
 
 let fishImages={
+
 
     rouge:new Image(),
 
@@ -113,6 +149,7 @@ let fishImages={
     whale:new Image(),
 
     octo:new Image()
+
 
 };
 
@@ -128,6 +165,8 @@ fishImages.aile.src="./fishImages/aile.png";
 fishImages.whale.src="./fishImages/whale.png";
 
 fishImages.octo.src="./fishImages/octo.png";
+
+
 
 
 
@@ -150,12 +189,18 @@ let algae={
 
 
 
+
+
 // =======================
-// CONTROLES PC
+// CONTROLES
 // =======================
 
 
 document.addEventListener("keydown",function(e){
+
+
+    if(gameOver) return;
+
 
 
     if(e.key==="ArrowUp")
@@ -174,52 +219,48 @@ document.addEventListener("keydown",function(e){
         changeDirection(speed,0);
 
 
+
 });
 
 
 
-
-
-
-// =======================
-// CONTROLES TELEPHONE
-// =======================
 
 
 document.getElementById("up").addEventListener("touchstart",function(e){
 
     e.preventDefault();
 
+    if(!gameOver)
     changeDirection(0,-speed);
 
 });
-
 
 
 document.getElementById("down").addEventListener("touchstart",function(e){
 
     e.preventDefault();
 
+    if(!gameOver)
     changeDirection(0,speed);
 
 });
-
 
 
 document.getElementById("left").addEventListener("touchstart",function(e){
 
     e.preventDefault();
 
+    if(!gameOver)
     changeDirection(-speed,0);
 
 });
-
 
 
 document.getElementById("right").addEventListener("touchstart",function(e){
 
     e.preventDefault();
 
+    if(!gameOver)
     changeDirection(speed,0);
 
 });
@@ -228,9 +269,6 @@ document.getElementById("right").addEventListener("touchstart",function(e){
 
 
 
-// =======================
-// DIRECTION
-// =======================
 
 
 function changeDirection(x,y){
@@ -242,19 +280,12 @@ function changeDirection(x,y){
 
 
 
-    if(x<0){
-
+    if(x<0)
         fish.direction="left";
 
-    }
 
-
-
-    if(x>0){
-
+    if(x>0)
         fish.direction="right";
-
-    }
 
 
 }
@@ -263,58 +294,35 @@ function changeDirection(x,y){
 
 
 
-// =======================
-// IMAGE POISSON
-// =======================
 
 
 function getFishImage(){
 
 
-    if(score < 2){
-
+    if(score<2)
         return fishImages.rouge;
 
-    }
 
-
-    else if(score < 4){
-
+    else if(score<4)
         return fishImages.nemo;
 
-    }
 
-
-    else if(score < 8){
-
+    else if(score<8)
         return fishImages.aile;
 
-    }
 
-
-    else if(score < 17){
-
+    else if(score<17)
         return fishImages.whale;
 
-    }
 
-
-    else{
-
+    else
         return fishImages.octo;
-
-    }
 
 
 }
 
 
 
-
-
-// =======================
-// NOUVELLE ALGUE
-// =======================
 
 
 function newAlgae(){
@@ -330,18 +338,22 @@ function newAlgae(){
 // UPDATE
 // =======================
 
+
 function update(){
 
 
+if(gameOver) return;
 
-// =======================
+
+
+
 // MOUVEMENT POISSON
-// =======================
-
 
 fish.x += fish.dx;
 
 fish.y += fish.dy;
+
+
 
 
 
@@ -355,43 +367,42 @@ fish.y += fish.dy;
 
 if(
 
-    score > 0 &&
+score > 0 &&
 
-    score % 5 === 0 &&
+score % 5 === 0 &&
 
-    score !== lastSharkScore &&
+score !== lastSharkScore &&
 
-    sharkActive === false
+sharkActive === false
 
 ){
 
 
-    sharkActive = true;
+    sharkActive=true;
 
 
-    lastSharkScore = score;
+    lastSharkScore=score;
 
 
-    sharkTimer = Date.now();
-
-
-
-    shark.x = canvas.width + 100;
-
-
-    shark.y = Math.random()*350;
+    sharkTimer=Date.now();
 
 
 
-    // vitesse requin aléatoire
-
-    shark.dx = -(Math.random()*2 + 5);
+    shark.x=canvas.width+100;
 
 
-    shark.dy = Math.random()*3 - 1.5;
+    shark.y=Math.random()*350;
+
+
+
+    shark.dx=-(Math.random()*2+5);
+
+
+    shark.dy=Math.random()*3-1.5;
 
 
 }
+
 
 
 
@@ -413,44 +424,38 @@ if(sharkActive){
 
 
 
-    // mouvements aléatoires
 
-    if(Math.random() < 0.03){
+    if(Math.random()<0.03){
 
-        shark.dy = Math.random()*4 - 2;
+        shark.dy=Math.random()*4-2;
+
+    }
+
+
+
+    if(shark.y<0){
+
+        shark.y=0;
+
+        shark.dy*=-1;
+
+    }
+
+
+
+    if(shark.y>410){
+
+        shark.y=410;
+
+        shark.dy*=-1;
 
     }
 
 
 
 
-    // rebond vertical
 
-    if(shark.y < 0){
-
-        shark.y = 0;
-
-        shark.dy *= -1;
-
-    }
-
-
-
-    if(shark.y > 410){
-
-        shark.y = 410;
-
-        shark.dy *= -1;
-
-    }
-
-
-
-
-
-    // disparition après 6 secondes
-
-    if(Date.now() - sharkTimer > 6000){
+    if(Date.now()-sharkTimer>6000){
 
         sharkActive=false;
 
@@ -464,37 +469,27 @@ if(sharkActive){
 
 
 
+
 // =======================
-// TELEPORTATION POISSON
+// TELEPORTATION
 // =======================
 
 
-if(fish.x < 0){
-
-    fish.x = canvas.width - 20;
-
-}
+if(fish.x<0)
+    fish.x=canvas.width-20;
 
 
-if(fish.x > canvas.width){
-
-    fish.x = 0;
-
-}
+if(fish.x>canvas.width)
+    fish.x=0;
 
 
-if(fish.y < 0){
-
-    fish.y = canvas.height - 20;
-
-}
+if(fish.y<0)
+    fish.y=canvas.height-20;
 
 
-if(fish.y > canvas.height){
+if(fish.y>canvas.height)
+    fish.y=0;
 
-    fish.y = 0;
-
-}
 
 
 
@@ -509,68 +504,47 @@ if(fish.y > canvas.height){
 if(
 
 
-Math.abs((fish.x+35)-(algae.x+10)) < 45 &&
+Math.abs((fish.x+35)-(algae.x+10))<45 &&
 
 
-Math.abs((fish.y+35)-(algae.y+10)) < 45
+Math.abs((fish.y+35)-(algae.y+10))<45
 
 
 ){
-
 
 
     score++;
 
 
 
-
-    // augmentation vitesse limitée
-
-    speed = Math.min(speed + 0.15, maxSpeed);
+    speed=Math.min(speed+0.15,maxSpeed);
 
 
 
 
-
-    // applique la nouvelle vitesse
-
-
-    if(fish.dx > 0){
-
-        fish.dx = speed;
-
-    }
+    if(fish.dx>0)
+        fish.dx=speed;
 
 
-    if(fish.dx < 0){
-
-        fish.dx = -speed;
-
-    }
+    if(fish.dx<0)
+        fish.dx=-speed;
 
 
-
-    if(fish.dy > 0){
-
-        fish.dy = speed;
-
-    }
+    if(fish.dy>0)
+        fish.dy=speed;
 
 
-    if(fish.dy < 0){
-
-        fish.dy = -speed;
-
-    }
+    if(fish.dy<0)
+        fish.dy=-speed;
 
 
 
 
-    document.getElementById("score").innerHTML =
+
+    document.getElementById("score").innerHTML=
 
     "Algues : "+score+
     " | Vitesse : "+speed.toFixed(1);
-
 
 
 
@@ -578,6 +552,7 @@ Math.abs((fish.y+35)-(algae.y+10)) < 45
 
 
 }
+
 
 
 
@@ -594,51 +569,37 @@ if(sharkActive){
 
 
 
-    let fishCenterX = fish.x + 35;
-
-    let fishCenterY = fish.y + 35;
+let distance=Math.sqrt(
 
 
+Math.pow((fish.x+35)-(shark.x+75),2)
 
-    let sharkCenterX = shark.x + 75;
++
 
-    let sharkCenterY = shark.y + 45;
-
-
-
-
-    let distance = Math.sqrt(
+Math.pow((fish.y+35)-(shark.y+45),2)
 
 
-        Math.pow(fishCenterX - sharkCenterX,2)
-
-        +
-
-        Math.pow(fishCenterY - sharkCenterY,2)
-
-
-    );
+);
 
 
 
 
-    // vraie collision
-
-    if(distance < 55){
+if(distance<55){
 
 
-
-        awaitGameOver();
-
-
-    }
-
+    endGame();
 
 
 }
 
 
 }
+
+
+
+}
+
+
 
 
 
@@ -650,20 +611,33 @@ if(sharkActive){
 // =======================
 
 
-async function awaitGameOver(){
+async function endGame(){
 
 
-    await saveScore();
+
+if(gameOver) return;
 
 
-    alert("GAME OVER 🦈");
+
+gameOver=true;
 
 
-    location.reload();
+
+await saveScore();
+
+
+
+document.getElementById("finalScore").innerHTML=
+
+"Score : "+score+" 🌿";
+
+
+
+document.getElementById("gameOver").style.display="block";
+
 
 
 }
-
 
 
 
@@ -680,9 +654,7 @@ async function awaitGameOver(){
 function draw(){
 
 
-
 ctx.clearRect(0,0,canvas.width,canvas.height);
-
 
 
 
@@ -709,7 +681,6 @@ algae.y+25
 
 
 
-
 // REQUIN
 
 
@@ -718,15 +689,15 @@ if(sharkActive && sharkImage.complete){
 
 ctx.drawImage(
 
-    sharkImage,
+sharkImage,
 
-    shark.x,
+shark.x,
 
-    shark.y,
+shark.y,
 
-    150,
+150,
 
-    95
+95
 
 );
 
@@ -738,43 +709,44 @@ ctx.drawImage(
 
 
 
-
 // POISSON
 
 
-let img = getFishImage();
+let img=getFishImage();
 
 
 
-if(img.complete && img.naturalWidth > 0){
+if(img.complete && img.naturalWidth>0){
 
 
 
 if(fish.direction==="left"){
 
 
-    ctx.save();
+
+ctx.save();
 
 
-    ctx.scale(-1,1);
+ctx.scale(-1,1);
 
 
-    ctx.drawImage(
+ctx.drawImage(
 
-        img,
+img,
 
-        -fish.x-70,
+-fish.x-70,
 
-        fish.y,
+fish.y,
 
-        70,
+70,
 
-        70
+70
 
-    );
+);
 
 
-    ctx.restore();
+ctx.restore();
+
 
 
 }
@@ -782,27 +754,26 @@ if(fish.direction==="left"){
 else{
 
 
-    ctx.drawImage(
+ctx.drawImage(
 
-        img,
+img,
 
-        fish.x,
+fish.x,
 
-        fish.y,
+fish.y,
 
-        70,
+70,
 
-        70
+70
 
-    );
-
-
-}
+);
 
 
 }
 
 
+
+}
 
 
 
@@ -814,7 +785,140 @@ update();
 requestAnimationFrame(draw);
 
 
+
 }
+
+
+
+
+
+
+
+
+// =======================
+// CLASSEMENT FIREBASE
+// =======================
+
+
+async function showRanking(){
+
+
+
+let list=document.getElementById("rankingList");
+
+
+
+list.innerHTML="Chargement...";
+
+
+
+document.getElementById("ranking").style.display="block";
+
+
+
+
+
+const q=query(
+
+collection(db,"scores"),
+
+orderBy("score","desc"),
+
+limit(10)
+
+);
+
+
+
+
+
+const result=await getDocs(q);
+
+
+
+list.innerHTML="";
+
+
+
+let place=1;
+
+
+
+result.forEach((doc)=>{
+
+
+let data=doc.data();
+
+
+
+let li=document.createElement("li");
+
+
+
+li.innerHTML=
+
+place+
+" 🐟 "+
+data.pseudo+
+" - "+
+data.score+
+" algues";
+
+
+
+list.appendChild(li);
+
+
+
+place++;
+
+
+
+});
+
+
+
+}
+
+
+
+
+
+
+
+// =======================
+// BOUTONS
+// =======================
+
+
+
+document.getElementById("rankingBtn")
+.addEventListener("click",showRanking);
+
+
+
+
+document.getElementById("closeRanking")
+.addEventListener("click",function(){
+
+
+document.getElementById("ranking").style.display="none";
+
+
+});
+
+
+
+
+
+document.getElementById("restartBtn")
+.addEventListener("click",function(){
+
+
+location.reload();
+
+
+});
 
 
 
@@ -830,106 +934,4 @@ requestAnimationFrame(draw);
 
 newAlgae();
 
-
 draw();
-// =======================
-// CLASSEMENT FIREBASE
-// =======================
-
-async function showRanking(){
-
-
-    const ranking = document.getElementById("ranking");
-
-    const list = document.getElementById("rankingList");
-
-
-    ranking.style.display = "block";
-
-
-    list.innerHTML = "Chargement...";
-
-
-
-    const q = query(
-
-        collection(db,"scores"),
-
-        orderBy("score","desc"),
-
-        limit(10)
-
-    );
-
-
-
-    const result = await getDocs(q);
-
-
-
-    list.innerHTML = "";
-
-
-    let position = 1;
-
-
-
-    result.forEach((doc)=>{
-
-
-        let data = doc.data();
-
-
-
-        let li = document.createElement("li");
-
-
-
-        li.innerHTML =
-
-        position +
-        " 🐟 " +
-        data.pseudo +
-        " - " +
-        data.score +
-        " algues";
-
-
-
-        list.appendChild(li);
-
-
-
-        position++;
-
-
-    });
-
-
-}
-
-
-
-
-
-
-// OUVRIR CLASSEMENT
-
-document.getElementById("rankingBtn")
-.addEventListener("click",showRanking);
-
-
-
-
-
-
-// FERMER CLASSEMENT
-
-document.getElementById("closeRanking")
-.addEventListener("click",function(){
-
-
-    document.getElementById("ranking").style.display="none";
-
-
-});
