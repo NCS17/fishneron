@@ -1346,17 +1346,30 @@ ctx.scale(
 
 
 
+let fishSize = 70;
+
+
+// Taille spéciale selon le skin
+
+if(currentSkin === "octo"){
+
+    fishSize = 45;
+
+}
+
+
+
 ctx.drawImage(
 
 img,
 
--fish.x-70,
+fish.x,
 
 fish.y,
 
-70,
+fishSize,
 
-70
+fishSize
 
 );
 
