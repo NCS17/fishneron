@@ -241,26 +241,23 @@ function update(){
 
 
 
+// MANGER L'ALGUE
 
-    // MANGER L'ALGUE
+if(
 
-    if(
+    Math.abs((fish.x + 35) - (algae.x + 10)) < 45 &&
+    Math.abs((fish.y + 35) - (algae.y + 10)) < 45
 
-        Math.abs(fish.x - algae.x) < 25 &&
-        Math.abs(fish.y - algae.y) < 25
+){
 
-    ){
+    score++;
 
+    document.getElementById("score").innerHTML =
+    "Algues : " + score;
 
-        score++;
+    newAlgae();
 
-
-        document.getElementById("score").innerHTML =
-        "Algues : " + score;
-
-
-        newAlgae();
-
+}
 
     }
 
