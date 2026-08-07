@@ -13,6 +13,7 @@ let score = 0;
 
 
 
+
 // =======================
 // POISSON
 // =======================
@@ -34,6 +35,7 @@ let fish = {
 
 
 
+
 // =======================
 // REQUIN
 // =======================
@@ -45,7 +47,6 @@ let shark = {
     y:200,
 
     dx:-5,
-
     dy:0
 
 };
@@ -63,8 +64,6 @@ let sharkActive = false;
 let sharkTimer = 0;
 
 
-// évite les apparitions en boucle
-
 let lastSharkScore = 0;
 
 
@@ -72,13 +71,13 @@ let lastSharkScore = 0;
 
 
 
+
 // =======================
-// IMAGES POISSONS
+// IMAGES POISSON
 // =======================
 
 
 let fishImages = {
-
 
     rouge:new Image(),
 
@@ -90,21 +89,21 @@ let fishImages = {
 
     octo:new Image()
 
-
 };
 
 
 
+fishImages.rouge.src="./fishImages/rouge.png";
 
-fishImages.rouge.src = "./fishImages/rouge.png";
+fishImages.nemo.src="./fishImages/nemo.png";
 
-fishImages.nemo.src = "./fishImages/nemo.png";
+fishImages.aile.src="./fishImages/aile.png";
 
-fishImages.aile.src = "./fishImages/aile.png";
+fishImages.whale.src="./fishImages/whale.png";
 
-fishImages.whale.src = "./fishImages/whale.png";
+fishImages.octo.src="./fishImages/octo.png";
 
-fishImages.octo.src = "./fishImages/octo.png";
+
 
 
 
@@ -138,30 +137,23 @@ document.addEventListener("keydown",function(e){
 
 
     if(e.key==="ArrowUp")
-
         changeDirection(0,-speed);
 
 
-
     if(e.key==="ArrowDown")
-
         changeDirection(0,speed);
 
 
-
     if(e.key==="ArrowLeft")
-
         changeDirection(-speed,0);
 
 
-
     if(e.key==="ArrowRight")
-
         changeDirection(speed,0);
 
 
-
 });
+
 
 
 
@@ -183,7 +175,6 @@ document.getElementById("up").addEventListener("touchstart",function(e){
 });
 
 
-
 document.getElementById("down").addEventListener("touchstart",function(e){
 
     e.preventDefault();
@@ -193,7 +184,6 @@ document.getElementById("down").addEventListener("touchstart",function(e){
 });
 
 
-
 document.getElementById("left").addEventListener("touchstart",function(e){
 
     e.preventDefault();
@@ -201,7 +191,6 @@ document.getElementById("left").addEventListener("touchstart",function(e){
     changeDirection(-speed,0);
 
 });
-
 
 
 document.getElementById("right").addEventListener("touchstart",function(e){
@@ -227,7 +216,6 @@ function changeDirection(x,y){
     fish.dx=x;
 
     fish.dy=y;
-
 
 
     if(x<0){
@@ -259,13 +247,11 @@ function getFishImage(){
 
     }
 
-
     else if(score < 4){
 
         return fishImages.nemo;
 
     }
-
 
     else if(score < 8){
 
@@ -273,20 +259,17 @@ function getFishImage(){
 
     }
 
-
     else if(score < 17){
 
         return fishImages.whale;
 
     }
 
-
     else{
 
         return fishImages.octo;
 
     }
-
 
 }
 
@@ -317,13 +300,13 @@ function newAlgae(){
 
 
 
+
 // =======================
 // UPDATE
 // =======================
 
 
 function update(){
-
 
 
     // MOUVEMENT POISSON
@@ -340,21 +323,19 @@ function update(){
 
     // =======================
     // APPARITION REQUIN
-    // TOUS LES 5 ALGUES
+    // TOUTES LES 5 ALGUES
     // =======================
 
 
     if(
 
-
-        score >= 5 &&
+        score > 0 &&
 
         score % 5 === 0 &&
 
         score !== lastSharkScore &&
 
         sharkActive === false
-
 
     ){
 
@@ -369,10 +350,7 @@ function update(){
 
 
 
-
-        // position départ
-
-        shark.x = canvas.width + 80;
+        shark.x = canvas.width + 100;
 
         shark.y = Math.random()*350;
 
@@ -380,10 +358,9 @@ function update(){
 
         // vitesse aléatoire
 
-        shark.dx = -(Math.random()*3 + 4);
+        shark.dx = -(Math.random()*2 + 5);
 
-        shark.dy = Math.random()*2 - 1;
-
+        shark.dy = Math.random()*3 - 1.5;
 
 
     }
@@ -394,13 +371,13 @@ function update(){
 
 
 
+
     // =======================
-    // MOUVEMENT ALEATOIRE REQUIN
+    // MOUVEMENT REQUIN
     // =======================
 
 
     if(sharkActive){
-
 
 
         shark.x += shark.dx;
@@ -409,10 +386,9 @@ function update(){
 
 
 
+        // changement mouvement aléatoire
 
-        // changement direction verticale
-
-        if(Math.random() < 0.03){
+        if(Math.random() < 0.04){
 
 
             shark.dy = Math.random()*4 - 2;
@@ -434,10 +410,9 @@ function update(){
         }
 
 
+        if(shark.y > 400){
 
-        if(shark.y > 420){
-
-            shark.y = 420;
+            shark.y = 400;
 
             shark.dy *= -1;
 
@@ -447,18 +422,16 @@ function update(){
 
 
 
+        // disparition après 6 secondes
 
-        // DISPARITION APRES 6 SEC
 
-
-        if(Date.now() - sharkTimer >= 6000){
+        if(Date.now() - sharkTimer > 6000){
 
 
             sharkActive = false;
 
 
         }
-
 
 
     }
@@ -470,9 +443,8 @@ function update(){
 
 
 
-
     // =======================
-    // SORTIE POISSON
+    // TELEPORTATION POISSON
     // =======================
 
 
@@ -509,6 +481,7 @@ function update(){
 
 
 
+
     // =======================
     // MANGER ALGUE
     // =======================
@@ -516,12 +489,9 @@ function update(){
 
     if(
 
-
         Math.abs((fish.x+35)-(algae.x+10)) < 45 &&
 
-
         Math.abs((fish.y+35)-(algae.y+10)) < 45
-
 
     ){
 
@@ -529,15 +499,12 @@ function update(){
         score++;
 
 
-
         document.getElementById("score").innerHTML =
-
         "Algues : " + score;
 
 
 
         newAlgae();
-
 
 
     }
@@ -551,37 +518,71 @@ function update(){
 
     // =======================
     // COLLISION REQUIN
+    // HITBOX AMELIOREE
     // =======================
 
-// COLLISION REQUIN
 
-if(
+    if(sharkActive){
 
-    sharkActive &&
 
-    fish.x < shark.x + 100 &&
-    fish.x + 50 > shark.x &&
+        let fishCenterX = fish.x + 35;
 
-    fish.y < shark.y + 60 &&
-    fish.y + 50 > shark.y
+        let fishCenterY = fish.y + 35;
 
-){
 
-    alert("GAME OVER 🦈");
 
-    location.reload();
+        let sharkCenterX = shark.x + 70;
+
+        let sharkCenterY = shark.y + 45;
+
+
+
+        let distance = Math.sqrt(
+
+            Math.pow(fishCenterX - sharkCenterX,2)
+
+            +
+
+            Math.pow(fishCenterY - sharkCenterY,2)
+
+        );
+
+
+
+        // distance de collision
+
+        if(distance < 55){
+
+
+            alert("GAME OVER 🦈");
+
+
+            location.reload();
+
+
+        }
+
+
+    }
+
+
 
 }
 
 
 
+
+
+
+
+
+
 // =======================
-// DRAW
+// AFFICHAGE
 // =======================
 
 
 function draw(){
-
 
 
     ctx.clearRect(0,0,canvas.width,canvas.height);
@@ -611,34 +612,25 @@ function draw(){
 
 
 
-
     // REQUIN
 
 
     if(sharkActive){
 
 
-
         ctx.drawImage(
-
 
             sharkImage,
 
-
             shark.x,
-
 
             shark.y,
 
-
             140,
-
 
             90
 
-
         );
-
 
 
     }
@@ -656,9 +648,7 @@ function draw(){
 
 
 
-
     if(fish.direction === "left"){
-
 
 
         ctx.save();
@@ -683,15 +673,12 @@ function draw(){
         );
 
 
-
         ctx.restore();
-
 
 
     }
 
     else{
-
 
 
         ctx.drawImage(
@@ -715,17 +702,13 @@ function draw(){
 
 
 
-
     update();
-
 
 
     requestAnimationFrame(draw);
 
 
-
 }
-
 
 
 
