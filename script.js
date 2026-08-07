@@ -228,6 +228,7 @@ function update(){
 // APPARITION DU REQUIN TOUTES LES 5 ALGUES
 
 if(
+    score > 0 &&
     score >= 5 &&
     score % 5 === 0 &&
     score !== lastSharkScore &&
@@ -240,12 +241,12 @@ if(
 
     sharkTimer = Date.now();
 
-
     shark.x = canvas.width + 50;
 
-    shark.y = Math.random() * 300;
+    shark.y = Math.random() * 250;
 
 }
+
 
 
     // MOUVEMENT DU REQUIN
@@ -392,9 +393,9 @@ function draw(){
 
             shark.y,
 
-            100,
+            120,
 
-            70
+            80
 
         );
 
