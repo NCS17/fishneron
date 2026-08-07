@@ -7,22 +7,21 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-<title>🐟 Henneron's Fish </title>
+<title>🐟 Henneron's Fish</title>
 
 <link rel="stylesheet" href="style.css">
 
 </head>
 
 
-
 <body>
 
 
-<h1>🐟 Bubulle Snake</h1>
+<h1>🐟 Henneron's Fish</h1>
 
 
 <p>
-Aide bubulle à manger les algues 🌿
+Aide ton poisson à évoluer en mangeant les algues 🌿
 </p>
 
 
@@ -41,6 +40,7 @@ Algues : 0
 
 
 
+
 <canvas id="game"></canvas>
 
 
@@ -49,7 +49,7 @@ Algues : 0
 
 
 
-<!-- CONTROLES TELEPHONE -->
+<!-- CONTROLES -->
 
 <div class="buttons">
 
@@ -57,6 +57,7 @@ Algues : 0
 <button id="up">
 ⬆️
 </button>
+
 
 
 <div>
@@ -88,13 +89,14 @@ Algues : 0
 
 
 
+
 <!-- GAME OVER -->
 
 
 <div id="gameOver" style="display:none;">
 
 
-<h2>🌊 Bubulle est fatigué...</h2>
+<h2>🦈 Bubulle s'est fait manger !</h2>
 
 
 <p id="finalScore">
@@ -105,15 +107,7 @@ Algues : 0
 
 <button id="restartBtn">
 
-Rejouer 🐠
-
-</button>
-
-
-
-<button id="rankingBtn">
-
-🏆 Classement
+Rejouer 🐟
 
 </button>
 
@@ -131,24 +125,29 @@ Rejouer 🐠
 <!-- CLASSEMENT -->
 
 
-<div id="ranking" style="display:none;">
+<div id="ranking">
 
 
-<h2>🏆 Meilleurs scores</h2>
+<h2>🏆 Classement des meilleurs joueurs</h2>
+
+
+
+<button id="rankingBtn">
+
+Actualiser le classement 🏆
+
+</button>
+
 
 
 <ol id="rankingList">
 
+<li>
+Le classement apparaîtra ici...
+</li>
 
 </ol>
 
-
-
-<button id="closeRanking">
-
-Fermer
-
-</button>
 
 
 </div>
@@ -171,6 +170,7 @@ import { initializeApp }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 
+
 import {
 
 getFirestore,
@@ -191,6 +191,7 @@ getDocs
 }
 
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
 
 
 
@@ -236,33 +237,23 @@ const db = getFirestore(app);
 
 
 
-// rendre Firebase accessible au script.js
-
-
 window.db = db;
-
 
 window.collection = collection;
 
-
 window.addDoc = addDoc;
-
 
 window.query = query;
 
-
 window.orderBy = orderBy;
 
-
 window.limit = limit;
-
 
 window.getDocs = getDocs;
 
 
 
 </script>
-
 
 
 
