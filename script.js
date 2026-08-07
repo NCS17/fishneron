@@ -1,6 +1,7 @@
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
 
+
 canvas.width = 500;
 canvas.height = 500;
 
@@ -20,6 +21,7 @@ let gameOver = false;
 
 
 
+
 // =======================
 // FIREBASE
 // =======================
@@ -28,44 +30,47 @@ let gameOver = false;
 async function saveScore(){
 
 
-    try{
+try{
 
 
-        let pseudo = prompt("Ton pseudo 🐟");
+let pseudo = prompt("Ton pseudo 🐟");
 
 
-        if(!pseudo || pseudo.trim()===""){
+if(!pseudo || pseudo.trim()===""){
 
-            pseudo="Anonyme";
+pseudo="Anonyme";
 
-        }
-
-
-
-        await addDoc(collection(db,"scores"),{
-
-
-            pseudo:pseudo,
-
-            score:score,
-
-            date:new Date()
-
-
-        });
+}
 
 
 
-    }catch(error){
+await addDoc(collection(db,"scores"),{
 
 
-        console.log(error);
+pseudo:pseudo,
+
+score:score,
+
+date:new Date()
 
 
-    }
+});
+
 
 
 }
+
+catch(error){
+
+console.log(error);
+
+}
+
+
+
+}
+
+
 
 
 
@@ -79,15 +84,19 @@ async function saveScore(){
 
 let fish = {
 
-    x:250,
 
-    y:250,
+x:250,
 
-    dx:speed,
+y:250,
 
-    dy:0,
 
-    direction:"right"
+dx:speed,
+
+dy:0,
+
+
+direction:"right"
+
 
 };
 
@@ -104,13 +113,16 @@ let fish = {
 
 let shark = {
 
-    x:600,
 
-    y:200,
+x:600,
 
-    dx:-5,
+y:200,
 
-    dy:0
+
+dx:-5,
+
+dy:0
+
 
 };
 
@@ -119,6 +131,7 @@ let shark = {
 let sharkImage = new Image();
 
 sharkImage.src="./fishImages/shark.png";
+
 
 
 let sharkActive=false;
@@ -134,23 +147,24 @@ let lastSharkScore=0;
 
 
 
+
 // =======================
-// IMAGES
+// IMAGES POISSON
 // =======================
 
 
 let fishImages={
 
 
-    rouge:new Image(),
+rouge:new Image(),
 
-    nemo:new Image(),
+nemo:new Image(),
 
-    aile:new Image(),
+aile:new Image(),
 
-    whale:new Image(),
+whale:new Image(),
 
-    octo:new Image()
+octo:new Image()
 
 
 };
@@ -169,6 +183,26 @@ fishImages.octo.src="./fishImages/octo.png";
 
 
 
+// DEBUG CHARGEMENT
+
+fishImages.rouge.onload=function(){
+
+console.log("Image poisson OK");
+
+};
+
+
+
+fishImages.rouge.onerror=function(){
+
+console.log("Image poisson introuvable");
+
+};
+
+
+
+
+
 
 
 
@@ -180,13 +214,13 @@ fishImages.octo.src="./fishImages/octo.png";
 
 let algae={
 
-    x:100,
 
-    y:100
+x:100,
+
+y:100
+
 
 };
-
-
 
 
 
@@ -194,12 +228,13 @@ let algae={
 function newAlgae(){
 
 
-    algae.x=Math.floor(Math.random()*25)*20;
+algae.x=Math.floor(Math.random()*25)*20;
 
-    algae.y=Math.floor(Math.random()*25)*20;
+algae.y=Math.floor(Math.random()*25)*20;
 
 
 }
+
 
 
 
@@ -214,31 +249,35 @@ function newAlgae(){
 function getFishImage(){
 
 
-    if(score<2)
+if(score<2)
 
-        return fishImages.rouge;
-
-
-    if(score<4)
-
-        return fishImages.nemo;
-
-
-    if(score<8)
-
-        return fishImages.aile;
-
-
-    if(score<17)
-
-        return fishImages.whale;
+return fishImages.rouge;
 
 
 
-    return fishImages.octo;
+if(score<4)
+
+return fishImages.nemo;
+
+
+
+if(score<8)
+
+return fishImages.aile;
+
+
+
+if(score<17)
+
+return fishImages.whale;
+
+
+
+return fishImages.octo;
 
 
 }
+
 
 
 
@@ -253,24 +292,26 @@ function getFishImage(){
 function changeDirection(x,y){
 
 
-    if(gameOver) return;
+if(gameOver)
+
+return;
 
 
 
-    fish.dx=x;
+fish.dx=x;
 
-    fish.dy=y;
-
-
-
-    if(x<0)
-
-        fish.direction="left";
+fish.dy=y;
 
 
-    if(x>0)
 
-        fish.direction="right";
+if(x<0)
+
+fish.direction="left";
+
+
+if(x>0)
+
+fish.direction="right";
 
 
 }
@@ -278,27 +319,32 @@ function changeDirection(x,y){
 
 
 
-document.addEventListener("keydown",e=>{
+
+document.addEventListener("keydown",function(e){
 
 
-    if(e.key==="ArrowUp")
+if(e.key==="ArrowUp")
 
-        changeDirection(0,-speed);
-
-
-    if(e.key==="ArrowDown")
-
-        changeDirection(0,speed);
+changeDirection(0,-speed);
 
 
-    if(e.key==="ArrowLeft")
 
-        changeDirection(-speed,0);
+if(e.key==="ArrowDown")
+
+changeDirection(0,speed);
 
 
-    if(e.key==="ArrowRight")
 
-        changeDirection(speed,0);
+if(e.key==="ArrowLeft")
+
+changeDirection(-speed,0);
+
+
+
+if(e.key==="ArrowRight")
+
+changeDirection(speed,0);
+
 
 
 });
@@ -308,16 +354,16 @@ document.addEventListener("keydown",e=>{
 
 
 
-function touch(id,x,y){
+function addTouch(id,x,y){
 
 
-let btn=document.getElementById(id);
+let button=document.getElementById(id);
 
 
-if(btn){
+if(button){
 
 
-btn.addEventListener("touchstart",e=>{
+button.addEventListener("touchstart",function(e){
 
 
 e.preventDefault();
@@ -335,13 +381,14 @@ changeDirection(x,y);
 
 
 
-touch("up",0,-speed);
 
-touch("down",0,speed);
+addTouch("up",0,-speed);
 
-touch("left",-speed,0);
+addTouch("down",0,speed);
 
-touch("right",speed,0);
+addTouch("left",-speed,0);
+
+addTouch("right",speed,0);
 // =======================
 // UPDATE
 // =======================
@@ -350,7 +397,9 @@ touch("right",speed,0);
 function update(){
 
 
-if(gameOver) return;
+if(gameOver)
+
+return;
 
 
 
@@ -371,26 +420,25 @@ fish.y += fish.dy;
 
 
 
+
 // =======================
 // APPARITION REQUIN
-// TOUTES LES 5 ALGUES
 // =======================
 
 
 if(
 
 
-score > 0 &&
+score>0 &&
 
-score % 5 === 0 &&
+score%5===0 &&
 
-score !== lastSharkScore &&
+score!==lastSharkScore &&
 
-sharkActive === false
+sharkActive===false
 
 
 ){
-
 
 
 sharkActive=true;
@@ -416,7 +464,9 @@ shark.dx=-(Math.random()*2+5);
 shark.dy=Math.random()*3-1.5;
 
 
+
 }
+
 
 
 
@@ -432,56 +482,63 @@ shark.dy=Math.random()*3-1.5;
 if(sharkActive){
 
 
-    shark.x += shark.dx;
+
+shark.x += shark.dx;
 
 
-    shark.y += shark.dy;
-
-
-
-    if(Math.random()<0.03){
-
-
-        shark.dy=Math.random()*4-2;
-
-
-    }
+shark.y += shark.dy;
 
 
 
 
-    if(shark.y<0){
+if(Math.random()<0.03){
 
 
-        shark.y=0;
-
-        shark.dy*=-1;
+shark.dy=Math.random()*4-2;
 
 
-    }
-
-
-
-    if(shark.y>410){
-
-
-        shark.y=410;
-
-        shark.dy*=-1;
-
-
-    }
+}
 
 
 
 
-    if(Date.now()-sharkTimer>6000){
+
+if(shark.y<0){
 
 
-        sharkActive=false;
+shark.y=0;
+
+shark.dy*=-1;
 
 
-    }
+}
+
+
+
+
+
+if(shark.y>410){
+
+
+shark.y=410;
+
+shark.dy*=-1;
+
+
+}
+
+
+
+
+
+if(Date.now()-sharkTimer>6000){
+
+
+sharkActive=false;
+
+
+}
+
 
 
 }
@@ -493,8 +550,9 @@ if(sharkActive){
 
 
 
+
 // =======================
-// TELEPORTATION
+// TELEPORTATION POISSON
 // =======================
 
 
@@ -527,6 +585,7 @@ fish.y=0;
 
 
 
+
 // =======================
 // MANGER ALGUE
 // =======================
@@ -544,12 +603,11 @@ Math.abs((fish.y+35)-(algae.y+10))<45
 ){
 
 
-
 score++;
 
 
 
-
+// vitesse max 12
 
 speed=Math.min(speed+0.15,maxSpeed);
 
@@ -579,14 +637,13 @@ fish.dy=-speed;
 
 
 
-
-let scoreHTML=document.getElementById("score");
-
-
-if(scoreHTML){
+let scoreBox=document.getElementById("score");
 
 
-scoreHTML.innerHTML=
+if(scoreBox){
+
+
+scoreBox.innerHTML=
 
 "Algues : "+score+
 " | Vitesse : "+speed.toFixed(1);
@@ -599,9 +656,7 @@ scoreHTML.innerHTML=
 newAlgae();
 
 
-
 }
-
 
 
 
@@ -619,13 +674,17 @@ if(sharkActive){
 
 
 
-let dx=(fish.x+35)-(shark.x+75);
-
-let dy=(fish.y+35)-(shark.y+45);
+let distance=Math.sqrt(
 
 
+Math.pow((fish.x+35)-(shark.x+75),2)
 
-let distance=Math.sqrt(dx*dx+dy*dy);
++
+
+Math.pow((fish.y+35)-(shark.y+45),2)
+
+
+);
 
 
 
@@ -654,8 +713,6 @@ endGame();
 
 
 
-
-
 // =======================
 // GAME OVER
 // =======================
@@ -664,7 +721,9 @@ endGame();
 async function endGame(){
 
 
-if(gameOver) return;
+if(gameOver)
+
+return;
 
 
 
@@ -673,8 +732,6 @@ gameOver=true;
 
 
 await saveScore();
-
-
 
 
 
@@ -687,6 +744,7 @@ let final=document.getElementById("finalScore");
 
 if(final){
 
+
 final.innerHTML="Score : "+score+" 🌿";
 
 
@@ -696,13 +754,16 @@ final.innerHTML="Score : "+score+" 🌿";
 
 if(box){
 
+
 box.style.display="block";
 
 
 }
 
 
+
 }
+
 
 
 
@@ -712,7 +773,7 @@ box.style.display="block";
 
 
 // =======================
-// AFFICHAGE
+// DRAW
 // =======================
 
 
@@ -725,7 +786,8 @@ ctx.clearRect(0,0,canvas.width,canvas.height);
 
 
 
-// algue
+// ALGUE
+
 
 ctx.font="35px Arial";
 
@@ -747,11 +809,10 @@ algae.y+25
 
 
 
-// requin
+// REQUIN
 
 
 if(sharkActive && sharkImage.complete){
-
 
 
 ctx.drawImage(
@@ -766,7 +827,6 @@ shark.y,
 
 95
 
-
 );
 
 
@@ -779,12 +839,12 @@ shark.y,
 
 
 
-// poisson
+// =======================
+// POISSON CORRIGE
+// =======================
 
 
 let img=getFishImage();
-
-
 
 
 
@@ -795,10 +855,12 @@ if(img.complete && img.naturalWidth>0){
 if(fish.direction==="left"){
 
 
+
 ctx.save();
 
 
 ctx.scale(-1,1);
+
 
 
 ctx.drawImage(
@@ -815,6 +877,7 @@ fish.y,
 
 
 );
+
 
 
 ctx.restore();
@@ -842,11 +905,38 @@ fish.y,
 );
 
 
+
+}
+
+
+
+}
+
+else{
+
+
+// SECURITE SI IMAGE NON CHARGEE
+
+ctx.font="50px Arial";
+
+
+ctx.fillText(
+
+"🐟",
+
+fish.x,
+
+fish.y+50
+
+
+);
+
+
+
 }
 
 
 
-}
 
 
 
@@ -858,7 +948,6 @@ update();
 requestAnimationFrame(draw);
 
 
-
 }
 
 
@@ -869,16 +958,17 @@ requestAnimationFrame(draw);
 
 
 
-
 // =======================
-// CLASSEMENT FIREBASE
+// CLASSEMENT
 // =======================
 
 
 async function showRanking(){
 
 
+
 let ranking=document.getElementById("ranking");
+
 
 let list=document.getElementById("rankingList");
 
@@ -895,7 +985,6 @@ return;
 ranking.style.display="block";
 
 
-
 list.innerHTML="Chargement...";
 
 
@@ -903,7 +992,6 @@ list.innerHTML="Chargement...";
 
 
 try{
-
 
 
 const q=query(
@@ -932,7 +1020,6 @@ let place=1;
 
 
 
-
 result.forEach(doc=>{
 
 
@@ -941,6 +1028,7 @@ let data=doc.data();
 
 
 let li=document.createElement("li");
+
 
 
 li.innerHTML=
@@ -961,6 +1049,7 @@ list.appendChild(li);
 place++;
 
 
+
 });
 
 
@@ -970,18 +1059,17 @@ place++;
 catch(error){
 
 
-list.innerHTML="Erreur classement";
-
-
 console.log(error);
 
 
+list.innerHTML="Erreur classement";
+
+
 }
 
 
 
 }
-
 
 
 
@@ -1016,7 +1104,7 @@ let closeRanking=document.getElementById("closeRanking");
 if(closeRanking){
 
 
-closeRanking.onclick=()=>{
+closeRanking.onclick=function(){
 
 
 document.getElementById("ranking").style.display="none";
@@ -1038,7 +1126,7 @@ let restartBtn=document.getElementById("restartBtn");
 if(restartBtn){
 
 
-restartBtn.onclick=()=>{
+restartBtn.onclick=function(){
 
 
 location.reload();
@@ -1058,7 +1146,7 @@ location.reload();
 
 
 // =======================
-// DEMARRAGE
+// START
 // =======================
 
 
