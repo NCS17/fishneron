@@ -7,11 +7,12 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-<title>🐟 Bubulle Snake</title>
+<title>🐟 Henneron's Fish </title>
 
 <link rel="stylesheet" href="style.css">
 
 </head>
+
 
 
 <body>
@@ -19,9 +20,11 @@
 
 <h1>🐟 Bubulle Snake</h1>
 
+
 <p>
-Aide Bubulle à manger les algues 🌿
+Aide bubulle à manger les algues 🌿
 </p>
+
 
 
 
@@ -56,7 +59,6 @@ Algues : 0
 </button>
 
 
-
 <div>
 
 <button id="left">
@@ -86,8 +88,7 @@ Algues : 0
 
 
 
-
-<!-- FIN DE PARTIE -->
+<!-- GAME OVER -->
 
 
 <div id="gameOver" style="display:none;">
@@ -97,16 +98,23 @@ Algues : 0
 
 
 <p id="finalScore">
+
 </p>
 
 
+
 <button id="restartBtn">
+
 Rejouer 🐠
+
 </button>
 
 
+
 <button id="rankingBtn">
+
 🏆 Classement
+
 </button>
 
 
@@ -126,10 +134,11 @@ Rejouer 🐠
 <div id="ranking" style="display:none;">
 
 
-<h2>🏆 Classement des meilleurs joueurs</h2>
+<h2>🏆 Meilleurs scores</h2>
 
 
 <ol id="rankingList">
+
 
 </ol>
 
@@ -162,15 +171,22 @@ import { initializeApp }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 
-import { 
+import {
 
 getFirestore,
+
 collection,
+
 addDoc,
+
 query,
+
 orderBy,
+
 limit,
+
 getDocs
+
 
 }
 
@@ -180,23 +196,30 @@ from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
 
+
 const firebaseConfig = {
 
 
-apiKey: "TON_API_KEY",
+apiKey: "AIzaSyBvcKnfsjvwvAjkfZ-mysvUartZSm3GK3E",
 
-authDomain: "TON_AUTH_DOMAIN",
 
-projectId: "TON_PROJECT_ID",
+authDomain: "henneron-s-fish.firebaseapp.com",
 
-storageBucket: "TON_STORAGE_BUCKET",
 
-messagingSenderId: "TON_MESSAGING_SENDER_ID",
+projectId: "henneron-s-fish",
 
-appId: "TON_APP_ID"
+
+storageBucket: "henneron-s-fish.firebasestorage.app",
+
+
+messagingSenderId: "126418087769",
+
+
+appId: "1:126418087769:web:f1c68acad749ab5299a648"
 
 
 };
+
 
 
 
@@ -212,27 +235,33 @@ const db = getFirestore(app);
 
 
 
+
 // rendre Firebase accessible au script.js
 
 
 window.db = db;
 
+
 window.collection = collection;
+
 
 window.addDoc = addDoc;
 
+
 window.query = query;
+
 
 window.orderBy = orderBy;
 
+
 window.limit = limit;
+
 
 window.getDocs = getDocs;
 
 
 
 </script>
-
 
 
 
