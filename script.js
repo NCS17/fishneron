@@ -25,7 +25,7 @@ let gameOver = false;
 // =======================
 
 
-let currentSkin = 
+let currentSkin =
 localStorage.getItem("skin")
 ||
 "rouge";
@@ -33,45 +33,25 @@ localStorage.getItem("skin")
 
 
 
-// Taille réelle de chaque skin
-// (adaptée aux PNG)
 
 const skinData = {
 
 
 rouge:{
 size:70,
-name:"Poisson rouge"
+name:"🐟 Poisson rouge"
 },
 
 
 nemo:{
 size:70,
-name:"Nemo"
-},
-
-
-ballon:{
-size:60,
-name:"Poisson ballon"
-},
-
-
-requin:{
-size:65,
-name:"Petit requin"
+name:"🐠 Nemo"
 },
 
 
 whale:{
-size:75,
-name:"Baleine"
-},
-
-
-octo:{
-size:35,
-name:"Pieuvre"
+size:80,
+name:"🐋 Baleine"
 }
 
 
@@ -82,8 +62,10 @@ name:"Pieuvre"
 
 
 
+
+
 // =======================
-// CHARGEMENT IMAGES
+// IMAGES SKINS
 // =======================
 
 
@@ -94,13 +76,7 @@ rouge:new Image(),
 
 nemo:new Image(),
 
-ballon:new Image(),
-
-requin:new Image(),
-
-whale:new Image(),
-
-octo:new Image()
+whale:new Image()
 
 
 };
@@ -117,20 +93,8 @@ fishImages.nemo.src =
 "./fishImages/nemo.png";
 
 
-fishImages.ballon.src =
-"./fishImages/ballon.png";
-
-
-fishImages.requin.src =
-"./fishImages/requin.png";
-
-
 fishImages.whale.src =
 "./fishImages/whale.png";
-
-
-fishImages.octo.src =
-"./fishImages/octo.png";
 
 
 
@@ -146,7 +110,7 @@ fishImages[skin].onload=function(){
 
 
 console.log(
-"✅ Skin chargé :",
+"Skin chargé :",
 skin
 );
 
@@ -154,13 +118,12 @@ skin
 };
 
 
-
 fishImages[skin].onerror=function(){
 
 
 console.log(
-"❌ Erreur chargement :",
-skin+".png"
+"Erreur image :",
+skin
 );
 
 
@@ -178,9 +141,8 @@ skin+".png"
 
 
 
-
 // =======================
-// ALGUIE PNG
+// IMAGE ALGUE
 // =======================
 
 
@@ -197,19 +159,17 @@ algaeImage.src =
 
 
 
+
 // =======================
-// SKIN
+// SKINS
 // =======================
 
 
 function equipSkin(skin){
 
 
-if(
-fishImages[skin]
-&&
-skinData[skin]
-){
+
+if(fishImages[skin]){
 
 
 localStorage.setItem(
@@ -218,13 +178,18 @@ skin
 );
 
 
+
 location.reload();
 
 
 }
 
 
+
 }
+
+
+
 
 
 
@@ -240,6 +205,8 @@ return fishImages[currentSkin];
 
 
 
+
+
 function getFishSize(){
 
 
@@ -247,6 +214,7 @@ return skinData[currentSkin].size;
 
 
 }
+
 
 
 
@@ -283,6 +251,9 @@ direction:"right"
 
 
 
+
+
+
 // =======================
 // FIREBASE SCORE
 // =======================
@@ -302,6 +273,8 @@ let pseudo = prompt(
 
 
 
+
+
 if(
 !pseudo
 ||
@@ -313,6 +286,9 @@ pseudo="Anonyme";
 
 
 }
+
+
+
 
 
 
@@ -340,6 +316,7 @@ date:new Date()
 
 }
 
+
 catch(error){
 
 
@@ -351,7 +328,6 @@ console.log(error);
 
 
 }
-
 
 
 
@@ -381,6 +357,7 @@ dy:0
 
 
 
+
 let sharkImage = new Image();
 
 
@@ -389,11 +366,16 @@ sharkImage.src =
 
 
 
+
 let sharkActive=false;
+
 
 let sharkTimer=0;
 
+
 let lastSharkScore=0;
+
+
 
 
 
@@ -404,7 +386,7 @@ let lastSharkScore=0;
 // =======================
 
 
-let algae={
+let algae = {
 
 
 x:100,
@@ -519,6 +501,7 @@ speed,
 
 
 
+
 // =======================
 // CONTROLES TELEPHONE
 // =======================
@@ -543,6 +526,7 @@ function(e){
 e.preventDefault();
 
 
+
 changeDirection(
 x,
 y
@@ -562,13 +546,11 @@ y
 
 
 
-
 addTouch(
 "up",
 0,
 -speed
 );
-
 
 
 addTouch(
@@ -578,7 +560,6 @@ speed
 );
 
 
-
 addTouch(
 "left",
 -speed,
@@ -586,12 +567,13 @@ addTouch(
 );
 
 
-
 addTouch(
 "right",
 speed,
 0
 );
+
+
 
 
 
@@ -609,9 +591,11 @@ speed,
 function update(){
 
 
+
 if(gameOver)
 
 return;
+
 
 
 
@@ -633,8 +617,9 @@ fish.y += fish.dy;
 
 
 
+
 // =======================
-// CREATION REQUIN
+// APPARITION REQUIN ENNEMI
 // =======================
 
 
@@ -651,8 +636,8 @@ sharkActive === false
 ){
 
 
-
 sharkActive=true;
+
 
 
 lastSharkScore=score;
@@ -715,6 +700,7 @@ shark.y += shark.dy;
 
 
 
+
 if(Math.random()<0.03){
 
 
@@ -723,6 +709,7 @@ Math.random()*4-2;
 
 
 }
+
 
 
 
@@ -761,6 +748,7 @@ shark.dy*=-1;
 
 
 
+
 if(
 Date.now()-sharkTimer > 6000
 ){
@@ -770,6 +758,8 @@ sharkActive=false;
 
 
 }
+
+
 
 
 
@@ -784,7 +774,7 @@ sharkActive=false;
 
 
 // =======================
-// TELEPORTATION POISSON
+// TELEPORTATION
 // =======================
 
 
@@ -811,7 +801,6 @@ fish.y=canvas.height;
 if(fish.y>canvas.height)
 
 fish.y=0;
-
 
 
 
@@ -874,7 +863,6 @@ maxSpeed
 
 
 
-
 if(fish.dx>0)
 
 fish.dx=speed;
@@ -896,6 +884,7 @@ fish.dy=speed;
 if(fish.dy<0)
 
 fish.dy=-speed;
+
 
 
 
@@ -950,11 +939,8 @@ newAlgae();
 
 
 
-
-
-
 // =======================
-// COLLISION REQUIN
+// COLLISION REQUIN ENNEMI
 // =======================
 
 
@@ -988,6 +974,8 @@ let dy =
 
 
 
+
+
 let distance =
 
 
@@ -1004,32 +992,8 @@ dy*dy
 
 
 
+
 if(distance < 55){
-
-
-
-// pouvoir du skin requin
-
-
-if(currentSkin==="requin"){
-
-
-
-console.log(
-"🦈 Protection utilisée !"
-);
-
-
-
-sharkActive=false;
-
-
-
-}
-
-
-
-else{
 
 
 endGame();
@@ -1045,11 +1009,6 @@ endGame();
 
 
 }
-
-
-
-}
-
 
 
 
@@ -1108,7 +1067,9 @@ document.getElementById(
 
 
 
+
 if(final){
+
 
 
 final.innerHTML =
@@ -1128,7 +1089,9 @@ score
 
 
 
+
 if(box){
+
 
 
 box.style.display="block";
@@ -1157,8 +1120,9 @@ canvas.height
 
 
 
+
 // =======================
-// FOND OCEAN FIXE
+// FOND FIXE
 // =======================
 
 
@@ -1171,16 +1135,19 @@ ctx.createLinearGradient(
 );
 
 
+
 gradient.addColorStop(
 0,
 "#4bd3ff"
 );
 
 
+
 gradient.addColorStop(
 1,
 "#006994"
 );
+
 
 
 
@@ -1201,16 +1168,19 @@ ctx.fillRect(
 
 
 
+
+
 // =======================
-// ALGUE PNG
+// ALGUE
 // =======================
 
 
 if(
 algaeImage.complete
 &&
-algaeImage.naturalWidth>0
+algaeImage.naturalWidth > 0
 ){
+
 
 
 ctx.drawImage(
@@ -1228,6 +1198,7 @@ algae.y,
 );
 
 
+
 }
 
 
@@ -1236,8 +1207,11 @@ algae.y,
 
 
 
+
+
+
 // =======================
-// REQUIN
+// REQUIN ENNEMI
 // =======================
 
 
@@ -1246,6 +1220,7 @@ sharkActive
 &&
 sharkImage.complete
 ){
+
 
 
 ctx.drawImage(
@@ -1263,7 +1238,9 @@ shark.y,
 );
 
 
+
 }
+
 
 
 
@@ -1291,11 +1268,14 @@ getFishSize();
 
 
 
+
 if(
 img.complete
 &&
-img.naturalWidth>0
+img.naturalWidth > 0
 ){
+
+
 
 
 
@@ -1362,9 +1342,11 @@ size
 
 
 
+
 }
 
 else{
+
 
 
 ctx.font="50px Arial";
@@ -1377,6 +1359,7 @@ fish.y+50
 );
 
 
+
 }
 
 
@@ -1385,7 +1368,9 @@ fish.y+50
 
 
 
+
 update();
+
 
 
 requestAnimationFrame(draw);
@@ -1403,10 +1388,10 @@ requestAnimationFrame(draw);
 
 
 
+
 // =======================
 // CASIER
 // =======================
-
 
 
 function openLocker(){
@@ -1437,6 +1422,8 @@ loadLocker();
 
 
 
+
+
 function closeLocker(){
 
 
@@ -1458,6 +1445,8 @@ locker.style.display="none";
 
 
 }
+
+
 
 
 
@@ -1512,7 +1501,10 @@ document.createElement(
 
 
 
-div.className="skin";
+div.className =
+"skin";
+
+
 
 
 
@@ -1548,38 +1540,46 @@ fishImages[skin].src;
 
 
 
-// taille aperçu casier
 
-let previewSize =
+
+let preview =
 skinData[skin].size;
 
 
 
-if(previewSize>80)
 
-previewSize=80;
+
+// taille aperçu casier
+
+if(preview>70)
+
+preview=70;
 
 
 
 img.style.width =
-previewSize+"px";
+preview+"px";
 
 
 img.style.height =
-previewSize+"px";
+preview+"px";
 
 
 
 
 
-let name =
+
+
+let title =
 document.createElement(
 "p"
 );
 
 
-name.innerHTML =
+
+title.innerHTML =
 skinData[skin].name;
+
 
 
 
@@ -1592,6 +1592,8 @@ let button =
 document.createElement(
 "button"
 );
+
+
 
 
 
@@ -1617,6 +1619,8 @@ button.innerHTML =
 
 
 
+
+
 button.onclick=function(){
 
 
@@ -1629,13 +1633,16 @@ equipSkin(skin);
 
 
 
+
+
 div.appendChild(img);
 
 
-div.appendChild(name);
+div.appendChild(title);
 
 
 div.appendChild(button);
+
 
 
 
@@ -1647,9 +1654,9 @@ container.appendChild(div);
 
 
 
-
-
 }
+
+
 
 
 
@@ -1664,8 +1671,8 @@ container.appendChild(div);
 // =======================
 
 
-
 async function showRanking(){
+
 
 
 let ranking =
@@ -1684,6 +1691,7 @@ document.getElementById(
 
 
 
+
 if(
 !ranking
 ||
@@ -1696,16 +1704,13 @@ return;
 
 
 
-
 ranking.style.display =
 "block";
 
 
 
-
 list.innerHTML =
 "Chargement...";
-
 
 
 
@@ -1737,9 +1742,9 @@ limit(10)
 
 
 
+
 const result =
 await getDocs(q);
-
 
 
 
@@ -1750,6 +1755,7 @@ list.innerHTML="";
 
 
 let place=1;
+
 
 
 
@@ -1772,6 +1778,8 @@ document.createElement(
 
 
 
+
+
 li.innerHTML =
 
 
@@ -1790,7 +1798,6 @@ data.score
 
 
 
-
 list.appendChild(li);
 
 
@@ -1805,16 +1812,20 @@ place++;
 
 
 
+
 }
 
 catch(error){
 
 
+
 console.log(error);
+
 
 
 list.innerHTML =
 "Erreur classement";
+
 
 
 }
@@ -1838,6 +1849,7 @@ list.innerHTML =
 // =======================
 
 
+
 let lockerBtn =
 document.getElementById(
 "lockerBtn"
@@ -1853,6 +1865,7 @@ openLocker;
 
 
 }
+
 
 
 
@@ -1927,6 +1940,7 @@ showRanking;
 
 
 
+
 let restartBtn =
 document.getElementById(
 "restartBtn"
@@ -1935,7 +1949,6 @@ document.getElementById(
 
 
 if(restartBtn){
-
 
 
 restartBtn.onclick=function(){
@@ -1947,7 +1960,9 @@ location.reload();
 };
 
 
+
 }
+
 
 
 
