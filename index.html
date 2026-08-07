@@ -5,7 +5,7 @@
 
 <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>🐟 Henneron's Fish</title>
 
@@ -21,8 +21,9 @@
 
 
 <p>
-Aide ton poisson à évoluer en mangeant les algues 🌿
+Aide ton poisson à manger les algues 🌿
 </p>
+
 
 
 
@@ -39,6 +40,130 @@ Algues : 0
 
 
 
+<!-- CASIER AVANT PARTIE -->
+
+<div id="locker">
+
+
+<h2>
+🧰 Casier à poissons
+</h2>
+
+
+<p>
+Choisis ton Bubulle :
+</p>
+
+
+
+
+<div class="skins">
+
+
+
+<div class="skinCard">
+
+<img src="./fishImages/rouge.png">
+
+<button onclick="equipSkin('rouge')">
+🐟 Classique
+</button>
+
+</div>
+
+
+
+
+
+<div class="skinCard">
+
+<img src="./fishImages/nemo.png">
+
+<button onclick="equipSkin('nemo')">
+🐠 Tropical
+</button>
+
+</div>
+
+
+
+
+
+
+<div class="skinCard">
+
+<img src="./fishImages/ballon.png">
+
+<button onclick="equipSkin('ballon')">
+🐡 Ballon
+</button>
+
+</div>
+
+
+
+
+
+
+<div class="skinCard">
+
+<img src="./fishImages/requin.png">
+
+<button onclick="equipSkin('requin')">
+🦈 Requin
+</button>
+
+</div>
+
+
+
+
+
+
+<div class="skinCard">
+
+<img src="./fishImages/whale.png">
+
+<button onclick="equipSkin('whale')">
+🐋 Baleine
+</button>
+
+</div>
+
+
+
+
+
+
+<div class="skinCard">
+
+<img src="./fishImages/octo.png">
+
+<button onclick="equipSkin('octo')">
+🐙 Poulpe
+</button>
+
+</div>
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+<!-- JEU -->
+
+
 <div class="gameContainer">
 
 
@@ -47,7 +172,9 @@ Algues : 0
 
 
 
+
 <!-- GAME OVER -->
+
 
 <div id="gameOver" style="display:none;">
 
@@ -57,13 +184,11 @@ Algues : 0
 </h2>
 
 
+
 <p id="finalScore">
 
 </p>
 
-
-
-<div class="gameButtons">
 
 
 <button id="restartBtn">
@@ -82,21 +207,12 @@ Algues : 0
 
 
 
-<button id="lockerBtn">
-
-🧰 Casier
-
-</button>
-
-
-
 </div>
 
 
 </div>
 
 
-</div>
 
 
 
@@ -106,13 +222,12 @@ Algues : 0
 
 <!-- CONTROLES -->
 
+
 <div class="buttons">
 
 
 <button id="up">
-
 ⬆️
-
 </button>
 
 
@@ -120,23 +235,17 @@ Algues : 0
 <div>
 
 <button id="left">
-
 ⬅️
-
 </button>
 
 
 <button id="down">
-
 ⬇️
-
 </button>
 
 
 <button id="right">
-
 ➡️
-
 </button>
 
 
@@ -145,95 +254,6 @@ Algues : 0
 
 </div>
 
-
-
-
-
-
-
-
-
-<!-- CASIER -->
-
-<div id="locker" style="display:none;">
-
-
-<h2>
-🧰 Mon Casier
-</h2>
-
-
-
-<p>
-Choisis ton poisson :
-</p>
-
-
-
-<div class="skin">
-
-
-<button onclick="equipSkin('rouge')">
-
-🐟 Bubulle classique
-
-</button>
-
-
-
-<button onclick="equipSkin('nemo')">
-
-🐠 Poisson tropical
-
-</button>
-
-
-
-<button onclick="equipSkin('ballon')">
-
-🐡 Poisson ballon
-
-</button>
-
-
-
-<button onclick="equipSkin('requin')">
-
-🦈 Skin requin
-
-</button>
-
-
-
-<button onclick="equipSkin('whale')">
-
-🐋 Mini baleine
-
-</button>
-
-
-
-<button onclick="equipSkin('octo')">
-
-🐙 Poulpe
-
-</button>
-
-
-
-</div>
-
-
-
-
-<button onclick="closeLocker()">
-
-Fermer
-
-</button>
-
-
-</div>
 
 
 
@@ -250,22 +270,19 @@ Fermer
 
 
 <h2>
-
 🏆 Classement
-
 </h2>
 
 
 
 <ol id="rankingList">
 
-
 <li>
 Chargement...
 </li>
 
-
 </ol>
+
 
 
 
@@ -302,7 +319,8 @@ Fermer
 <script type="module">
 
 
-import { initializeApp } 
+import { initializeApp }
+
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 
@@ -372,28 +390,23 @@ const db = getFirestore(app);
 
 
 
-// rendre Firebase accessible au script.js
+window.db=db;
 
+window.collection=collection;
 
-window.db = db;
+window.addDoc=addDoc;
 
-window.collection = collection;
+window.query=query;
 
-window.addDoc = addDoc;
+window.orderBy=orderBy;
 
-window.query = query;
+window.limit=limit;
 
-window.orderBy = orderBy;
-
-window.limit = limit;
-
-window.getDocs = getDocs;
+window.getDocs=getDocs;
 
 
 
 </script>
-
-
 
 
 
