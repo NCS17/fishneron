@@ -5,7 +5,7 @@ canvas.width = 500;
 canvas.height = 500;
 
 
-// VITESSE DU POISSON
+// VITESSE POISSON
 
 const speed = 10;
 
@@ -13,7 +13,10 @@ let score = 0;
 
 
 
+// =======================
 // POISSON
+// =======================
+
 
 let fish = {
 
@@ -30,6 +33,7 @@ let fish = {
 
 
 
+
 // =======================
 // REQUIN
 // =======================
@@ -40,9 +44,12 @@ let shark = {
     x:500,
     y:200,
 
-    dx:-4
+    dx:-5,
+
+    dy:0
 
 };
+
 
 
 let sharkImage = new Image();
@@ -56,9 +63,10 @@ let sharkActive = false;
 let sharkTimer = 0;
 
 
-// Dernier score où le requin est apparu
+// évite les apparitions en boucle
 
 let lastSharkScore = 0;
+
 
 
 
@@ -84,6 +92,7 @@ let fishImages = {
 
 
 };
+
 
 
 
@@ -113,6 +122,8 @@ let algae = {
     y:100
 
 };
+
+
 
 
 
@@ -206,7 +217,7 @@ document.getElementById("right").addEventListener("touchstart",function(e){
 
 
 // =======================
-// DIRECTION POISSON
+// DIRECTION
 // =======================
 
 
@@ -283,6 +294,8 @@ function getFishImage(){
 
 
 
+
+
 // =======================
 // NOUVELLE ALGUE
 // =======================
@@ -302,8 +315,10 @@ function newAlgae(){
 
 
 
+
+
 // =======================
-// UPDATE DU JEU
+// UPDATE
 // =======================
 
 
@@ -321,13 +336,16 @@ function update(){
 
 
 
+
+
     // =======================
     // APPARITION REQUIN
-    // TOUTES LES 5 ALGUES
+    // TOUS LES 5 ALGUES
     // =======================
 
 
     if(
+
 
         score >= 5 &&
 
@@ -336,6 +354,7 @@ function update(){
         score !== lastSharkScore &&
 
         sharkActive === false
+
 
     ){
 
@@ -350,10 +369,20 @@ function update(){
 
 
 
-        shark.x = canvas.width + 50;
+
+        // position départ
+
+        shark.x = canvas.width + 80;
+
+        shark.y = Math.random()*350;
 
 
-        shark.y = Math.random()*300;
+
+        // vitesse aléatoire
+
+        shark.dx = -(Math.random()*3 + 4);
+
+        shark.dy = Math.random()*2 - 1;
 
 
 
@@ -366,7 +395,7 @@ function update(){
 
 
     // =======================
-    // MOUVEMENT REQUIN
+    // MOUVEMENT ALEATOIRE REQUIN
     // =======================
 
 
@@ -375,6 +404,46 @@ function update(){
 
 
         shark.x += shark.dx;
+
+        shark.y += shark.dy;
+
+
+
+
+        // changement direction verticale
+
+        if(Math.random() < 0.03){
+
+
+            shark.dy = Math.random()*4 - 2;
+
+
+        }
+
+
+
+        // rebond haut/bas
+
+
+        if(shark.y < 0){
+
+            shark.y = 0;
+
+            shark.dy *= -1;
+
+        }
+
+
+
+        if(shark.y > 420){
+
+            shark.y = 420;
+
+            shark.dy *= -1;
+
+        }
+
+
 
 
 
@@ -400,8 +469,10 @@ function update(){
 
 
 
+
+
     // =======================
-    // PASSAGE DES BORDS
+    // SORTIE POISSON
     // =======================
 
 
@@ -443,7 +514,6 @@ function update(){
     // =======================
 
 
-
     if(
 
 
@@ -454,7 +524,6 @@ function update(){
 
 
     ){
-
 
 
         score++;
@@ -478,6 +547,8 @@ function update(){
 
 
 
+
+
     // =======================
     // COLLISION REQUIN
     // =======================
@@ -485,13 +556,14 @@ function update(){
 
     if(
 
+
         sharkActive &&
 
 
-        Math.abs(fish.x-shark.x) < 60 &&
+        Math.abs(fish.x-shark.x) < 70 &&
 
 
-        Math.abs(fish.y-shark.y) < 50
+        Math.abs(fish.y-shark.y) < 60
 
 
     ){
@@ -507,6 +579,8 @@ function update(){
 
 
 
+
+
 }
 
 
@@ -518,7 +592,7 @@ function update(){
 
 
 // =======================
-// AFFICHAGE
+// DRAW
 // =======================
 
 
@@ -553,6 +627,7 @@ function draw(){
 
 
 
+
     // REQUIN
 
 
@@ -562,15 +637,21 @@ function draw(){
 
         ctx.drawImage(
 
+
             sharkImage,
+
 
             shark.x,
 
+
             shark.y,
 
-            120,
 
-            80
+            140,
+
+
+            90
+
 
         );
 
@@ -625,9 +706,8 @@ function draw(){
 
     }
 
-
-
     else{
+
 
 
         ctx.drawImage(
@@ -655,11 +735,14 @@ function draw(){
     update();
 
 
+
     requestAnimationFrame(draw);
 
 
 
 }
+
+
 
 
 
@@ -672,6 +755,5 @@ function draw(){
 
 
 newAlgae();
-
 
 draw();
