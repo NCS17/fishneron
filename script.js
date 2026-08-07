@@ -116,9 +116,16 @@ function changeDirection(x,y){
     fish.dx = x;
     fish.dy = y;
 
+    // Orientation du poisson
+    if(x < 0){
+        fish.direction = "left";
+    }
+
+    if(x > 0){
+        fish.direction = "right";
+    }
+
 }
-
-
 
 
 
