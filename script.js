@@ -772,22 +772,55 @@ drawOceanBackground();
 drawOceanBackground();
 
 
+
 // =======================
-// ALGUE TOUJOURS VISIBLE
+// ALGUE VISIBLE
 // =======================
 
 ctx.save();
 
-ctx.shadowColor="black";
-ctx.shadowBlur=5;
+ctx.strokeStyle = "#00ff66";
+ctx.lineWidth = 4;
 
-ctx.font="40px Arial";
+ctx.beginPath();
 
-ctx.fillText(
-"🌿",
-algae.x,
-algae.y+30
+ctx.moveTo(algae.x+10, algae.y+20);
+
+ctx.quadraticCurveTo(
+    algae.x,
+    algae.y,
+    algae.x+5,
+    algae.y-15
 );
+
+ctx.moveTo(algae.x+10, algae.y+20);
+
+ctx.quadraticCurveTo(
+    algae.x+20,
+    algae.y,
+    algae.x+25,
+    algae.y-15
+);
+
+ctx.stroke();
+
+
+// petite bulle au-dessus
+
+ctx.fillStyle="white";
+
+ctx.beginPath();
+
+ctx.arc(
+    algae.x+15,
+    algae.y-25,
+    4,
+    0,
+    Math.PI*2
+);
+
+ctx.fill();
+
 
 ctx.restore();
 
