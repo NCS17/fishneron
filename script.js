@@ -1,67 +1,91 @@
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
 
+
 canvas.width = 500;
 canvas.height = 500;
+
 
 
 // =======================
 // VARIABLES
 // =======================
 
+
 let score = 0;
+
 
 let speed = 5;
 
+
 const maxSpeed = 12;
+
 
 let gameOver = false;
 
 
 
+
+
+
 // =======================
-// FIREBASE
+// FIREBASE SCORE
 // =======================
+
 
 async function saveScore(){
 
-    try{
+
+try{
 
 
-        let pseudo = prompt(
-            "🦈 GAME OVER !\n\nEntre ton pseudo 🐟"
-        );
-
-
-        if(!pseudo || pseudo.trim()===""){
-
-            pseudo="Anonyme";
-
-        }
+let pseudo = prompt(
+"🦈 GAME OVER !\n\nEntre ton pseudo 🐟"
+);
 
 
 
-        await addDoc(
-            collection(db,"scores"),
-            {
-
-                pseudo:pseudo,
-
-                score:score,
-
-                date:new Date()
-
-            }
-        );
+if(!pseudo || pseudo.trim()===""){
 
 
-    }
+pseudo="Anonyme";
 
-    catch(error){
 
-        console.log(error);
+}
 
-    }
+
+
+await addDoc(
+collection(db,"scores"),
+{
+
+
+pseudo:pseudo,
+
+
+score:score,
+
+
+date:new Date()
+
+
+}
+
+);
+
+
+
+}
+
+
+catch(error){
+
+
+console.log(error);
+
+
+}
+
 
 }
 
@@ -69,28 +93,83 @@ async function saveScore(){
 
 
 
+
+
 // =======================
-// IMAGES DES SKINS
+// SYSTEME DE SKINS
+// =======================
+
+
+
+let currentSkin =
+localStorage.getItem("skin")
+||
+"rouge";
+
+
+
+
+// =======================
+// POISSON
+// =======================
+
+
+let fish = {
+
+
+x:250,
+
+
+y:250,
+
+
+dx:speed,
+
+
+dy:0,
+
+
+direction:"right"
+
+
+};
+
+
+
+
+
+
+
+// =======================
+// IMAGES SKINS
 // =======================
 
 
 let fishImages = {
 
 
-    rouge:new Image(),
+rouge:new Image(),
 
-    nemo:new Image(),
 
-    ballon:new Image(),
+nemo:new Image(),
 
-    requin:new Image(),
 
-    whale:new Image(),
+ballon:new Image(),
 
-    octo:new Image()
+
+requin:new Image(),
+
+
+whale:new Image(),
+
+
+octo:new Image()
 
 
 };
+
+
+
 
 
 
@@ -122,210 +201,50 @@ fishImages.octo.src =
 
 
 
-// DEBUG IMAGE
-
-fishImages.rouge.onload=function(){
-
-    console.log("🐟 rouge.png chargé");
-
-};
-
-
-fishImages.rouge.onerror=function(){
-
-    console.log("❌ rouge.png introuvable");
-
-};
-
-
-
-
 
 // =======================
-// SYSTEME DE SKINS
+// EQUIPER UN SKIN
 // =======================
 
 
-let skins = {
+function equipSkin(skin){
 
 
-    rouge:{
+    // Vérifie que le skin existe
 
+    if(fishImages[skin]){
 
-        nom:"🐟 Bubulle classique",
 
-        image:fishImages.rouge,
-
-        prix:0,
-
-        unlocked:true
-
-
-    },
-
-
-
-    nemo:{
-
-
-        nom:"🐠 Poisson tropical",
-
-        image:fishImages.nemo,
-
-        prix:20,
-
-        unlocked:false
-
-
-    },
-
-
-
-    ballon:{
-
-
-        nom:"🐡 Poisson ballon",
-
-        image:fishImages.ballon,
-
-        prix:50,
-
-        unlocked:false
-
-
-    },
-
-
-
-    requin:{
-
-
-        nom:"🦈 Skin requin",
-
-        image:fishImages.requin,
-
-        prix:100,
-
-        unlocked:false,
-
-        protection:true
-
-
-    },
-
-
-
-    whale:{
-
-
-        nom:"🐋 Mini baleine",
-
-        image:fishImages.whale,
-
-        prix:200,
-
-        unlocked:false
-
-
-    },
-
-
-
-    octo:{
-
-
-        nom:"🐙 Poulpe",
-
-        image:fishImages.octo,
-
-        prix:300,
-
-        unlocked:false
-
-
-    }
-
-
-};
-
-
-
-
-
-
-// =======================
-// SKIN PAR DEFAUT
-// =======================
-
-
-// Toujours rouge au premier lancement
-
-let currentSkin="rouge";
-
-
-
-let savedSkin =
-localStorage.getItem("currentSkin");
-
-
-
-if(savedSkin && skins[savedSkin]){
-
-
-    currentSkin=savedSkin;
-
-
-}
-
-
-
-
-
-function getFishImage(){
-
-
-    if(!skins[currentSkin]){
-
-
-        currentSkin="rouge";
-
-
-    }
-
-
-
-    return skins[currentSkin].image;
-
-
-}
-
-
-
-
-
-
-
-function equipSkin(name){
-
-
-
-    if(
-
-        skins[name] &&
-
-        skins[name].unlocked
-
-    ){
-
-
-
-        currentSkin=name;
-
-
+        // Sauvegarde le skin choisi
 
         localStorage.setItem(
-            "currentSkin",
-            name
+            "skin",
+            skin
+        );
+
+
+
+        console.log(
+            "Nouveau skin équipé :",
+            skin
+        );
+
+
+
+        // Recharge automatiquement le jeu
+
+        location.reload();
+
+
+
+    }
+
+    else{
+
+
+        console.log(
+            "Skin introuvable :",
+            skin
         );
 
 
@@ -336,114 +255,38 @@ function equipSkin(name){
 
 
 
-
-
-
-// =======================
-// DEBLOCAGE SKINS
-// =======================
-
-
-function checkUnlocks(){
-
-
-    for(let s in skins){
-
-
-
-        if(
-
-            score >= skins[s].prix
-
-            &&
-
-            skins[s].unlocked===false
-
-        ){
-
-
-
-            skins[s].unlocked=true;
-
-
-
-            console.log(
-                skins[s].nom+
-                " débloqué"
-            );
-
-
-        }
-
-
-    }
-
-
-}
-
-
-
-
-
-
-// =======================
-// POISSON
-// =======================
-
-
-let fish={
-
-
-    x:250,
-
-
-    y:250,
-
-
-    dx:speed,
-
-
-    dy:0,
-
-
-    direction:"right"
-
-
-};
-
-
-
-
-
-
 // =======================
 // REQUIN ENNEMI
 // =======================
 
 
-let shark={
+
+let shark = {
 
 
-    x:600,
+x:600,
 
 
-    y:200,
+y:200,
 
 
-    dx:-5,
+dx:-5,
 
 
-    dy:0
+dy:0
 
 
 };
 
 
 
-let sharkImage=new Image();
 
 
-sharkImage.src="./fishImages/shark.png";
+let sharkImage = new Image();
+
+
+sharkImage.src =
+"./fishImages/shark.png";
 
 
 
@@ -459,18 +302,22 @@ let lastSharkScore=0;
 
 
 
+
+
+
 // =======================
 // ALGUE
 // =======================
 
 
+
 let algae={
 
 
-    x:100,
+x:100,
 
 
-    y:100
+y:100
 
 
 };
@@ -478,48 +325,81 @@ let algae={
 
 
 
+
+
 function newAlgae(){
 
 
-    algae.x =
-    Math.floor(Math.random()*25)*20;
+
+algae.x =
+Math.floor(
+Math.random()*25
+)
+*
+20;
 
 
-    algae.y =
-    Math.floor(Math.random()*25)*20;
+
+algae.y =
+Math.floor(
+Math.random()*25
+)
+*
+20;
+
 
 
 }
+
+
+
+
+
+
+
+
 // =======================
 // CONTROLES
 // =======================
 
 
+
 function changeDirection(x,y){
 
 
-    if(gameOver)
-        return;
+
+if(gameOver)
+
+return;
 
 
 
-    fish.dx=x;
 
-    fish.dy=y;
-
+fish.dx=x;
 
 
-    if(x<0)
-
-        fish.direction="left";
+fish.dy=y;
 
 
-    if(x>0)
 
-        fish.direction="right";
+
+if(x<0)
+
+
+fish.direction="left";
+
+
+
+if(x>0)
+
+
+fish.direction="right";
+
 
 
 }
+
+
 
 
 
@@ -529,70 +409,80 @@ document.addEventListener(
 function(e){
 
 
-    if(e.key==="ArrowUp")
 
-        changeDirection(0,-speed);
+if(e.key==="ArrowUp")
 
-
-
-    if(e.key==="ArrowDown")
-
-        changeDirection(0,speed);
+changeDirection(
+0,
+-speed
+);
 
 
 
-    if(e.key==="ArrowLeft")
+if(e.key==="ArrowDown")
 
-        changeDirection(-speed,0);
+changeDirection(
+0,
+speed
+);
 
 
 
-    if(e.key==="ArrowRight")
+if(e.key==="ArrowLeft")
 
-        changeDirection(speed,0);
+changeDirection(
+-speed,
+0
+);
+
+
+
+if(e.key==="ArrowRight")
+
+changeDirection(
+speed,
+0
+);
 
 
 
 });
-
-
-
-
-
-
-
 // =======================
-// CONTROLES TELEPHONE
+// TOUCH TELEPHONE
 // =======================
 
 
 function addTouch(id,x,y){
 
 
-    let button =
-    document.getElementById(id);
+let button =
+document.getElementById(id);
 
 
 
-    if(button){
+if(button){
 
 
-        button.addEventListener(
-            "touchstart",
-            function(e){
+button.addEventListener(
+"touchstart",
+function(e){
 
 
-                e.preventDefault();
+e.preventDefault();
 
 
-                changeDirection(x,y);
+changeDirection(
+x,
+y
+);
 
 
-            }
-        );
+
+});
 
 
-    }
+}
+
 
 
 }
@@ -632,8 +522,9 @@ speed,
 
 
 
+
 // =======================
-// UPDATE
+// UPDATE DU JEU
 // =======================
 
 
@@ -670,57 +561,60 @@ fish.y += fish.dy;
 // =======================
 
 
+
 if(
 
-score>0
 
-&&
+score > 0 &&
 
-score%5===0
 
-&&
+score % 5 === 0 &&
 
-score!==lastSharkScore
 
-&&
+score !== lastSharkScore &&
 
-sharkActive===false
+
+sharkActive === false
+
+
 
 ){
 
 
 
-    sharkActive=true;
+sharkActive=true;
 
 
 
-    lastSharkScore=score;
+lastSharkScore=score;
 
 
 
-    sharkTimer=Date.now();
-
-
-
-
-    shark.x =
-    canvas.width+100;
-
-
-
-    shark.y =
-    Math.random()*350;
+sharkTimer=Date.now();
 
 
 
 
-    shark.dx =
-    -(Math.random()*2+5);
+
+shark.x =
+canvas.width+100;
 
 
 
-    shark.dy =
-    Math.random()*3-1.5;
+shark.y =
+Math.random()*350;
+
+
+
+
+shark.dx =
+-(Math.random()*2+5);
+
+
+
+shark.dy =
+Math.random()*3-1.5;
+
 
 
 }
@@ -740,68 +634,71 @@ if(sharkActive){
 
 
 
-    shark.x += shark.dx;
+shark.x += shark.dx;
 
 
-    shark.y += shark.dy;
-
-
-
-
-
-    if(Math.random()<0.03){
-
-
-        shark.dy =
-        Math.random()*4-2;
-
-
-    }
+shark.y += shark.dy;
 
 
 
 
 
 
-    if(shark.y<0){
+if(Math.random()<0.03){
 
 
-        shark.y=0;
+shark.dy =
+Math.random()*4-2;
 
 
-        shark.dy*=-1;
-
-
-    }
-
-
-
-
-
-    if(shark.y>410){
-
-
-        shark.y=410;
-
-
-        shark.dy*=-1;
-
-
-    }
+}
 
 
 
 
 
-    if(
-    Date.now()-sharkTimer > 6000
-    ){
+if(shark.y<0){
 
 
-        sharkActive=false;
+shark.y=0;
 
 
-    }
+shark.dy*=-1;
+
+
+}
+
+
+
+
+if(shark.y>410){
+
+
+shark.y=410;
+
+
+shark.dy*=-1;
+
+
+}
+
+
+
+
+
+
+if(
+Date.now()-sharkTimer
+>
+6000
+){
+
+
+sharkActive=false;
+
+
+}
+
 
 
 }
@@ -812,32 +709,39 @@ if(sharkActive){
 
 
 
+// =======================
+// TELEPORTATION POISSON
+// =======================
 
-// =======================
-// TELEPORTATION
-// =======================
 
 
 if(fish.x<0)
+
 
 fish.x=canvas.width;
 
 
 
+
 if(fish.x>canvas.width)
+
 
 fish.x=0;
 
 
 
 
+
 if(fish.y<0)
+
 
 fish.y=canvas.height;
 
 
 
+
 if(fish.y>canvas.height)
+
 
 fish.y=0;
 
@@ -854,6 +758,7 @@ fish.y=0;
 // =======================
 
 
+
 if(
 
 
@@ -862,7 +767,8 @@ Math.abs(
 -
 (algae.x+10)
 )
-<45
+<
+45
 
 
 
@@ -875,52 +781,26 @@ Math.abs(
 -
 (algae.y+10)
 )
-<45
+<
+45
+
 
 
 ){
 
 
 
-    score++;
+score++;
 
 
 
 
 
-    speed =
-    Math.min(
-        speed+0.15,
-        maxSpeed
-    );
-
-
-
-
-
-    if(fish.dx>0)
-
-        fish.dx=speed;
-
-
-
-    if(fish.dx<0)
-
-        fish.dx=-speed;
-
-
-
-
-
-    if(fish.dy>0)
-
-        fish.dy=speed;
-
-
-
-    if(fish.dy<0)
-
-        fish.dy=-speed;
+speed =
+Math.min(
+speed+0.15,
+maxSpeed
+);
 
 
 
@@ -928,46 +808,71 @@ Math.abs(
 
 
 
-    let scoreBox =
-    document.getElementById("score");
+if(fish.dx>0)
+
+fish.dx=speed;
 
 
 
-    if(scoreBox){
+if(fish.dx<0)
 
-
-        scoreBox.innerHTML =
-
-        "Algues : "
-        +
-        score
-        +
-        " | Vitesse : "
-        +
-        speed.toFixed(1);
-
-
-    }
+fish.dx=-speed;
 
 
 
+if(fish.dy>0)
+
+fish.dy=speed;
 
 
 
-    // débloque les skins
+if(fish.dy<0)
 
-    checkUnlocks();
+fish.dy=-speed;
 
 
 
 
 
-    newAlgae();
+
+
+let scoreBox =
+document.getElementById(
+"score"
+);
+
+
+
+if(scoreBox){
+
+
+
+scoreBox.innerHTML =
+
+
+"Algues : "
++
+score
++
+" | Vitesse : "
++
+speed.toFixed(1);
 
 
 
 }
 
+
+
+
+
+
+
+newAlgae();
+
+
+
+}
 
 
 
@@ -981,101 +886,72 @@ Math.abs(
 // =======================
 
 
+
 if(sharkActive){
 
 
 
-    let dx =
-
-    (fish.x+35)
-
-    -
-
-    (shark.x+75);
+let dx =
+(fish.x+35)
+-
+(shark.x+75);
 
 
 
-
-
-    let dy =
-
-    (fish.y+35)
-
-    -
-
-    (shark.y+45);
+let dy =
+(fish.y+35)
+-
+(shark.y+45);
 
 
 
 
 
-    let distance = Math.sqrt(
-
-        dx*dx
-
-        +
-
-        dy*dy
-
-    );
+let distance =
+Math.sqrt(
+dx*dx + dy*dy
+);
 
 
 
 
 
-
-
-    if(distance<55){
-
+if(distance<55){
 
 
 
+// protection skin requin plus tard
 
-        // Protection skin requin
 
-        if(
-
-        currentSkin==="requin"
-
-        &&
-
-        skins.requin.protection
-
-        ){
+if(currentSkin==="requin"){
 
 
 
-            sharkActive=false;
+sharkActive=false;
 
 
 
-            skins.requin.protection=false;
+console.log(
+"Le skin requin a sauvé Bubulle 🦈"
+);
 
 
 
-            console.log(
-            "🦈 Protection utilisée !"
-            );
+}
+
+else{
 
 
 
-        }
+endGame();
 
 
 
-
-        else{
-
-
-            endGame();
-
-
-        }
+}
 
 
 
-
-    }
+}
 
 
 
@@ -1086,6 +962,7 @@ if(sharkActive){
 
 
 }
+
 
 
 
@@ -1099,331 +976,248 @@ if(sharkActive){
 // =======================
 
 
+
 async function endGame(){
 
 
 
-    if(gameOver)
+if(gameOver)
 
-        return;
-
-
-
-
-    gameOver=true;
-
-
-
-    await saveScore();
-
-
-
-
-    let box =
-    document.getElementById("gameOver");
-
-
-
-    let final =
-    document.getElementById("finalScore");
+return;
 
 
 
 
 
-    if(final){
+gameOver=true;
 
 
-        final.innerHTML =
 
-        "Score : "
-        +
-        score
-        +
-        " 🌿";
-
-
-    }
+await saveScore();
 
 
 
 
 
 
-    if(box){
+let box =
+document.getElementById(
+"gameOver"
+);
 
 
-        box.style.display="block";
+
+let final =
+document.getElementById(
+"finalScore"
+);
 
 
-    }
 
 
+
+
+if(final){
+
+
+final.innerHTML =
+
+
+"Score : "
++
+score
++
+" 🌿";
+
+
+
+}
+
+
+
+
+
+
+if(box){
+
+
+
+box.style.display="block";
+
+
+
+}
 
 
 
 }
 // =======================
-// FONDS OCEAN EVOLUTIFS
+// FOND OCEAN EVOLUTIF
 // =======================
+
 
 function drawOceanBackground(){
 
 
-    if(score < 15){
 
+if(score < 15){
 
-        let gradient =
-        ctx.createLinearGradient(
-            0,
-            0,
-            0,
-            500
-        );
 
 
-        gradient.addColorStop(
-            0,
-            "#4bd3ff"
-        );
+let gradient =
+ctx.createLinearGradient(
+0,
+0,
+0,
+500
+);
 
 
-        gradient.addColorStop(
-            1,
-            "#ffe29a"
-        );
 
+gradient.addColorStop(
+0,
+"#4bd3ff"
+);
 
 
-        ctx.fillStyle=gradient;
 
-        ctx.fillRect(
-            0,
-            0,
-            500,
-            500
-        );
+gradient.addColorStop(
+1,
+"#ffe29a"
+);
 
 
 
-        ctx.fillStyle="#d6b36a";
+ctx.fillStyle=gradient;
 
-        ctx.fillRect(
-            0,
-            430,
-            500,
-            70
-        );
 
 
+ctx.fillRect(
+0,
+0,
+500,
+500
+);
 
-        ctx.font="30px Arial";
 
-        ctx.fillText(
-            "🫧",
-            80,
-            100
-        );
 
 
-        ctx.fillText(
-            "🫧",
-            350,
-            180
-        );
 
+ctx.fillStyle="#d8bd75";
 
+ctx.fillRect(
+0,
+430,
+500,
+70
+);
 
-    }
 
 
 
-    else if(score < 30){
 
+ctx.font="30px Arial";
 
 
-        let gradient =
-        ctx.createLinearGradient(
-            0,
-            0,
-            0,
-            500
-        );
+ctx.fillText(
+"🫧",
+80,
+100
+);
 
 
+ctx.fillText(
+"🫧",
+350,
+180
+);
 
-        gradient.addColorStop(
-            0,
-            "#00e5ff"
-        );
 
 
-        gradient.addColorStop(
-            1,
-            "#0077be"
-        );
+}
 
 
 
-        ctx.fillStyle=gradient;
 
 
-        ctx.fillRect(
-            0,
-            0,
-            500,
-            500
-        );
 
+else if(score < 30){
 
 
-        ctx.font="45px Arial";
 
+let gradient =
+ctx.createLinearGradient(
+0,
+0,
+0,
+500
+);
 
-        ctx.fillText(
-            "🪸",
-            50,
-            420
-        );
 
 
-        ctx.fillText(
-            "🪸",
-            400,
-            420
-        );
+gradient.addColorStop(
+0,
+"#00e5ff"
+);
 
 
 
-        ctx.font="25px Arial";
+gradient.addColorStop(
+1,
+"#006994"
+);
 
 
-        ctx.fillText(
-            "🐠",
-            100,
-            120
-        );
 
+ctx.fillStyle=gradient;
 
-        ctx.fillText(
-            "🐠",
-            350,
-            200
-        );
 
 
-    }
+ctx.fillRect(
+0,
+0,
+500,
+500
+);
 
 
 
 
-    else if(score < 50){
 
+ctx.font="45px Arial";
 
 
-        let gradient =
-        ctx.createLinearGradient(
-            0,
-            0,
-            0,
-            500
-        );
+ctx.fillText(
+"🪸",
+50,
+430
+);
 
 
-        gradient.addColorStop(
-            0,
-            "#006994"
-        );
+ctx.fillText(
+"🪸",
+400,
+430
+);
 
 
-        gradient.addColorStop(
-            1,
-            "#002b45"
-        );
 
+ctx.font="25px Arial";
 
 
-        ctx.fillStyle=gradient;
+ctx.fillText(
+"🐠",
+100,
+120
+);
 
 
-        ctx.fillRect(
-            0,
-            0,
-            500,
-            500
-        );
 
-
-
-        ctx.font="90px Arial";
-
-
-        ctx.fillText(
-            "🚢",
-            200,
-            350
-        );
-
-
-
-        ctx.font="30px Arial";
-
-
-        ctx.fillText(
-            "⚓",
-            80,
-            420
-        );
-
-
-
-    }
-
-
-
-
-
-    else{
-
-
-        ctx.fillStyle="#00152e";
-
-
-        ctx.fillRect(
-            0,
-            0,
-            500,
-            500
-        );
-
-
-
-        ctx.font="50px Arial";
-
-
-        ctx.fillText(
-            "✨",
-            80,
-            120
-        );
-
-
-        ctx.fillText(
-            "✨",
-            380,
-            180
-        );
-
-
-        ctx.fillText(
-            "💡",
-            250,
-            420
-        );
-
-
-
-    }
+ctx.fillText(
+"🐠",
+350,
+200
+);
 
 
 
@@ -1435,208 +1229,325 @@ function drawOceanBackground(){
 
 
 
+else if(score < 50){
+
+
+
+let gradient =
+ctx.createLinearGradient(
+0,
+0,
+0,
+500
+);
+
+
+
+gradient.addColorStop(
+0,
+"#005577"
+);
+
+
+
+gradient.addColorStop(
+1,
+"#002b45"
+);
+
+
+
+ctx.fillStyle=gradient;
+
+
+
+ctx.fillRect(
+0,
+0,
+500,
+500
+);
+
+
+
+
+
+ctx.font="90px Arial";
+
+
+ctx.fillText(
+"🚢",
+200,
+350
+);
+
+
+
+ctx.font="30px Arial";
+
+
+ctx.fillText(
+"⚓",
+80,
+420
+);
+
+
+
+}
+
+
+
+
+
+
+else{
+
+
+
+ctx.fillStyle="#00152e";
+
+
+
+ctx.fillRect(
+0,
+0,
+500,
+500
+);
+
+
+
+
+
+ctx.font="50px Arial";
+
+
+
+ctx.fillText(
+"✨",
+80,
+120
+);
+
+
+
+ctx.fillText(
+"✨",
+380,
+180
+);
+
+
+
+ctx.fillText(
+"💡",
+250,
+420
+);
+
+
+
+}
+
+
+
+}
+
+
+
+
+
+
+
+
+
 // =======================
-// AFFICHAGE
+// AFFICHAGE DU JEU
 // =======================
+
 
 
 function draw(){
 
 
 
-    ctx.clearRect(
-        0,
-        0,
-        canvas.width,
-        canvas.height
-    );
+ctx.clearRect(
+0,
+0,
+canvas.width,
+canvas.height
+);
 
 
 
-    drawOceanBackground();
 
 
+drawOceanBackground();
 
 
 
-    // =======================
-    // ALGUE
-    // =======================
 
 
-    ctx.font="45px Arial";
 
 
-    ctx.fillText(
+// ALGUE
 
-        "🌿",
 
-        algae.x,
 
-        algae.y+35
+ctx.font="45px Arial";
 
-    );
 
 
+ctx.fillText(
 
+"🌿",
 
+algae.x,
 
+algae.y+35
 
+);
 
-    // =======================
-    // REQUIN
-    // =======================
 
 
-    if(
 
-    sharkActive
 
-    &&
 
-    sharkImage.complete
 
-    ){
+// REQUIN
 
 
-        ctx.drawImage(
 
-            sharkImage,
+if(
+sharkActive
+&&
+sharkImage.complete
+){
 
-            shark.x,
 
-            shark.y,
 
-            150,
+ctx.drawImage(
 
-            95
+sharkImage,
 
-        );
+shark.x,
 
+shark.y,
 
-    }
+150,
 
+95
 
-
-
-
-
-    // =======================
-    // POISSON
-    // =======================
-
-
-    let img=getFishImage();
-
-
-
-
-    if(
-
-    img.complete
-
-    &&
-
-    img.naturalWidth>0
-
-    ){
-
-
-
-        if(fish.direction==="left"){
-
-
-
-            ctx.save();
-
-
-            ctx.scale(
-                -1,
-                1
-            );
-
-
-
-            ctx.drawImage(
-
-                img,
-
-                -fish.x-70,
-
-                fish.y,
-
-                70,
-
-                70
-
-            );
-
-
-
-            ctx.restore();
-
-
-
-        }
-
-
-        else{
-
-
-            ctx.drawImage(
-
-                img,
-
-                fish.x,
-
-                fish.y,
-
-                70,
-
-                70
-
-            );
-
-
-        }
-
-
-
-    }
-
-
-
-    else{
-
-
-        ctx.font="50px Arial";
-
-
-        ctx.fillText(
-
-            "🐟",
-
-            fish.x,
-
-            fish.y+50
-
-        );
-
-
-    }
-
-
-
-
-
-    update();
-
-
-    requestAnimationFrame(draw);
+);
 
 
 
 }
+
+
+
+
+
+
+
+
+// POISSON SKIN
+
+
+
+let img =
+getFishImage();
+
+
+
+
+
+if(
+img.complete
+&&
+img.naturalWidth>0
+){
+
+
+
+if(
+fish.direction==="left"
+){
+
+
+
+ctx.save();
+
+
+
+ctx.scale(
+-1,
+1
+);
+
+
+
+ctx.drawImage(
+
+img,
+
+-fish.x-70,
+
+fish.y,
+
+70,
+
+70
+
+);
+
+
+
+ctx.restore();
+
+
+
+}
+
+else{
+
+
+
+ctx.drawImage(
+
+img,
+
+fish.x,
+
+fish.y,
+
+70,
+
+70
+
+);
+
+
+
+}
+
+
+
+}
+
+
+
+update();
+
+
+
+requestAnimationFrame(draw);
+
+
+
+}
+
 
 
 
@@ -1651,22 +1562,26 @@ function draw(){
 // =======================
 
 
+
 function openLocker(){
 
 
 
-    let locker =
-    document.getElementById("locker");
+let locker =
+document.getElementById(
+"locker"
+);
 
 
 
-    if(locker){
+if(locker){
 
 
-        locker.style.display="block";
+locker.style.display="block";
 
 
-    }
+}
+
 
 
 }
@@ -1678,21 +1593,25 @@ function closeLocker(){
 
 
 
-    let locker =
-    document.getElementById("locker");
+let locker =
+document.getElementById(
+"locker"
+);
 
 
 
-    if(locker){
+if(locker){
 
 
-        locker.style.display="none";
-
-
-    }
+locker.style.display="none";
 
 
 }
+
+
+
+}
+
 
 
 
@@ -1706,146 +1625,160 @@ function closeLocker(){
 // =======================
 
 
+
 async function showRanking(){
 
 
 
-    let ranking =
-    document.getElementById("ranking");
+let ranking =
+document.getElementById(
+"ranking"
+);
 
 
-    let list =
-    document.getElementById("rankingList");
 
+let list =
+document.getElementById(
+"rankingList"
+);
 
 
 
-    if(!ranking || !list)
 
-        return;
 
+if(
+!ranking
+||
+!list
+)
 
+return;
 
 
 
-    ranking.style.display="block";
 
 
-    list.innerHTML=
-    "Chargement...";
+ranking.style.display="block";
 
 
 
+list.innerHTML=
+"Chargement...";
 
 
-    try{
 
 
-        const q=query(
 
-            collection(db,"scores"),
 
-            orderBy(
-                "score",
-                "desc"
-            ),
+try{
 
-            limit(10)
 
-        );
 
+const q =
+query(
 
+collection(db,"scores"),
 
+orderBy(
+"score",
+"desc"
+),
 
+limit(10)
 
-        const result =
-        await getDocs(q);
+);
 
 
 
 
 
-        list.innerHTML="";
 
 
+const result =
+await getDocs(q);
 
-        let place=1;
 
 
 
 
 
-        result.forEach(doc=>{
+list.innerHTML="";
 
 
-            let data=doc.data();
 
+let place=1;
 
 
 
-            let li =
-            document.createElement("li");
 
 
+result.forEach(doc=>{
 
 
-            li.innerHTML =
 
+let data =
+doc.data();
 
-            place
 
-            +
 
-            " 🐟 "
 
-            +
+let li =
+document.createElement(
+"li"
+);
 
-            data.pseudo
 
-            +
 
-            " : "
 
-            +
 
-            data.score
+li.innerHTML =
 
-            +
 
-            " 🌿";
+place
++
+" 🐟 "
++
+data.pseudo
++
+" : "
++
+data.score
++
+" 🌿";
 
 
 
 
 
-            list.appendChild(li);
 
+list.appendChild(li);
 
 
-            place++;
 
+place++;
 
 
-        });
 
+});
 
 
 
 
-    }
+}
 
+catch(error){
 
-    catch(error){
 
+console.log(error);
 
-        console.log(error);
 
 
-        list.innerHTML=
-        "Erreur classement";
+list.innerHTML=
+"Erreur classement";
 
 
-    }
+
+}
 
 
 
@@ -1875,11 +1808,12 @@ document.getElementById(
 if(rankingBtn){
 
 
-    rankingBtn.onclick =
-    showRanking;
+rankingBtn.onclick =
+showRanking;
 
 
 }
+
 
 
 
@@ -1895,34 +1829,8 @@ document.getElementById(
 if(refreshRanking){
 
 
-    refreshRanking.onclick =
-    showRanking;
-
-
-}
-
-
-
-
-
-
-let restartBtn =
-document.getElementById(
-"restartBtn"
-);
-
-
-
-if(restartBtn){
-
-
-    restartBtn.onclick=function(){
-
-
-        location.reload();
-
-
-    };
+refreshRanking.onclick =
+showRanking;
 
 
 }
@@ -1942,8 +1850,37 @@ document.getElementById(
 if(lockerBtn){
 
 
-    lockerBtn.onclick =
-    openLocker;
+lockerBtn.onclick =
+openLocker;
+
+
+}
+
+
+
+
+
+
+let restartBtn =
+document.getElementById(
+"restartBtn"
+);
+
+
+
+if(restartBtn){
+
+
+
+restartBtn.onclick=function(){
+
+
+location.reload();
+
+
+
+};
+
 
 
 }
@@ -1959,6 +1896,7 @@ if(lockerBtn){
 // =======================
 // DEMARRAGE
 // =======================
+
 
 
 newAlgae();
