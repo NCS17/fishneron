@@ -5,19 +5,18 @@ canvas.width = 500;
 canvas.height = 500;
 
 
-// VITESSE POISSON
+// =======================
+// VARIABLES
+// =======================
 
 const speed = 10;
 
 let score = 0;
 
 
-
-
 // =======================
 // POISSON
 // =======================
-
 
 let fish = {
 
@@ -33,17 +32,13 @@ let fish = {
 
 
 
-
-
-
 // =======================
 // REQUIN
 // =======================
 
-
 let shark = {
 
-    x:500,
+    x:600,
     y:200,
 
     dx:-5,
@@ -52,21 +47,16 @@ let shark = {
 };
 
 
-
 let sharkImage = new Image();
 
-sharkImage.src = "./fishImages/shark.png";
-
+sharkImage.src = "fishImages/shark.png";
 
 
 let sharkActive = false;
 
 let sharkTimer = 0;
 
-
 let lastSharkScore = 0;
-
-
 
 
 
@@ -93,18 +83,11 @@ let fishImages = {
 
 
 
-fishImages.rouge.src="./fishImages/rouge.png";
-
-fishImages.nemo.src="./fishImages/nemo.png";
-
-fishImages.aile.src="./fishImages/aile.png";
-
-fishImages.whale.src="./fishImages/whale.png";
-
-fishImages.octo.src="./fishImages/octo.png";
-
-
-
+fishImages.rouge.src = "fishImages/rouge.png";
+fishImages.nemo.src = "fishImages/nemo.png";
+fishImages.aile.src = "fishImages/aile.png";
+fishImages.whale.src = "fishImages/whale.png";
+fishImages.octo.src = "fishImages/octo.png";
 
 
 
@@ -113,11 +96,9 @@ fishImages.octo.src="./fishImages/octo.png";
 // ALGUE
 // =======================
 
-
 let algae = {
 
     x:100,
-
     y:100
 
 };
@@ -125,11 +106,8 @@ let algae = {
 
 
 
-
-
-
 // =======================
-// CONTROLES PC
+// CONTROLES
 // =======================
 
 
@@ -157,14 +135,7 @@ document.addEventListener("keydown",function(e){
 
 
 
-
-
-
-
-// =======================
-// CONTROLES TELEPHONE
-// =======================
-
+// TELEPHONE
 
 document.getElementById("up").addEventListener("touchstart",function(e){
 
@@ -205,11 +176,6 @@ document.getElementById("right").addEventListener("touchstart",function(e){
 
 
 
-// =======================
-// DIRECTION
-// =======================
-
-
 function changeDirection(x,y){
 
 
@@ -218,25 +184,19 @@ function changeDirection(x,y){
     fish.dy=y;
 
 
-    if(x<0){
 
+    if(x<0)
         fish.direction="left";
 
-    }
 
-
-    if(x>0){
-
+    if(x>0)
         fish.direction="right";
-
-    }
 
 
 }
 // =======================
 // CHOIX DU POISSON
 // =======================
-
 
 function getFishImage(){
 
@@ -277,23 +237,17 @@ function getFishImage(){
 
 
 
-
-
 // =======================
 // NOUVELLE ALGUE
 // =======================
 
-
 function newAlgae(){
-
 
     algae.x = Math.floor(Math.random()*25)*20;
 
     algae.y = Math.floor(Math.random()*25)*20;
 
-
 }
-
 
 
 
@@ -305,11 +259,10 @@ function newAlgae(){
 // UPDATE
 // =======================
 
-
 function update(){
 
 
-    // MOUVEMENT POISSON
+    // déplacement poisson
 
     fish.x += fish.dx;
 
@@ -319,11 +272,8 @@ function update(){
 
 
 
-
-
     // =======================
     // APPARITION REQUIN
-    // TOUTES LES 5 ALGUES
     // =======================
 
 
@@ -342,12 +292,10 @@ function update(){
 
         sharkActive = true;
 
-
         lastSharkScore = score;
 
 
         sharkTimer = Date.now();
-
 
 
         shark.x = canvas.width + 100;
@@ -356,15 +304,12 @@ function update(){
 
 
 
-        // vitesse aléatoire
+        shark.dx = -(Math.random()*2+5);
 
-        shark.dx = -(Math.random()*2 + 5);
-
-        shark.dy = Math.random()*3 - 1.5;
+        shark.dy = Math.random()*3-1.5;
 
 
     }
-
 
 
 
@@ -386,19 +331,12 @@ function update(){
 
 
 
-        // changement mouvement aléatoire
+        if(Math.random()<0.04){
 
-        if(Math.random() < 0.04){
-
-
-            shark.dy = Math.random()*4 - 2;
-
+            shark.dy = Math.random()*4-2;
 
         }
 
-
-
-        // rebond haut/bas
 
 
         if(shark.y < 0){
@@ -410,9 +348,9 @@ function update(){
         }
 
 
-        if(shark.y > 400){
+        if(shark.y > 410){
 
-            shark.y = 400;
+            shark.y = 410;
 
             shark.dy *= -1;
 
@@ -420,16 +358,11 @@ function update(){
 
 
 
+        // durée 6 secondes
 
+        if(Date.now()-sharkTimer > 6000){
 
-        // disparition après 6 secondes
-
-
-        if(Date.now() - sharkTimer > 6000){
-
-
-            sharkActive = false;
-
+            sharkActive=false;
 
         }
 
@@ -444,36 +377,28 @@ function update(){
 
 
     // =======================
-    // TELEPORTATION POISSON
+    // SORTIE DU CADRE
     // =======================
 
 
-    if(fish.x < 0){
+    if(fish.x < 0)
 
-        fish.x = canvas.width - 20;
-
-    }
+        fish.x = canvas.width-20;
 
 
-    if(fish.x > canvas.width){
+    if(fish.x > canvas.width)
 
         fish.x = 0;
 
-    }
+
+    if(fish.y < 0)
+
+        fish.y = canvas.height-20;
 
 
-    if(fish.y < 0){
-
-        fish.y = canvas.height - 20;
-
-    }
-
-
-    if(fish.y > canvas.height){
+    if(fish.y > canvas.height)
 
         fish.y = 0;
-
-    }
 
 
 
@@ -483,7 +408,7 @@ function update(){
 
 
     // =======================
-    // MANGER ALGUE
+    // ALGUE
     // =======================
 
 
@@ -500,8 +425,7 @@ function update(){
 
 
         document.getElementById("score").innerHTML =
-        "Algues : " + score;
-
+        "Algues : "+score;
 
 
         newAlgae();
@@ -514,48 +438,28 @@ function update(){
 
 
 
-
-
     // =======================
     // COLLISION REQUIN
-    // HITBOX AMELIOREE
     // =======================
 
 
     if(sharkActive){
 
 
-        let fishCenterX = fish.x + 35;
+        let dx = (fish.x+35)-(shark.x+70);
 
-        let fishCenterY = fish.y + 35;
-
-
-
-        let sharkCenterX = shark.x + 70;
-
-        let sharkCenterY = shark.y + 45;
+        let dy = (fish.y+35)-(shark.y+45);
 
 
 
-        let distance = Math.sqrt(
-
-            Math.pow(fishCenterX - sharkCenterX,2)
-
-            +
-
-            Math.pow(fishCenterY - sharkCenterY,2)
-
-        );
+        let distance = Math.sqrt(dx*dx+dy*dy);
 
 
-
-        // distance de collision
 
         if(distance < 55){
 
 
             alert("GAME OVER 🦈");
-
 
             location.reload();
 
@@ -564,7 +468,6 @@ function update(){
 
 
     }
-
 
 
 }
@@ -578,9 +481,8 @@ function update(){
 
 
 // =======================
-// AFFICHAGE
+// DESSIN
 // =======================
-
 
 function draw(){
 
@@ -590,12 +492,9 @@ function draw(){
 
 
 
-
-    // ALGUE
-
+    // algue
 
     ctx.font="35px Arial";
-
 
     ctx.fillText(
 
@@ -611,9 +510,7 @@ function draw(){
 
 
 
-
-    // REQUIN
-
+    // requin
 
     if(sharkActive){
 
@@ -641,59 +538,66 @@ function draw(){
 
 
 
-    // POISSON
-
+    // poisson
 
     let img = getFishImage();
 
 
 
-    if(fish.direction === "left"){
+    // sécurité téléphone
 
-
-        ctx.save();
-
-
-        ctx.scale(-1,1);
+    if(img.complete && img.naturalWidth > 0){
 
 
 
-        ctx.drawImage(
-
-            img,
-
-            -fish.x-70,
-
-            fish.y,
-
-            70,
-
-            70
-
-        );
+        if(fish.direction==="left"){
 
 
-        ctx.restore();
+            ctx.save();
 
 
-    }
-
-    else{
+            ctx.scale(-1,1);
 
 
-        ctx.drawImage(
+            ctx.drawImage(
 
-            img,
+                img,
 
-            fish.x,
+                -fish.x-70,
 
-            fish.y,
+                fish.y,
 
-            70,
+                70,
 
-            70
+                70
 
-        );
+            );
+
+
+            ctx.restore();
+
+
+        }
+
+        else{
+
+
+            ctx.drawImage(
+
+                img,
+
+                fish.x,
+
+                fish.y,
+
+                70,
+
+                70
+
+            );
+
+
+        }
 
 
     }
@@ -715,12 +619,54 @@ function draw(){
 
 
 
-
 // =======================
-// START
+// ATTENTE CHARGEMENT IMAGE
 // =======================
 
 
-newAlgae();
+let imagesLoaded = 0;
 
-draw();
+
+Object.values(fishImages).forEach(function(img){
+
+
+    img.onload = function(){
+
+        imagesLoaded++;
+
+    };
+
+
+});
+
+
+
+
+
+function startGame(){
+
+
+    if(imagesLoaded >= 5){
+
+
+        newAlgae();
+
+        draw();
+
+
+    }
+
+    else{
+
+
+        setTimeout(startGame,100);
+
+
+    }
+
+
+}
+
+
+
+startGame();
