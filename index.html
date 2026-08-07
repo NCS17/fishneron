@@ -2,7 +2,9 @@
 <html lang="fr">
 
 <head>
+
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
 <title>Henneron's Fish</title>
@@ -13,6 +15,7 @@
 
 
 <body>
+
 
 <h1>🐟 Henneron's Fish</h1>
 
@@ -44,12 +47,14 @@ Aide ton poisson à évoluer en mangeant des algues 🌿
 
 
 
+
 <div id="controls">
 
 
 <button id="up">
 ⬆️
 </button>
+
 
 
 <div>
@@ -95,7 +100,7 @@ import { initializeApp } from
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 
-import { getFirestore } from 
+import { getFirestore, collection, addDoc } from 
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
@@ -141,6 +146,10 @@ const db = getFirestore(app);
 
 window.db = db;
 
+window.collection = collection;
+
+window.addDoc = addDoc;
+
 
 
 </script>
@@ -149,9 +158,9 @@ window.db = db;
 
 
 
-<!-- SCRIPT DU JEU -->
+<!-- JEU -->
 
-<script type="module" src="script.js"></script>
+<script src="script.js"></script>
 
 
 
