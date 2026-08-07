@@ -87,26 +87,27 @@ document.addEventListener("keydown", function(e){
 
 // CONTROLES TELEPHONE
 
-document.getElementById("up").onclick = function(){
+// CONTROLES TELEPHONE
+
+document.getElementById("up").addEventListener("touchstart", function(e){
+    e.preventDefault();
     changeDirection(0,-speed);
-};
+});
 
-
-document.getElementById("down").onclick = function(){
+document.getElementById("down").addEventListener("touchstart", function(e){
+    e.preventDefault();
     changeDirection(0,speed);
-};
+});
 
-
-document.getElementById("left").onclick = function(){
+document.getElementById("left").addEventListener("touchstart", function(e){
+    e.preventDefault();
     changeDirection(-speed,0);
-};
+});
 
-
-document.getElementById("right").onclick = function(){
+document.getElementById("right").addEventListener("touchstart", function(e){
+    e.preventDefault();
     changeDirection(speed,0);
-};
-
-
+});
 
 
 
