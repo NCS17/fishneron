@@ -291,17 +291,15 @@ function draw(currentTime){
         ctx.fillText("🌿", algae.x, algae.y + 25);
 
         // IMAGE DU POISSON
-        ctx.drawImage(
-    img,
-    fish.x,
-    fish.y,
-    70,
-    70
-);
+        // IMAGE DU POISSON
+
+let img = getFishImage();
+
+if(fish.direction === "left"){
 
     ctx.save();
 
-    // retourne l'image horizontalement
+    // miroir horizontal
     ctx.scale(-1,1);
 
     ctx.drawImage(
@@ -313,6 +311,17 @@ function draw(currentTime){
     );
 
     ctx.restore();
+
+}
+else{
+
+    ctx.drawImage(
+        img,
+        fish.x,
+        fish.y,
+        70,
+        70
+    );
 
 }
 else{
@@ -338,12 +347,3 @@ else{
 
 newAlgae();
 requestAnimationFrame(draw);
-
-
-
-
-
-
-newAlgae();
-
-draw();
