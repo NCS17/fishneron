@@ -773,6 +773,33 @@ drawOceanBackground();
 
 
 
+
+
+
+
+// REQUIN
+
+if(sharkActive && sharkImage.complete){
+
+
+ctx.drawImage(
+
+sharkImage,
+
+shark.x,
+
+shark.y,
+
+150,
+
+95
+
+);
+
+
+}
+
+
 // =======================
 // ALGUE VISIBLE
 // =======================
@@ -823,32 +850,6 @@ ctx.fill();
 
 
 ctx.restore();
-
-
-
-
-// REQUIN
-
-if(sharkActive && sharkImage.complete){
-
-
-ctx.drawImage(
-
-sharkImage,
-
-shark.x,
-
-shark.y,
-
-150,
-
-95
-
-);
-
-
-}
-
 
 
 
