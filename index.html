@@ -26,6 +26,7 @@ Aide ton poisson à évoluer en mangeant les algues 🌿
 
 
 
+
 <div class="score">
 
 <span id="score">
@@ -46,14 +47,14 @@ Algues : 0
 
 
 
-
 <!-- GAME OVER -->
-
 
 <div id="gameOver" style="display:none;">
 
 
-<h2>🦈 GAME OVER !</h2>
+<h2>
+🦈 GAME OVER !
+</h2>
 
 
 <p id="finalScore">
@@ -80,6 +81,15 @@ Algues : 0
 </button>
 
 
+
+<button id="lockerBtn">
+
+🧰 Casier
+
+</button>
+
+
+
 </div>
 
 
@@ -87,6 +97,7 @@ Algues : 0
 
 
 </div>
+
 
 
 
@@ -94,7 +105,6 @@ Algues : 0
 
 
 <!-- CONTROLES -->
-
 
 <div class="buttons">
 
@@ -136,53 +146,148 @@ Algues : 0
 </div>
 
 
-<button id="lockerBtn">
-🧰 Casier
+
+
+
+
+
+
+
+<!-- CASIER -->
+
+<div id="locker" style="display:none;">
+
+
+<h2>
+🧰 Mon Casier
+</h2>
+
+
+
+<p>
+Choisis ton poisson :
+</p>
+
+
+
+<div class="skin">
+
+
+<button onclick="equipSkin('rouge')">
+
+🐟 Bubulle classique
+
 </button>
 
 
 
+<button onclick="equipSkin('nemo')">
 
-<!-- CLASSEMENT PREMIUM -->
+🐠 Poisson tropical
 
-
-<div id="ranking">
-
-
-<h2>🏆 Océan des champions</h2>
+</button>
 
 
-<p>
-Les meilleurs Bubulles 🐟
-</p>
+
+<button onclick="equipSkin('ballon')">
+
+🐡 Poisson ballon
+
+</button>
+
+
+
+<button onclick="equipSkin('requin')">
+
+🦈 Skin requin
+
+</button>
+
+
+
+<button onclick="equipSkin('whale')">
+
+🐋 Mini baleine
+
+</button>
+
+
+
+<button onclick="equipSkin('octo')">
+
+🐙 Poulpe
+
+</button>
+
+
+
+</div>
+
+
+
+
+<button onclick="closeLocker()">
+
+Fermer
+
+</button>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- CLASSEMENT -->
+
+
+<div id="ranking" style="display:none;">
+
+
+<h2>
+
+🏆 Classement
+
+</h2>
+
+
+
+<ol id="rankingList">
+
+
+<li>
+Chargement...
+</li>
+
+
+</ol>
 
 
 
 <button id="refreshRanking">
 
-🔄 
+🔄 Actualiser
 
 </button>
 
 
 
 
-<div id="rankingList">
+<button onclick="document.getElementById('ranking').style.display='none'">
 
+Fermer
 
-<div class="rankCard">
-
-🌊 Le classement apparaîtra ici...
-
-</div>
-
-
-</div>
-
+</button>
 
 
 
 </div>
+
 
 
 
@@ -256,6 +361,7 @@ appId: "1:126418087769:web:f1c68acad749ab5299a648"
 
 
 
+
 const app = initializeApp(firebaseConfig);
 
 
@@ -264,6 +370,9 @@ const db = getFirestore(app);
 
 
 
+
+
+// rendre Firebase accessible au script.js
 
 
 window.db = db;
@@ -283,6 +392,7 @@ window.getDocs = getDocs;
 
 
 </script>
+
 
 
 
