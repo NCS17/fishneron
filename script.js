@@ -1,7 +1,6 @@
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
 
-
 canvas.width = 500;
 canvas.height = 500;
 
@@ -19,33 +18,25 @@ const maxSpeed = 12;
 let gameOver = false;
 
 
-
-
-
 // =======================
 // FIREBASE SCORE
 // =======================
 
 async function saveScore(){
 
-
     try{
 
+        let pseudo = prompt("🦈 GAME OVER !\n\nEntre ton pseudo 🐟");
 
-        let pseudo = prompt("Entre ton pseudo 🐟");
 
+        if(!pseudo || pseudo.trim() === ""){
 
-        if(!pseudo || pseudo.trim()===""){
-
-            pseudo="Anonyme";
+            pseudo = "Anonyme";
 
         }
 
 
-
-
         await addDoc(collection(db,"scores"),{
-
 
             pseudo:pseudo,
 
@@ -53,27 +44,18 @@ async function saveScore(){
 
             date:new Date()
 
-
         });
-
 
 
     }
 
     catch(error){
 
-
-        console.log("Erreur Firebase :",error);
-
+        console.log(error);
 
     }
 
-
 }
-
-
-
-
 
 
 
@@ -84,24 +66,17 @@ async function saveScore(){
 
 let fish = {
 
-
     x:250,
 
     y:250,
-
 
     dx:speed,
 
     dy:0,
 
-
     direction:"right"
 
-
 };
-
-
-
 
 
 
@@ -111,31 +86,23 @@ let fish = {
 // REQUIN
 // =======================
 
-
-let shark={
-
+let shark = {
 
     x:600,
 
     y:200,
 
-
     dx:-5,
 
     dy:0
-
 
 };
 
 
 
-
-
-let sharkImage=new Image();
-
+let sharkImage = new Image();
 
 sharkImage.src="./fishImages/shark.png";
-
 
 
 let sharkActive=false;
@@ -148,16 +115,11 @@ let lastSharkScore=0;
 
 
 
-
-
-
 // =======================
 // IMAGES POISSON
 // =======================
 
-
 let fishImages={
-
 
     rouge:new Image(),
 
@@ -169,9 +131,7 @@ let fishImages={
 
     octo:new Image()
 
-
 };
-
 
 
 
@@ -189,40 +149,27 @@ fishImages.octo.src="./fishImages/octo.png";
 
 
 
-
-
-
 // =======================
 // ALGUE
 // =======================
 
-
 let algae={
-
 
     x:100,
 
     y:100
 
-
 };
-
-
 
 
 
 function newAlgae(){
 
-
     algae.x=Math.floor(Math.random()*25)*20;
 
     algae.y=Math.floor(Math.random()*25)*20;
 
-
 }
-
-
-
 
 
 
@@ -232,34 +179,27 @@ function newAlgae(){
 // EVOLUTION POISSON
 // =======================
 
-
 function getFishImage(){
 
 
-
-    if(score<2)
+    if(score < 2)
 
         return fishImages.rouge;
 
 
-
-    if(score<4)
+    if(score < 4)
 
         return fishImages.nemo;
 
 
-
-    if(score<8)
+    if(score < 8)
 
         return fishImages.aile;
 
 
-
-    if(score<17)
+    if(score < 17)
 
         return fishImages.whale;
-
-
 
 
     return fishImages.octo;
@@ -271,13 +211,9 @@ function getFishImage(){
 
 
 
-
-
-
 // =======================
 // CONTROLES
 // =======================
-
 
 function changeDirection(x,y){
 
@@ -299,16 +235,12 @@ function changeDirection(x,y){
         fish.direction="left";
 
 
-
     if(x>0)
 
         fish.direction="right";
 
 
 }
-
-
-
 
 
 
@@ -338,19 +270,21 @@ document.addEventListener("keydown",function(e){
         changeDirection(speed,0);
 
 
+
 });
 
 
 
 
 
-
+// =======================
+// TOUCH TELEPHONE
+// =======================
 
 function addTouch(id,x,y){
 
 
     let button=document.getElementById(id);
-
 
 
     if(button){
@@ -375,7 +309,6 @@ function addTouch(id,x,y){
 
 
 
-
 addTouch("up",0,-speed);
 
 addTouch("down",0,speed);
@@ -383,94 +316,77 @@ addTouch("down",0,speed);
 addTouch("left",-speed,0);
 
 addTouch("right",speed,0);
-
-
-
-
-
-
-
 // =======================
 // UPDATE
 // =======================
 
-
 function update(){
 
 
+if(gameOver)
 
-    if(gameOver)
-
-        return;
-
+return;
 
 
 
-    // mouvement poisson
 
+// =======================
+// MOUVEMENT POISSON
+// =======================
 
-    fish.x += fish.dx;
+fish.x += fish.dx;
 
-    fish.y += fish.dy;
-
-
+fish.y += fish.dy;
 
 
 
 
 
-    // apparition requin
+// =======================
+// APPARITION REQUIN
+// =======================
+
+if(
+
+score > 0 &&
+
+score % 5 === 0 &&
+
+score !== lastSharkScore &&
+
+sharkActive === false
+
+){
 
 
-    if(
+    sharkActive=true;
 
+    lastSharkScore=score;
 
-        score>0 &&
-
-
-        score%5===0 &&
-
-
-        score!==lastSharkScore &&
-
-
-        sharkActive===false
-
-
-    ){
-
-
-
-        sharkActive=true;
-
-
-        lastSharkScore=score;
-
-
-        sharkTimer=Date.now();
+    sharkTimer=Date.now();
 
 
 
+    shark.x=canvas.width+100;
 
-        shark.x=canvas.width+100;
-
-
-        shark.y=Math.random()*350;
+    shark.y=Math.random()*350;
 
 
 
-        shark.dx=-(Math.random()*2+5);
+    shark.dx=-(Math.random()*2+5);
+
+    shark.dy=Math.random()*3-1.5;
 
 
-        shark.dy=Math.random()*3-1.5;
+}
 
 
 
-    }
+
+
 // =======================
 // MOUVEMENT REQUIN
 // =======================
-
 
 if(sharkActive){
 
@@ -478,7 +394,6 @@ if(sharkActive){
     shark.x += shark.dx;
 
     shark.y += shark.dy;
-
 
 
 
@@ -506,8 +421,6 @@ if(sharkActive){
 
 
 
-
-
     if(shark.y>410){
 
 
@@ -517,7 +430,6 @@ if(sharkActive){
 
 
     }
-
 
 
 
@@ -539,9 +451,6 @@ if(sharkActive){
 
 
 
-
-
-
 // =======================
 // TELEPORTATION POISSON
 // =======================
@@ -549,28 +458,25 @@ if(sharkActive){
 
 if(fish.x<0)
 
-    fish.x=canvas.width;
+fish.x=canvas.width;
 
 
 
 if(fish.x>canvas.width)
 
-    fish.x=0;
+fish.x=0;
 
 
 
 if(fish.y<0)
 
-    fish.y=canvas.height;
+fish.y=canvas.height;
 
 
 
 if(fish.y>canvas.height)
 
-    fish.y=0;
-
-
-
+fish.y=0;
 
 
 
@@ -581,91 +487,70 @@ if(fish.y>canvas.height)
 // MANGER ALGUE
 // =======================
 
-
 if(
 
+Math.abs((fish.x+35)-(algae.x+10))<45 &&
 
-    Math.abs((fish.x+35)-(algae.x+10))<45 &&
-
-
-    Math.abs((fish.y+35)-(algae.y+10))<45
-
+Math.abs((fish.y+35)-(algae.y+10))<45
 
 ){
 
 
-
-    score++;
-
-
-
-    // vitesse limitée
-
-
-    speed=Math.min(speed+0.15,maxSpeed);
+score++;
 
 
 
 
-
-    if(fish.dx>0)
-
-        fish.dx=speed;
-
-
-
-    if(fish.dx<0)
-
-        fish.dx=-speed;
+speed=Math.min(speed+0.15,maxSpeed);
 
 
 
 
+if(fish.dx>0)
 
-    if(fish.dy>0)
-
-        fish.dy=speed;
-
+fish.dx=speed;
 
 
-    if(fish.dy<0)
+if(fish.dx<0)
 
-        fish.dy=-speed;
+fish.dx=-speed;
+
+
+if(fish.dy>0)
+
+fish.dy=speed;
+
+
+if(fish.dy<0)
+
+fish.dy=-speed;
 
 
 
 
 
-
-    let scoreBox=document.getElementById("score");
-
+let scoreBox=document.getElementById("score");
 
 
-    if(scoreBox){
+if(scoreBox){
 
 
-        scoreBox.innerHTML=
+scoreBox.innerHTML=
 
-        "Algues : "+score+
+"Algues : "+score+
 
-        " | Vitesse : "+speed.toFixed(1);
-
-
-
-    }
-
-
-
-
-
-    newAlgae();
-
+" | Vitesse : "+speed.toFixed(1);
 
 
 }
 
 
 
+newAlgae();
+
+
+
+}
 
 
 
@@ -675,34 +560,33 @@ if(
 // COLLISION REQUIN
 // =======================
 
-
 if(sharkActive){
 
 
 
-    let dx=(fish.x+35)-(shark.x+75);
+let dx=(fish.x+35)-(shark.x+75);
 
-
-    let dy=(fish.y+35)-(shark.y+45);
-
-
-
-    let distance=Math.sqrt(
-
-        dx*dx+dy*dy
-
-    );
+let dy=(fish.y+35)-(shark.y+45);
 
 
 
+let distance=Math.sqrt(
 
-    if(distance<90){
+dx*dx +
+
+dy*dy
+
+);
 
 
-        endGame();
+
+if(distance<55){
 
 
-    }
+endGame();
+
+
+}
 
 
 
@@ -710,11 +594,7 @@ if(sharkActive){
 
 
 
-
-
 }
-
-
 
 
 
@@ -726,56 +606,49 @@ if(sharkActive){
 // GAME OVER
 // =======================
 
-
 async function endGame(){
 
 
-    if(gameOver)
+if(gameOver)
 
-        return;
-
-
-
-    gameOver=true;
+return;
 
 
 
-
-    let box=document.getElementById("gameOver");
-
-    let final=document.getElementById("finalScore");
+gameOver=true;
 
 
 
+await saveScore();
 
 
-    if(final){
 
+let box=document.getElementById("gameOver");
 
-        final.innerHTML=
-
-        "Score final : "+score+" 🌿";
-
-
-    }
+let final=document.getElementById("finalScore");
 
 
 
 
-
-    if(box){
-
-
-        box.style.display="block";
+if(final){
 
 
-    }
+final.innerHTML=
+
+"Score : "+score+" 🌿";
+
+
+}
 
 
 
+if(box){
 
 
-    await saveScore();
+box.style.display="block";
+
+
+}
 
 
 
@@ -788,190 +661,161 @@ async function endGame(){
 
 
 
-
 // =======================
-// DRAW
+// AFFICHAGE
 // =======================
-
 
 function draw(){
 
 
+ctx.clearRect(0,0,canvas.width,canvas.height);
 
-    ctx.clearRect(0,0,canvas.width,canvas.height);
 
 
 
+// ALGUE
 
+ctx.font="35px Arial";
 
+ctx.fillText(
 
-    // algue
+"🌿",
 
+algae.x,
 
-    ctx.font="35px Arial";
+algae.y+25
 
+);
 
-    ctx.fillText(
 
-        "🌿",
 
-        algae.x,
 
-        algae.y+25
 
-    );
 
+// REQUIN
 
+if(sharkActive && sharkImage.complete){
 
 
+ctx.drawImage(
 
+sharkImage,
 
+shark.x,
 
-    // requin
+shark.y,
 
+150,
 
-    if(sharkActive && sharkImage.complete){
+95
 
+);
 
 
-        ctx.drawImage(
+}
 
-            sharkImage,
 
-            shark.x,
 
-            shark.y,
 
-            150,
 
-            95
 
+// POISSON
 
-        );
+let img=getFishImage();
 
 
-    }
 
+if(img.complete && img.naturalWidth>0){
 
 
 
+if(fish.direction==="left"){
 
 
+ctx.save();
 
-    // poisson
 
+ctx.scale(-1,1);
 
-    let img=getFishImage();
 
 
+ctx.drawImage(
 
+img,
 
+-fish.x-70,
 
-    if(img.complete && img.naturalWidth>0){
+fish.y,
 
+70,
 
+70
 
+);
 
 
-        if(fish.direction==="left"){
 
+ctx.restore();
 
 
-            ctx.save();
+}
 
+else{
 
 
-            ctx.scale(-1,1);
+ctx.drawImage(
 
+img,
 
+fish.x,
 
+fish.y,
 
-            ctx.drawImage(
+70,
 
-                img,
+70
 
-                -fish.x-70,
+);
 
-                fish.y,
 
-                70,
-
-                70
-
-
-            );
-
-
-
-            ctx.restore();
-
-
-
-        }
-
-        else{
-
-
-            ctx.drawImage(
-
-                img,
-
-                fish.x,
-
-                fish.y,
-
-                70,
-
-                70
-
-
-            );
-
-
-
-        }
-
-
-
-
-
-    }
-
-    else{
-
-
-        ctx.font="50px Arial";
-
-
-        ctx.fillText(
-
-            "🐟",
-
-            fish.x,
-
-            fish.y+50
-
-
-        );
-
-
-
-    }
-
-
-
-
-
-    update();
-
-
-
-    requestAnimationFrame(draw);
+}
 
 
 
 }
 
+else{
+
+
+// sécurité
+
+ctx.font="50px Arial";
+
+ctx.fillText(
+
+"🐟",
+
+fish.x,
+
+fish.y+50
+
+);
+
+
+}
+
+
+
+
+
+update();
+
+
+requestAnimationFrame(draw);
+
+
+
+}
 
 
 
@@ -984,128 +828,111 @@ function draw(){
 // CLASSEMENT FIREBASE
 // =======================
 
-
 async function showRanking(){
 
 
+let ranking=document.getElementById("ranking");
 
-    let list=document.getElementById("rankingList");
+let list=document.getElementById("rankingList");
 
 
 
-    if(!list)
+if(!ranking || !list)
 
-        return;
+return;
 
 
 
+ranking.style.display="block";
 
 
-    list.innerHTML="Chargement...";
+list.innerHTML="Chargement...";
 
 
 
+try{
 
-    try{
 
+const q=query(
 
+collection(db,"scores"),
 
-        const q=query(
+orderBy("score","desc"),
 
+limit(10)
 
-            collection(db,"scores"),
+);
 
 
-            orderBy("score","desc"),
 
 
-            limit(10)
+const result=await getDocs(q);
 
 
-        );
 
+list.innerHTML="";
 
 
 
+let place=1;
 
 
-        const result=await getDocs(q);
 
+result.forEach(doc=>{
 
 
-        list.innerHTML="";
+let data=doc.data();
 
 
 
-        let place=1;
+let li=document.createElement("li");
 
 
 
+li.innerHTML=
 
+place+
 
-        result.forEach(doc=>{
+" 🐟 "+
 
+data.pseudo+
 
+" : "+
 
-            let data=doc.data();
+data.score+
 
+" algues";
 
 
 
-            let li=document.createElement("li");
+list.appendChild(li);
 
 
 
-            li.innerHTML=
+place++;
 
 
-            place+
 
-            " 🐟 "+
-
-            data.pseudo+
-
-            " : "+
-
-            data.score+
-
-            " algues";
-
-
-
-
-
-            list.appendChild(li);
-
-
-
-            place++;
-
-
-
-        });
-
-
-
-
-    }
-
-
-    catch(error){
-
-
-        console.log(error);
-
-
-        list.innerHTML="Erreur classement";
-
-
-    }
+});
 
 
 
 }
 
+catch(error){
+
+
+console.log(error);
+
+
+list.innerHTML="Erreur classement";
+
+
+}
+
+
+
+}
 
 
 
@@ -1122,15 +949,27 @@ async function showRanking(){
 let rankingBtn=document.getElementById("rankingBtn");
 
 
-
 if(rankingBtn){
 
 
-    rankingBtn.onclick=showRanking;
+rankingBtn.onclick=showRanking;
 
 
 }
 
+
+
+
+let refreshRanking=document.getElementById("refreshRanking");
+
+
+if(refreshRanking){
+
+
+refreshRanking.onclick=showRanking;
+
+
+}
 
 
 
@@ -1138,24 +977,19 @@ if(rankingBtn){
 let restartBtn=document.getElementById("restartBtn");
 
 
-
 if(restartBtn){
 
 
-    restartBtn.onclick=function(){
+restartBtn.onclick=function(){
 
 
-        location.reload();
+location.reload();
 
 
-
-    };
+};
 
 
 }
-
-
-
 
 
 
