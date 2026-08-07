@@ -843,7 +843,690 @@ if(sharkActive){
 
 
 }
+// =======================
+// FONDS OCEAN EVOLUTIFS
+// =======================
 
+function drawOceanBackground(){
+
+
+    if(score < 15){
+
+
+        let gradient = ctx.createLinearGradient(
+            0,
+            0,
+            0,
+            500
+        );
+
+
+        gradient.addColorStop(
+            0,
+            "#4bd3ff"
+        );
+
+
+        gradient.addColorStop(
+            1,
+            "#ffe29a"
+        );
+
+
+        ctx.fillStyle=gradient;
+
+        ctx.fillRect(
+            0,
+            0,
+            500,
+            500
+        );
+
+
+
+        ctx.fillStyle="#e6c477";
+
+        ctx.fillRect(
+            0,
+            430,
+            500,
+            70
+        );
+
+
+
+        ctx.font="30px Arial";
+
+        ctx.fillText(
+            "🫧",
+            80,
+            100
+        );
+
+        ctx.fillText(
+            "🫧",
+            350,
+            180
+        );
+
+
+    }
+
+
+
+    else if(score < 30){
+
+
+        let gradient=ctx.createLinearGradient(
+            0,
+            0,
+            0,
+            500
+        );
+
+
+        gradient.addColorStop(
+            0,
+            "#00e5ff"
+        );
+
+
+        gradient.addColorStop(
+            1,
+            "#0077be"
+        );
+
+
+        ctx.fillStyle=gradient;
+
+        ctx.fillRect(
+            0,
+            0,
+            500,
+            500
+        );
+
+
+
+        ctx.font="45px Arial";
+
+        ctx.fillText(
+            "🪸",
+            50,
+            420
+        );
+
+
+        ctx.fillText(
+            "🪸",
+            400,
+            430
+        );
+
+
+
+        ctx.font="25px Arial";
+
+
+        ctx.fillText(
+            "🐠",
+            100,
+            120
+        );
+
+
+        ctx.fillText(
+            "🐠",
+            350,
+            200
+        );
+
+
+    }
+
+
+
+    else if(score < 50){
+
+
+
+        let gradient=ctx.createLinearGradient(
+            0,
+            0,
+            0,
+            500
+        );
+
+
+        gradient.addColorStop(
+            0,
+            "#006994"
+        );
+
+
+        gradient.addColorStop(
+            1,
+            "#00334d"
+        );
+
+
+
+        ctx.fillStyle=gradient;
+
+        ctx.fillRect(
+            0,
+            0,
+            500,
+            500
+        );
+
+
+
+        ctx.font="90px Arial";
+
+        ctx.fillText(
+            "🚢",
+            200,
+            350
+        );
+
+
+        ctx.font="30px Arial";
+
+
+        ctx.fillText(
+            "⚓",
+            80,
+            420
+        );
+
+
+        ctx.fillText(
+            "🫧",
+            350,
+            100
+        );
+
+
+
+    }
+
+
+    else{
+
+
+        ctx.fillStyle="#00152e";
+
+
+        ctx.fillRect(
+            0,
+            0,
+            500,
+            500
+        );
+
+
+
+        ctx.font="50px Arial";
+
+
+        ctx.fillText(
+            "✨",
+            70,
+            120
+        );
+
+
+        ctx.fillText(
+            "✨",
+            380,
+            200
+        );
+
+
+
+        ctx.font="30px Arial";
+
+
+        ctx.fillText(
+            "💡",
+            250,
+            420
+        );
+
+
+        ctx.fillText(
+            "🪨",
+            50,
+            450
+        );
+
+
+        ctx.fillText(
+            "🪨",
+            400,
+            450
+        );
+
+
+    }
+
+
+}
+
+
+
+
+// =======================
+// AFFICHAGE JEU
+// =======================
+
+function draw(){
+
+
+    ctx.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+
+
+    drawOceanBackground();
+
+
+
+
+    // ALGUE
+
+    ctx.font="40px Arial";
+
+    ctx.fillText(
+        "🌿",
+        algae.x,
+        algae.y+30
+    );
+
+
+
+
+    // REQUIN
+
+    if(
+        sharkActive &&
+        sharkImage.complete
+    ){
+
+
+        ctx.drawImage(
+            sharkImage,
+            shark.x,
+            shark.y,
+            150,
+            95
+        );
+
+
+    }
+
+
+
+
+
+    // POISSON SKIN
+
+    let img=getFishImage();
+
+
+
+    if(
+        img.complete &&
+        img.naturalWidth>0
+    ){
+
+
+
+        if(fish.direction==="left"){
+
+
+            ctx.save();
+
+
+            ctx.scale(
+                -1,
+                1
+            );
+
+
+
+            ctx.drawImage(
+                img,
+                -fish.x-70,
+                fish.y,
+                70,
+                70
+            );
+
+
+
+            ctx.restore();
+
+
+
+        }
+
+
+        else{
+
+
+            ctx.drawImage(
+                img,
+                fish.x,
+                fish.y,
+                70,
+                70
+            );
+
+
+        }
+
+
+
+    }
+
+
+    else{
+
+
+        ctx.font="50px Arial";
+
+
+        ctx.fillText(
+            "🐟",
+            fish.x,
+            fish.y+50
+        );
+
+
+    }
+
+
+
+
+    update();
+
+
+    requestAnimationFrame(draw);
+
+
+}
+
+
+
+
+
+// =======================
+// CASIER
+// =======================
+
+function openLocker(){
+
+
+    let text="🧰 CASIER\n\n";
+
+
+    for(let s in skins){
+
+
+        text +=
+
+        skins[s].nom+
+
+        " : ";
+
+
+
+        if(skins[s].unlocked)
+
+
+            text+="✅";
+
+
+        else
+
+            text+="🔒 "+skins[s].prix+" algues";
+
+
+
+        text+="\n";
+
+
+    }
+
+
+
+    alert(text);
+
+
+}
+
+
+
+
+
+// =======================
+// CLASSEMENT
+// =======================
+
+async function showRanking(){
+
+
+let ranking=document.getElementById(
+    "ranking"
+);
+
+
+let list=document.getElementById(
+    "rankingList"
+);
+
+
+
+if(!ranking || !list)
+
+return;
+
+
+
+ranking.style.display="block";
+
+
+list.innerHTML=
+"Chargement...";
+
+
+
+try{
+
+
+
+const q=query(
+
+collection(db,"scores"),
+
+orderBy("score","desc"),
+
+limit(10)
+
+);
+
+
+
+const result=
+await getDocs(q);
+
+
+
+list.innerHTML="";
+
+
+
+let place=1;
+
+
+
+result.forEach(doc=>{
+
+
+let data=doc.data();
+
+
+
+let li=document.createElement(
+    "li"
+);
+
+
+
+li.innerHTML=
+
+place+
+
+" 🐟 "+
+
+data.pseudo+
+
+" : "+
+
+data.score+
+
+" 🌿";
+
+
+
+list.appendChild(li);
+
+
+
+place++;
+
+
+
+});
+
+
+
+}
+
+catch(error){
+
+
+console.log(error);
+
+
+list.innerHTML=
+"Erreur classement";
+
+
+}
+
+
+
+}
+
+
+
+
+
+// =======================
+// BOUTONS
+// =======================
+
+
+let rankingBtn=document.getElementById(
+"rankingBtn"
+);
+
+
+if(rankingBtn){
+
+
+rankingBtn.onclick=showRanking;
+
+
+}
+
+
+
+
+let refreshRanking=document.getElementById(
+"refreshRanking"
+);
+
+
+
+if(refreshRanking){
+
+
+refreshRanking.onclick=showRanking;
+
+
+}
+
+
+
+
+let restartBtn=document.getElementById(
+"restartBtn"
+);
+
+
+
+if(restartBtn){
+
+
+restartBtn.onclick=function(){
+
+
+location.reload();
+
+
+};
+
+
+}
+
+
+
+
+let lockerBtn=document.getElementById(
+"lockerBtn"
+);
+
+
+
+if(lockerBtn){
+
+
+lockerBtn.onclick=openLocker;
+
+
+}
+
+
+
+
+
+// =======================
+// DEMARRAGE
+// =======================
+
+
+newAlgae();
+
+
+draw();
 
 
 
