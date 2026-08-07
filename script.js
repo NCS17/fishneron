@@ -331,27 +331,20 @@ if(
 
     // COLLISION REQUIN
 
-    if(sharkActive &&
+    if(
+    sharkActive &&
+    Math.abs(fish.x - shark.x) < 60 &&
+    Math.abs(fish.y - shark.y) < 50
+){
 
-        Math.abs(fish.x - shark.x) < 60 &&
+    sharkActive = false;
 
-        Math.abs(fish.y - shark.y) < 50
+    alert("GAME OVER 🦈");
 
-    ){
-
-
-        alert("GAME OVER 🦈");
-
-
-        location.reload();
-
-
-    }
-
+    location.reload();
 
 }
-
-
+    
 
 
 
