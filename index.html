@@ -26,7 +26,6 @@ Aide ton poisson à évoluer en mangeant les algues 🌿
 
 
 
-
 <div class="score">
 
 <span id="score">
@@ -38,9 +37,52 @@ Algues : 0
 
 
 
+<div class="gameContainer">
+
 
 <canvas id="game"></canvas>
 
+
+
+<!-- GAME OVER -->
+
+<div id="gameOver" style="display:none;">
+
+
+<h2>🦈 GAME OVER !</h2>
+
+
+<p id="finalScore">
+
+</p>
+
+
+
+<div class="gameButtons">
+
+
+<button id="restartBtn">
+
+🐟 Rejouer
+
+</button>
+
+
+
+<button id="rankingBtn">
+
+🏆 Classement
+
+</button>
+
+
+</div>
+
+
+</div>
+
+
+</div>
 
 
 
@@ -54,6 +96,7 @@ Algues : 0
 <button id="up">
 ⬆️
 </button>
+
 
 
 <div>
@@ -83,46 +126,6 @@ Algues : 0
 
 
 
-
-
-<!-- GAME OVER -->
-
-
-<div id="gameOver" style="display:none;">
-
-
-<h2>🦈 Bubulle s'est fait manger !</h2>
-
-
-<p id="finalScore"></p>
-
-
-
-<button id="restartBtn">
-
-Rejouer 🐟
-
-</button>
-
-
-
-<button id="rankingBtn">
-
-🏆 Voir le classement
-
-</button>
-
-
-</div>
-
-
-
-
-
-
-
-
-
 <!-- CLASSEMENT -->
 
 
@@ -136,7 +139,7 @@ Rejouer 🐟
 <ol id="rankingList">
 
 <li>
-Clique sur actualiser pour voir les scores
+Le classement apparaîtra ici...
 </li>
 
 </ol>
@@ -160,7 +163,6 @@ Actualiser le classement 🏆
 
 
 
-
 <!-- FIREBASE -->
 
 
@@ -169,6 +171,7 @@ Actualiser le classement 🏆
 
 import { initializeApp } 
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
 
 
 import {
@@ -186,7 +189,6 @@ orderBy,
 limit,
 
 getDocs
-
 
 }
 
@@ -225,19 +227,19 @@ const db = getFirestore(app);
 
 
 
-window.db=db;
+window.db = db;
 
-window.collection=collection;
+window.collection = collection;
 
-window.addDoc=addDoc;
+window.addDoc = addDoc;
 
-window.query=query;
+window.query = query;
 
-window.orderBy=orderBy;
+window.orderBy = orderBy;
 
-window.limit=limit;
+window.limit = limit;
 
-window.getDocs=getDocs;
+window.getDocs = getDocs;
 
 
 
