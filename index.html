@@ -1,38 +1,81 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
 <title>Henneron's Fish</title>
+
 <link rel="stylesheet" href="style.css">
+
 </head>
 
+
 <body>
- 
+
 <h1>🐟 Henneron's Fish</h1>
 
-<p>Aide ton poisson à évoluer en mangeant des algues 🌿</p>
+
+<p>
+Aide ton poisson à évoluer en mangeant des algues 🌿
+</p>
+
+
 
 <div id="info">
-    <div id="score">Algues : 0</div>
-    <div id="level">🐟 Poisson rouge</div>
+
+    <div id="score">
+        Algues : 0
+    </div>
+
+
+    <div id="level">
+        🐟 Poisson rouge
+    </div>
+
 </div>
+
+
 
 
 <canvas id="game"></canvas>
 
 
+
+
 <div id="controls">
 
-<button id="up">⬆️</button>
+
+<button id="up">
+⬆️
+</button>
+
 
 <div>
-<button id="left">⬅️</button>
-<button id="down">⬇️</button>
-<button id="right">➡️</button>
-</div>
+
+<button id="left">
+⬅️
+</button>
+
+
+<button id="down">
+⬇️
+</button>
+
+
+<button id="right">
+➡️
+</button>
+
 
 </div>
+
+
+</div>
+
+
+
 
 
 <p id="message">
@@ -40,44 +83,79 @@ Mange les algues et deviens le roi des océans 🌊
 </p>
 
 
+
+
+
 <!-- FIREBASE -->
 
 <script type="module">
 
+
 import { initializeApp } from 
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
 
 import { getFirestore } from 
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
+
+
+
 const firebaseConfig = {
 
-    apiKey: "TON_API_KEY",
-    authDomain: "TON_AUTH_DOMAIN",
-    projectId: "TON_PROJECT_ID",
-    storageBucket: "TON_STORAGE_BUCKET",
-    messagingSenderId: "TON_MESSAGING_SENDER_ID",
-    appId: "TON_APP_ID"
+
+    apiKey: "AIzaSyBvcKnfsjvwvAjkfZ-mysvUartZSm3GK3E",
+
+
+    authDomain: "henneron-s-fish.firebaseapp.com",
+
+
+    projectId: "henneron-s-fish",
+
+
+    storageBucket: "henneron-s-fish.firebasestorage.app",
+
+
+    messagingSenderId: "126418087769",
+
+
+    appId: "1:126418087769:web:f1c68acad749ab5299a648"
+
 
 };
 
 
+
+
+
 const app = initializeApp(firebaseConfig);
+
+
 
 const db = getFirestore(app);
 
 
+
+// Rend Firebase accessible dans script.js
+
 window.db = db;
+
 
 
 </script>
 
 
+
+
+
+<!-- SCRIPT DU JEU -->
+
 <script src="script.js"></script>
 
 
+
+
 </body>
-</html>
-</body>
+
 </html>
