@@ -291,7 +291,13 @@ function draw(currentTime){
         ctx.fillText("🌿", algae.x, algae.y + 25);
 
         // IMAGE DU POISSON
-        if(fish.direction === "left"){
+        ctx.drawImage(
+    img,
+    fish.x,
+    fish.y,
+    70,
+    70
+);
 
     ctx.save();
 
