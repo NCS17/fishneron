@@ -6,7 +6,7 @@ canvas.height = 500;
 
 
 // VITESSE DU POISSON
-const speed = 5; 
+const speed = 6; 
 
    
 let score = 0; 
@@ -288,9 +288,8 @@ function draw(currentTime){
         ctx.font = "35px Arial";
         ctx.fillText("🌿", algae.x, algae.y + 25);
 
-        // IMAGE DU POISSON
+      
         
-// IMAGE DU POISSON
 // IMAGE DU POISSON
 
 let img = getFishImage();
