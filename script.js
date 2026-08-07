@@ -9,7 +9,7 @@ canvas.height = 500;
 const speed = 10; 
 
    
-let score = 0;
+let score = 0; 
  
 
 // Poisson  
