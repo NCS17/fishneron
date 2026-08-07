@@ -6,7 +6,7 @@ canvas.height = 500;
 
 
 // VITESSE DU POISSON
-const speed = 10; 
+const speed = 5; 
 
    
 let score = 0; 
@@ -19,7 +19,7 @@ let fish = {
     x: 250,
     y: 250,
     dx: speed,
-    dy: 0
+    dy: 5
 };
 
 
