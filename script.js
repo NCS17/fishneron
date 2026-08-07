@@ -6,21 +6,19 @@ canvas.height = 500;
 
 
 // VITESSE DU POISSON
-const speed = 6; 
+const speed = 10;
 
-   
-let score = 0; 
- 
 
-// Poisson  
+let score = 0;
 
+
+// Poisson
 
 let fish = {
     x: 250,
     y: 250,
     dx: speed,
-    dy: 0,
-    direction: "right"
+    dy: 0
 };
 
 
@@ -40,11 +38,13 @@ let fishImages = {
 
 // CHEMIN VERS TES PNG
 
-fishImages.rouge.src = "./fishImages/rouge.png";
-fishImages.nemo.src = "./fishImages/nemo.png";
-fishImages.aile.src = "./fishImages/aile.png";
-fishImages.whale.src = "./fishImages/whale.png";
-fishImages.octo.src = "./fishImages/octo.png";
+fishImages.rouge.src = "fishImages/rouge.png";
+fishImages.nemo.src = "fishImages/nemo.png";
+fishImages.aile.src = "fishImages/aile.png";
+fishImages.whale.src = "fishImages/whale.png";
+fishImages.octo.src = "fishImages/octo.png";
+
+
 
 
 // Algues
@@ -116,16 +116,8 @@ function changeDirection(x,y){
     fish.dx = x;
     fish.dy = y;
 
-    // Orientation du poisson
-    if(x > 0){
-        fish.direction = "right";
-    }
-
-    if(x < 0){
-        fish.direction = "left";
-    }
-
 }
+
 
 
 
@@ -239,28 +231,33 @@ function update(){
 
 
 
-// MANGER L'ALGUE
 
-if(
+    // MANGER L'ALGUE
 
-    Math.abs((fish.x + 35) - (algae.x + 10)) < 45 &&
-    Math.abs((fish.y + 35) - (algae.y + 10)) < 45
+    if(
 
-){
+        Math.abs(fish.x - algae.x) < 25 &&
+        Math.abs(fish.y - algae.y) < 25
 
-    score++;
+    ){
 
-    document.getElementById("score").innerHTML =
-    "Algues : " + score;
 
-    newAlgae();
+        score++;
 
-}
+
+        document.getElementById("score").innerHTML =
+        "Algues : " + score;
+
+
+        newAlgae();
+
 
     }
 
 
 }
+
+
 
 
 
@@ -269,73 +266,60 @@ if(
 
 // AFFICHAGE
 
-
-   let lastTime = 0;
-
-function draw(currentTime){
-
-    if (!lastTime) lastTime = currentTime;
-
-    const deltaTime = currentTime - lastTime;
-
-    if(deltaTime >= 16){ // ≈60 FPS
-
-        ctx.clearRect(0,0,canvas.width,canvas.height);
-
-        // ALGUE
-        ctx.font = "35px Arial";
-        ctx.fillText("🌿", algae.x, algae.y + 25);
-
-      
-        
-// IMAGE DU POISSON
-
-// IMAGE DU POISSON
-
-let img = getFishImage();
-
-if(img.complete && img.naturalWidth > 0){
-
-    if(fish.direction === "left"){
-
-        ctx.save();
-
-        // Retourne l'image horizontalement
-        ctx.scale(-1,1);
-
-        ctx.drawImage(
-            img,
-            -fish.x - 70,
-            fish.y,
-            70,
-            70
-        );
-
-        ctx.restore();
-
-    }
-    else{
-
-        ctx.drawImage(
-            img,
-            fish.x,
-            fish.y,
-            70,
-            70
-        );
-
-    }
-
-}
+function draw(){
 
 
-update();
+    ctx.clearRect(0,0,canvas.width,canvas.height);
 
-lastTime = currentTime;
-    }
+
+
+    // ALGUE
+
+    ctx.font = "35px Arial";
+
+    ctx.fillText(
+        "🌿",
+        algae.x,
+        algae.y + 25
+    );
+
+
+
+    // IMAGE DU POISSON
+
+    let img = getFishImage();
+
+
+
+    ctx.drawImage(
+
+        img,
+
+        fish.x,
+
+        fish.y,
+
+        70,
+
+        70
+
+    );
+
+
+
+    update();
+
 
     requestAnimationFrame(draw);
+
+
 }
 
+
+
+
+
+
 newAlgae();
-requestAnimationFrame(draw);
+
+draw();
