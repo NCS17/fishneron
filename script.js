@@ -182,7 +182,9 @@ octo:new Image()
 };
 
 
+let algaeImage = new Image();
 
+algaeImage.src = "./fishImages/algae.png";
 
 
 
@@ -1239,23 +1241,29 @@ ctx.fillRect(
 
 
 // =======================
-// ALGUE
+// ALGUE PNG
 // =======================
 
 
-ctx.font="45px Arial";
+if(algaeImage.complete && algaeImage.naturalWidth > 0){
 
 
-ctx.fillText(
+ctx.drawImage(
 
-"🌿",
+algaeImage,
 
 algae.x,
 
-algae.y+35
+algae.y,
+
+50,
+
+50
 
 );
 
+
+}
 
 
 
