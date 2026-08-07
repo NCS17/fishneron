@@ -291,6 +291,7 @@ function draw(currentTime){
         // IMAGE DU POISSON
         
 // IMAGE DU POISSON
+// IMAGE DU POISSON
 
 let img = getFishImage();
 
@@ -298,7 +299,6 @@ if(fish.direction === "left"){
 
     ctx.save();
 
-    // Retourne l'image horizontalement
     ctx.scale(-1,1);
 
     ctx.drawImage(
@@ -323,11 +323,11 @@ else{
     );
 
 }
-        );
 
-        update();
 
-        lastTime = currentTime;
+update();
+
+lastTime = currentTime;
     }
 
     requestAnimationFrame(draw);
