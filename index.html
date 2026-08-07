@@ -37,6 +37,7 @@ Algues : 0
 
 
 
+
 <div class="gameContainer">
 
 
@@ -44,7 +45,10 @@ Algues : 0
 
 
 
+
+
 <!-- GAME OVER -->
+
 
 <div id="gameOver" style="display:none;">
 
@@ -88,13 +92,17 @@ Algues : 0
 
 
 
+
 <!-- CONTROLES -->
+
 
 <div class="buttons">
 
 
 <button id="up">
+
 ⬆️
+
 </button>
 
 
@@ -102,17 +110,23 @@ Algues : 0
 <div>
 
 <button id="left">
+
 ⬅️
+
 </button>
 
 
 <button id="down">
+
 ⬇️
+
 </button>
 
 
 <button id="right">
+
 ➡️
+
 </button>
 
 
@@ -126,31 +140,43 @@ Algues : 0
 
 
 
-<!-- CLASSEMENT -->
+
+<!-- CLASSEMENT PREMIUM -->
 
 
 <div id="ranking">
 
 
-<h2>🏆 Classement des meilleurs joueurs</h2>
+<h2>🏆 Océan des champions</h2>
 
 
-
-<ol id="rankingList">
-
-<li>
-Le classement apparaîtra ici...
-</li>
-
-</ol>
+<p>
+Les meilleurs Bubulles 🐟
+</p>
 
 
 
 <button id="refreshRanking">
 
-Actualiser le classement 🏆
+🔄 Actualiser le classement
 
 </button>
+
+
+
+
+<div id="rankingList">
+
+
+<div class="rankCard">
+
+🌊 Le classement apparaîtra ici...
+
+</div>
+
+
+</div>
+
 
 
 
@@ -198,18 +224,25 @@ from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
 
+
+
 const firebaseConfig = {
 
 
 apiKey: "AIzaSyBvcKnfsjvwvAjkfZ-mysvUartZSm3GK3E",
 
+
 authDomain: "henneron-s-fish.firebaseapp.com",
+
 
 projectId: "henneron-s-fish",
 
+
 storageBucket: "henneron-s-fish.firebasestorage.app",
 
+
 messagingSenderId: "126418087769",
+
 
 appId: "1:126418087769:web:f1c68acad749ab5299a648"
 
@@ -219,10 +252,14 @@ appId: "1:126418087769:web:f1c68acad749ab5299a648"
 
 
 
+
+
 const app = initializeApp(firebaseConfig);
 
 
+
 const db = getFirestore(app);
+
 
 
 
@@ -244,6 +281,7 @@ window.getDocs = getDocs;
 
 
 </script>
+
 
 
 
