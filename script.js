@@ -40,13 +40,11 @@ let fishImages = {
 
 // CHEMIN VERS TES PNG
 
-fishImages.rouge.src = "fishImages/rouge.png";
-fishImages.nemo.src = "fishImages/nemo.png";
-fishImages.aile.src = "fishImages/aile.png";
-fishImages.whale.src = "fishImages/whale.png";
-fishImages.octo.src = "fishImages/octo.png";
-
-
+fishImages.rouge.src = "./fishImages/rouge.png";
+fishImages.nemo.src = "./fishImages/nemo.png";
+fishImages.aile.src = "./fishImages/aile.png";
+fishImages.whale.src = "./fishImages/whale.png";
+fishImages.octo.src = "./fishImages/octo.png";
 
 
 // Algues
