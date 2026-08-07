@@ -290,34 +290,41 @@ function draw(currentTime){
         
 // IMAGE DU POISSON
 
+// IMAGE DU POISSON
+
 let img = getFishImage();
 
-if(fish.direction === "left"){
+if(img.complete && img.naturalWidth > 0){
 
-    ctx.save();
+    if(fish.direction === "left"){
 
-    ctx.scale(-1,1);
+        ctx.save();
 
-    ctx.drawImage(
-        img,
-        -fish.x - 70,
-        fish.y,
-        70,
-        70
-    );
+        // Retourne l'image horizontalement
+        ctx.scale(-1,1);
 
-    ctx.restore();
+        ctx.drawImage(
+            img,
+            -fish.x - 70,
+            fish.y,
+            70,
+            70
+        );
 
-}
-else{
+        ctx.restore();
 
-    ctx.drawImage(
-        img,
-        fish.x,
-        fish.y,
-        70,
-        70
-    );
+    }
+    else{
+
+        ctx.drawImage(
+            img,
+            fish.x,
+            fish.y,
+            70,
+            70
+        );
+
+    }
 
 }
 
