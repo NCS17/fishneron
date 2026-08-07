@@ -17,6 +17,33 @@ let score = 0;
 
 
 
+// =======================
+// FIREBASE SCORE
+// =======================
+
+async function saveScore(){
+
+    let pseudo = prompt("Entre ton pseudo 🐟");
+
+    if(!pseudo || pseudo.trim() === ""){
+        pseudo = "Anonyme";
+    }
+
+
+    await addDoc(collection(db,"scores"),{
+
+        pseudo: pseudo,
+
+        score: score,
+
+        date: new Date()
+
+    });
+
+
+}
+
+
 
 // =======================
 // POISSON
@@ -54,9 +81,11 @@ let shark = {
 };
 
 
+
 let sharkImage = new Image();
 
-sharkImage.src="fishImages/shark.png";
+sharkImage.src="./fishImages/shark.png";
+
 
 
 let sharkActive=false;
@@ -64,8 +93,6 @@ let sharkActive=false;
 let sharkTimer=0;
 
 let lastSharkScore=0;
-
-
 
 
 
@@ -78,22 +105,29 @@ let lastSharkScore=0;
 let fishImages={
 
     rouge:new Image(),
+
     nemo:new Image(),
+
     aile:new Image(),
+
     whale:new Image(),
+
     octo:new Image()
 
 };
 
 
 
-fishImages.rouge.src="fishImages/rouge.png";
-fishImages.nemo.src="fishImages/nemo.png";
-fishImages.aile.src="fishImages/aile.png";
-fishImages.whale.src="fishImages/whale.png";
-fishImages.octo.src="fishImages/octo.png";
 
+fishImages.rouge.src="./fishImages/rouge.png";
 
+fishImages.nemo.src="./fishImages/nemo.png";
+
+fishImages.aile.src="./fishImages/aile.png";
+
+fishImages.whale.src="./fishImages/whale.png";
+
+fishImages.octo.src="./fishImages/octo.png";
 
 
 
@@ -107,11 +141,10 @@ fishImages.octo.src="fishImages/octo.png";
 let algae={
 
     x:100,
+
     y:100
 
 };
-
-
 
 
 
@@ -142,7 +175,6 @@ document.addEventListener("keydown",function(e){
 
 
 });
-
 
 
 
@@ -196,10 +228,8 @@ document.getElementById("right").addEventListener("touchstart",function(e){
 
 
 
-
-
 // =======================
-// CHANGER DIRECTION
+// DIRECTION
 // =======================
 
 
@@ -211,11 +241,13 @@ function changeDirection(x,y){
     fish.dy=y;
 
 
+
     if(x<0){
 
         fish.direction="left";
 
     }
+
 
 
     if(x>0){
@@ -226,8 +258,6 @@ function changeDirection(x,y){
 
 
 }
-
-
 
 
 
@@ -274,15 +304,7 @@ function getFishImage(){
         return fishImages.octo;
 
     }
-// =======================
-// NOUVELLE ALGUE
-// =======================
 
-function newAlgae(){
-
-    algae.x = Math.floor(Math.random()*25)*20;
-
-    algae.y = Math.floor(Math.random()*25)*20;
 
 }
 
@@ -290,12 +312,23 @@ function newAlgae(){
 
 
 
+// =======================
+// NOUVELLE ALGUE
+// =======================
 
 
+function newAlgae(){
+
+
+    algae.x=Math.floor(Math.random()*25)*20;
+
+    algae.y=Math.floor(Math.random()*25)*20;
+
+
+}
 // =======================
 // UPDATE
 // =======================
-
 
 function update(){
 
@@ -309,9 +342,6 @@ function update(){
 fish.x += fish.dx;
 
 fish.y += fish.dy;
-
-
-
 
 
 
@@ -353,14 +383,15 @@ if(
 
 
 
-    shark.dx = -(Math.random()*2+4);
+    // vitesse requin aléatoire
+
+    shark.dx = -(Math.random()*2 + 5);
 
 
-    shark.dy = Math.random()*3-1.5;
+    shark.dy = Math.random()*3 - 1.5;
 
 
 }
-
 
 
 
@@ -376,48 +407,40 @@ if(
 if(sharkActive){
 
 
-
     shark.x += shark.dx;
 
     shark.y += shark.dy;
 
 
 
+    // mouvements aléatoires
 
+    if(Math.random() < 0.03){
 
-    if(Math.random()<0.03){
-
-
-        shark.dy = Math.random()*4-2;
-
+        shark.dy = Math.random()*4 - 2;
 
     }
 
 
 
 
+    // rebond vertical
 
     if(shark.y < 0){
-
 
         shark.y = 0;
 
         shark.dy *= -1;
 
-
     }
-
-
 
 
 
     if(shark.y > 410){
 
-
         shark.y = 410;
 
         shark.dy *= -1;
-
 
     }
 
@@ -425,21 +448,16 @@ if(sharkActive){
 
 
 
-    // 6 secondes
+    // disparition après 6 secondes
 
-
-    if(Date.now()-sharkTimer > 6000){
-
+    if(Date.now() - sharkTimer > 6000){
 
         sharkActive=false;
-
 
     }
 
 
 }
-
-
 
 
 
@@ -453,7 +471,7 @@ if(sharkActive){
 
 if(fish.x < 0){
 
-    fish.x = canvas.width-20;
+    fish.x = canvas.width - 20;
 
 }
 
@@ -467,7 +485,7 @@ if(fish.x > canvas.width){
 
 if(fish.y < 0){
 
-    fish.y = canvas.height-20;
+    fish.y = canvas.height - 20;
 
 }
 
@@ -477,9 +495,6 @@ if(fish.y > canvas.height){
     fish.y = 0;
 
 }
-
-
-
 
 
 
@@ -500,8 +515,8 @@ Math.abs((fish.x+35)-(algae.x+10)) < 45 &&
 Math.abs((fish.y+35)-(algae.y+10)) < 45
 
 
-
 ){
+
 
 
     score++;
@@ -509,65 +524,44 @@ Math.abs((fish.y+35)-(algae.y+10)) < 45
 
 
 
+    // augmentation vitesse limitée
 
-    // =======================
-    // AUGMENTATION VITESSE
-    // =======================
-
-
-    if(speed < maxSpeed){
-
-
-        speed += 0.2;
-
-
-
-        if(speed > maxSpeed){
-
-
-            speed=maxSpeed;
-
-
-        }
-
-
-    }
+    speed = Math.min(speed + 0.15, maxSpeed);
 
 
 
 
 
-    // garde la direction mais applique la nouvelle vitesse
+    // applique la nouvelle vitesse
 
 
     if(fish.dx > 0){
 
-        fish.dx=speed;
+        fish.dx = speed;
 
     }
 
 
     if(fish.dx < 0){
 
-        fish.dx=-speed;
+        fish.dx = -speed;
 
     }
 
 
+
     if(fish.dy > 0){
 
-        fish.dy=speed;
+        fish.dy = speed;
 
     }
 
 
     if(fish.dy < 0){
 
-        fish.dy=-speed;
+        fish.dy = -speed;
 
     }
-
-
 
 
 
@@ -591,7 +585,6 @@ Math.abs((fish.y+35)-(algae.y+10)) < 45
 
 
 
-
 // =======================
 // COLLISION REQUIN
 // =======================
@@ -601,48 +594,72 @@ if(sharkActive){
 
 
 
-    let fishCenterX = fish.x+35;
+    let fishCenterX = fish.x + 35;
 
-    let fishCenterY = fish.y+35;
+    let fishCenterY = fish.y + 35;
 
 
 
-    let sharkCenterX = shark.x+70;
+    let sharkCenterX = shark.x + 75;
 
-    let sharkCenterY = shark.y+45;
-
+    let sharkCenterY = shark.y + 45;
 
 
 
 
     let distance = Math.sqrt(
 
-        Math.pow(fishCenterX-sharkCenterX,2)
+
+        Math.pow(fishCenterX - sharkCenterX,2)
 
         +
 
-        Math.pow(fishCenterY-sharkCenterY,2)
+        Math.pow(fishCenterY - sharkCenterY,2)
+
 
     );
 
 
 
 
-    if(distance < 60){
+    // vraie collision
+
+    if(distance < 55){
 
 
-        alert("GAME OVER 🦈");
 
-
-        location.reload();
+        awaitGameOver();
 
 
     }
 
 
+
 }
 
 
+}
+
+
+
+
+
+
+// =======================
+// FIN DE PARTIE
+// =======================
+
+
+async function awaitGameOver(){
+
+
+    await saveScore();
+
+
+    alert("GAME OVER 🦈");
+
+
+    location.reload();
 
 
 }
@@ -663,6 +680,7 @@ if(sharkActive){
 function draw(){
 
 
+
 ctx.clearRect(0,0,canvas.width,canvas.height);
 
 
@@ -678,11 +696,11 @@ ctx.font="35px Arial";
 
 ctx.fillText(
 
-    "🌿",
+"🌿",
 
-    algae.x,
+algae.x,
 
-    algae.y+25
+algae.y+25
 
 );
 
@@ -695,33 +713,25 @@ ctx.fillText(
 // REQUIN
 
 
-if(sharkActive){
+if(sharkActive && sharkImage.complete){
 
 
-    if(sharkImage.complete){
+ctx.drawImage(
 
+    sharkImage,
 
-        ctx.drawImage(
+    shark.x,
 
-            sharkImage,
+    shark.y,
 
-            shark.x,
+    150,
 
-            shark.y,
+    95
 
-            150,
-
-            95
-
-        );
-
-
-    }
+);
 
 
 }
-
-
 
 
 
@@ -736,75 +746,62 @@ let img = getFishImage();
 
 
 
-
-
-// attend le chargement de l'image (important téléphone)
-
-
 if(img.complete && img.naturalWidth > 0){
 
 
 
-    if(fish.direction==="left"){
+if(fish.direction==="left"){
 
 
-
-        ctx.save();
-
+    ctx.save();
 
 
-        ctx.scale(-1,1);
+    ctx.scale(-1,1);
 
 
+    ctx.drawImage(
+
+        img,
+
+        -fish.x-70,
+
+        fish.y,
+
+        70,
+
+        70
+
+    );
 
 
-        ctx.drawImage(
-
-            img,
-
-            -fish.x-70,
-
-            fish.y,
-
-            70,
-
-            70
-
-        );
-
-
-
-
-        ctx.restore();
-
-
-
-    }
-
-
-    else{
-
-
-
-        ctx.drawImage(
-
-            img,
-
-            fish.x,
-
-            fish.y,
-
-            70,
-
-            70
-
-        );
-
-
-    }
+    ctx.restore();
 
 
 }
+
+else{
+
+
+    ctx.drawImage(
+
+        img,
+
+        fish.x,
+
+        fish.y,
+
+        70,
+
+        70
+
+    );
+
+
+}
+
+
+}
+
 
 
 
@@ -815,7 +812,6 @@ update();
 
 
 requestAnimationFrame(draw);
-
 
 
 }
@@ -836,5 +832,3 @@ newAlgae();
 
 
 draw();
-
-}
