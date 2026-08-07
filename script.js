@@ -553,41 +553,25 @@ function update(){
     // COLLISION REQUIN
     // =======================
 
+// COLLISION REQUIN
 
-    if(
+if(
 
+    sharkActive &&
 
-        sharkActive &&
+    fish.x < shark.x + 100 &&
+    fish.x + 50 > shark.x &&
 
+    fish.y < shark.y + 60 &&
+    fish.y + 50 > shark.y
 
-        Math.abs(fish.x-shark.x) < 70 &&
+){
 
+    alert("GAME OVER 🦈");
 
-        Math.abs(fish.y-shark.y) < 60
-
-
-    ){
-
-
-        alert("GAME OVER 🦈");
-
-
-        location.reload();
-
-
-    }
-
-
-
-
+    location.reload();
 
 }
-
-
-
-
-
-
 
 
 
