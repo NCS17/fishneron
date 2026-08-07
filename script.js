@@ -7,8 +7,6 @@ canvas.height = 500;
 
 
 
-
-
 // =======================
 // VARIABLES
 // =======================
@@ -16,12 +14,9 @@ canvas.height = 500;
 
 let score = 0;
 
-
 let speed = 5;
 
-
 const maxSpeed = 12;
-
 
 let gameOver = false;
 
@@ -30,13 +25,13 @@ let gameOver = false;
 
 
 // =======================
-// SKIN SYSTEME
+// SYSTEME SKINS
 // =======================
 
 
-// Skin sauvegardé
+// skin sauvegardé
 
-let currentSkin =
+let currentSkin = 
 localStorage.getItem("skin")
 ||
 "rouge";
@@ -45,102 +40,46 @@ localStorage.getItem("skin")
 
 
 
+// paramètres des skins
 
-// =======================
-// FIREBASE SCORE
-// =======================
-
-
-async function saveScore(){
+const skinData = {
 
 
-try{
+rouge:{
+    size:70,
+    name:"Poisson rouge"
+},
 
 
-let pseudo = prompt(
-"🦈 GAME OVER !\n\nPseudo ? 🐟"
-);
+nemo:{
+    size:70,
+    name:"Nemo"
+},
 
 
+ballon:{
+    size:65,
+    name:"Poisson ballon"
+},
 
-if(!pseudo || pseudo.trim()===""){
+
+requin:{
+    size:90,
+    name:"Petit requin"
+},
 
 
-pseudo="Anonyme";
+whale:{
+    size:80,
+    name:"Baleine"
+},
 
 
+octo:{
+    size:40,
+    name:"Pieuvre"
 }
 
-
-
-
-
-await addDoc(
-
-collection(db,"scores"),
-
-{
-
-
-pseudo:pseudo,
-
-
-score:score,
-
-
-date:new Date()
-
-
-}
-
-
-);
-
-
-
-}
-
-
-catch(error){
-
-
-console.log(error);
-
-
-}
-
-
-
-}
-
-
-
-
-
-
-
-
-// =======================
-// POISSON
-// =======================
-
-
-let fish = {
-
-
-x:250,
-
-
-y:250,
-
-
-dx:speed,
-
-
-dy:0,
-
-
-direction:"right"
 
 
 };
@@ -152,9 +91,8 @@ direction:"right"
 
 
 
-
 // =======================
-// IMAGES DES SKINS
+// IMAGES SKINS
 // =======================
 
 
@@ -163,28 +101,22 @@ let fishImages = {
 
 rouge:new Image(),
 
-
 nemo:new Image(),
-
 
 ballon:new Image(),
 
-
 requin:new Image(),
-
 
 whale:new Image(),
 
-
 octo:new Image()
+
 
 
 };
 
 
-let algaeImage = new Image();
 
-algaeImage.src = "./fishImages/algae.png";
 
 
 
@@ -218,7 +150,7 @@ fishImages.octo.src =
 
 
 
-// Vérification chargement images
+// vérification images
 
 
 Object.keys(fishImages).forEach(
@@ -229,9 +161,10 @@ fishImages[skin].onload=function(){
 
 
 console.log(
-"Skin chargé : ",
+"✅ Skin chargé :",
 skin
 );
+
 
 
 };
@@ -242,8 +175,8 @@ fishImages[skin].onerror=function(){
 
 
 console.log(
-"Erreur image : ",
-skin
+"❌ Image introuvable :",
+skin+".png"
 );
 
 
@@ -262,9 +195,27 @@ skin
 
 
 
+// =======================
+// ALGUE IMAGE
+// =======================
+
+
+let algaeImage = new Image();
+
+
+algaeImage.src =
+"./fishImages/algae.png";
+
+
+
+
+
+
+
+
 
 // =======================
-// CHOISIR UN SKIN
+// CHOIX SKIN
 // =======================
 
 
@@ -272,7 +223,12 @@ function equipSkin(skin){
 
 
 
-if(fishImages[skin]){
+if(
+skinData[skin]
+&&
+fishImages[skin]
+){
+
 
 
 localStorage.setItem(
@@ -282,16 +238,14 @@ skin
 
 
 
-
 console.log(
-"Skin sélectionné : ",
+"Skin équipé :",
 skin
 );
 
 
 
-
-// recharge automatiquement
+// refresh automatique
 
 location.reload();
 
@@ -307,10 +261,6 @@ location.reload();
 
 
 
-
-
-
-
 function getFishImage(){
 
 
@@ -319,6 +269,148 @@ return fishImages[currentSkin];
 
 }
 
+
+
+
+
+function getFishSize(){
+
+
+if(
+skinData[currentSkin]
+){
+
+
+return skinData[currentSkin].size;
+
+
+}
+
+
+return 70;
+
+
+}
+
+
+
+
+
+
+
+
+
+
+// =======================
+// POISSON
+// =======================
+
+
+let fish = {
+
+
+x:250,
+
+y:250,
+
+
+dx:speed,
+
+dy:0,
+
+
+direction:"right"
+
+
+
+};
+
+
+
+
+
+
+
+
+
+// =======================
+// FIREBASE SCORE
+// =======================
+
+
+async function saveScore(){
+
+
+
+try{
+
+
+let pseudo = prompt(
+
+"🦈 GAME OVER !\n\nPseudo ? 🐟"
+
+);
+
+
+
+
+
+if(
+!pseudo
+||
+pseudo.trim()===""
+){
+
+
+pseudo="Anonyme";
+
+
+}
+
+
+
+
+
+await addDoc(
+
+collection(db,"scores"),
+
+
+{
+
+
+pseudo:pseudo,
+
+
+score:score,
+
+
+date:new Date()
+
+
+
+}
+
+
+);
+
+
+
+}
+
+
+
+catch(error){
+
+
+console.log(error);
+
+
+}
+
+
+
+}
 
 
 
@@ -337,7 +429,6 @@ let shark = {
 
 x:600,
 
-
 y:200,
 
 
@@ -353,9 +444,8 @@ dy:0
 
 
 
-let sharkImage =
-new Image();
 
+let sharkImage = new Image();
 
 
 sharkImage.src =
@@ -372,7 +462,6 @@ let sharkTimer=0;
 
 
 let lastSharkScore=0;
-
 
 
 
@@ -401,10 +490,7 @@ y:100
 
 
 
-
-
 function newAlgae(){
-
 
 
 algae.x =
@@ -426,15 +512,6 @@ Math.random()*25
 
 
 }
-
-
-
-
-
-
-
-
-
 // =======================
 // CONTROLES
 // =======================
@@ -443,33 +520,25 @@ Math.random()*25
 function changeDirection(x,y){
 
 
-
 if(gameOver)
 
 return;
 
 
 
-
-
 fish.dx=x;
-
 
 fish.dy=y;
 
 
 
-
-
 if(x<0)
-
 
 fish.direction="left";
 
 
 
 if(x>0)
-
 
 fish.direction="right";
 
@@ -488,9 +557,7 @@ document.addEventListener(
 function(e){
 
 
-
 if(e.key==="ArrowUp")
-
 
 changeDirection(
 0,
@@ -501,7 +568,6 @@ changeDirection(
 
 if(e.key==="ArrowDown")
 
-
 changeDirection(
 0,
 speed
@@ -510,7 +576,6 @@ speed
 
 
 if(e.key==="ArrowLeft")
-
 
 changeDirection(
 -speed,
@@ -521,7 +586,6 @@ changeDirection(
 
 if(e.key==="ArrowRight")
 
-
 changeDirection(
 speed,
 0
@@ -530,6 +594,15 @@ speed,
 
 
 });
+
+
+
+
+
+
+
+
+
 // =======================
 // CONTROLES TELEPHONE
 // =======================
@@ -554,6 +627,7 @@ function(e){
 e.preventDefault();
 
 
+
 changeDirection(
 x,
 y
@@ -569,6 +643,7 @@ y
 
 
 }
+
 
 
 
@@ -607,14 +682,12 @@ speed,
 
 
 
-
 // =======================
-// UPDATE DU JEU
+// UPDATE JEU
 // =======================
 
 
 function update(){
-
 
 
 if(gameOver)
@@ -633,7 +706,6 @@ return;
 
 fish.x += fish.dx;
 
-
 fish.y += fish.dy;
 
 
@@ -651,22 +723,16 @@ fish.y += fish.dy;
 
 if(
 
-
 score > 0 &&
-
 
 score % 5 === 0 &&
 
-
 score !== lastSharkScore &&
-
 
 sharkActive === false
 
 
-
 ){
-
 
 
 sharkActive=true;
@@ -683,7 +749,7 @@ sharkTimer=Date.now();
 
 
 shark.x =
-canvas.width + 100;
+canvas.width+100;
 
 
 
@@ -714,13 +780,13 @@ Math.random()*3-1.5;
 
 
 
+
 // =======================
 // MOUVEMENT REQUIN
 // =======================
 
 
 if(sharkActive){
-
 
 
 shark.x += shark.dx;
@@ -732,18 +798,15 @@ shark.y += shark.dy;
 
 
 
-
-
 if(Math.random()<0.03){
-
 
 
 shark.dy =
 Math.random()*4-2;
 
 
-
 }
+
 
 
 
@@ -760,6 +823,7 @@ shark.dy*=-1;
 
 
 }
+
 
 
 
@@ -782,6 +846,7 @@ shark.dy*=-1;
 
 
 
+
 if(
 Date.now()-sharkTimer
 >
@@ -789,16 +854,16 @@ Date.now()-sharkTimer
 ){
 
 
-
 sharkActive=false;
 
 
-
 }
 
 
 
+
 }
+
 
 
 
@@ -815,13 +880,11 @@ sharkActive=false;
 
 if(fish.x<0)
 
-
 fish.x=canvas.width;
 
 
 
 if(fish.x>canvas.width)
-
 
 fish.x=0;
 
@@ -831,17 +894,13 @@ fish.x=0;
 
 if(fish.y<0)
 
-
 fish.y=canvas.height;
 
 
 
 if(fish.y>canvas.height)
 
-
 fish.y=0;
-
-
 
 
 
@@ -862,7 +921,7 @@ if(
 Math.abs(
 (fish.x+35)
 -
-(algae.x+10)
+(algae.x+25)
 )
 <
 45
@@ -876,7 +935,7 @@ Math.abs(
 Math.abs(
 (fish.y+35)
 -
-(algae.y+10)
+(algae.y+25)
 )
 <
 45
@@ -903,9 +962,7 @@ maxSpeed
 
 
 
-
 if(fish.dx>0)
-
 
 fish.dx=speed;
 
@@ -913,20 +970,17 @@ fish.dx=speed;
 
 if(fish.dx<0)
 
-
 fish.dx=-speed;
 
 
 
 if(fish.dy>0)
 
-
 fish.dy=speed;
 
 
 
 if(fish.dy<0)
-
 
 fish.dy=-speed;
 
@@ -940,6 +994,7 @@ let scoreBox =
 document.getElementById(
 "score"
 );
+
 
 
 
@@ -969,12 +1024,14 @@ speed.toFixed(1);
 
 
 
-
 newAlgae();
 
 
 
+
+
 }
+
 
 
 
@@ -996,6 +1053,7 @@ if(sharkActive){
 
 let dx =
 
+
 (fish.x+35)
 
 -
@@ -1008,6 +1066,7 @@ let dx =
 
 let dy =
 
+
 (fish.y+35)
 
 -
@@ -1019,11 +1078,13 @@ let dy =
 
 
 
+
 let distance =
+
 
 Math.sqrt(
 
-dx*dx +
+dx*dx+
 
 dy*dy
 
@@ -1035,25 +1096,25 @@ dy*dy
 
 
 
+
 if(distance < 55){
 
 
 
+// pouvoir skin requin
 
-
-// futur pouvoir skin requin
 
 if(currentSkin==="requin"){
 
 
 
-sharkActive=false;
-
-
-
 console.log(
-"🦈 Skin requin : attaque bloquée !"
+"🦈 Le skin requin protège !"
 );
+
+
+
+sharkActive=false;
 
 
 
@@ -1064,11 +1125,9 @@ console.log(
 else{
 
 
-
 endGame();
 
 
-
 }
 
 
@@ -1078,12 +1137,14 @@ endGame();
 
 
 
-
 }
 
 
 
+
 }
+
+
 
 
 
@@ -1096,7 +1157,6 @@ endGame();
 // =======================
 // GAME OVER
 // =======================
-
 
 
 async function endGame(){
@@ -1147,7 +1207,6 @@ document.getElementById(
 if(final){
 
 
-
 final.innerHTML =
 
 
@@ -1158,9 +1217,7 @@ score
 " 🌿";
 
 
-
 }
-
 
 
 
@@ -1170,9 +1227,7 @@ score
 if(box){
 
 
-
 box.style.display="block";
-
 
 
 }
@@ -1188,6 +1243,7 @@ box.style.display="block";
 function draw(){
 
 
+
 ctx.clearRect(
 0,
 0,
@@ -1197,8 +1253,10 @@ canvas.height
 
 
 
+
+
 // =======================
-// FOND FIXE
+// FOND OCEAN
 // =======================
 
 
@@ -1224,7 +1282,9 @@ gradient.addColorStop(
 
 
 
-ctx.fillStyle=gradient;
+ctx.fillStyle =
+gradient;
+
 
 
 ctx.fillRect(
@@ -1240,12 +1300,17 @@ ctx.fillRect(
 
 
 
+
 // =======================
 // ALGUE PNG
 // =======================
 
 
-if(algaeImage.complete && algaeImage.naturalWidth > 0){
+if(
+algaeImage.complete
+&&
+algaeImage.naturalWidth>0
+){
 
 
 ctx.drawImage(
@@ -1263,7 +1328,9 @@ algae.y,
 );
 
 
+
 }
+
 
 
 
@@ -1282,6 +1349,7 @@ sharkActive
 &&
 sharkImage.complete
 ){
+
 
 
 ctx.drawImage(
@@ -1311,12 +1379,19 @@ shark.y,
 
 
 // =======================
-// POISSON AVEC SKIN PNG
+// POISSON SKIN
 // =======================
+
 
 
 let img =
 getFishImage();
+
+
+
+let size =
+getFishSize();
+
 
 
 
@@ -1325,8 +1400,10 @@ getFishImage();
 if(
 img.complete
 &&
-img.naturalWidth > 0
+img.naturalWidth>0
 ){
+
+
 
 
 
@@ -1339,6 +1416,7 @@ fish.direction==="left"
 ctx.save();
 
 
+
 ctx.scale(
 -1,
 1
@@ -1346,32 +1424,20 @@ ctx.scale(
 
 
 
-let fishSize = 70;
-
-
-// Taille spéciale selon le skin
-
-if(currentSkin === "octo"){
-
-    fishSize = 45;
-
-}
-
-
-
 ctx.drawImage(
 
 img,
 
-fish.x,
+-fish.x-size,
 
 fish.y,
 
-fishSize,
+size,
 
-fishSize
+size
 
 );
+
 
 
 
@@ -1395,15 +1461,17 @@ fish.x,
 
 fish.y,
 
-70,
+size,
 
-70
+size
 
 );
 
 
 
 }
+
+
 
 
 
@@ -1435,6 +1503,7 @@ requestAnimationFrame(draw);
 
 
 
+
 // =======================
 // CASIER
 // =======================
@@ -1455,16 +1524,16 @@ document.getElementById(
 if(locker){
 
 
-locker.style.display="block";
-
-
-}
+locker.style.display =
+"block";
 
 
 
 }
 
 
+
+}
 
 
 
@@ -1484,7 +1553,10 @@ document.getElementById(
 if(locker){
 
 
-locker.style.display="none";
+
+locker.style.display =
+"none";
+
 
 
 }
@@ -1492,6 +1564,140 @@ locker.style.display="none";
 
 
 }
+
+
+
+
+
+
+
+
+
+// =======================
+// APERCU SKINS CASIER
+// =======================
+
+
+function loadLocker(){
+
+
+
+let container =
+document.getElementById(
+"skinList"
+);
+
+
+
+
+if(!container)
+
+return;
+
+
+
+
+
+container.innerHTML="";
+
+
+
+
+
+Object.keys(fishImages).forEach(
+skin=>{
+
+
+
+let div =
+document.createElement(
+"div"
+);
+
+
+
+div.className =
+"skin";
+
+
+
+
+
+let img =
+document.createElement(
+"img"
+);
+
+
+
+img.src =
+fishImages[skin].src;
+
+
+
+img.width=70;
+
+
+img.height=70;
+
+
+
+
+
+let button =
+document.createElement(
+"button"
+);
+
+
+
+
+button.innerHTML =
+"Choisir";
+
+
+
+
+
+button.onclick=function(){
+
+
+
+equipSkin(skin);
+
+
+
+};
+
+
+
+
+
+
+div.appendChild(img);
+
+
+div.appendChild(
+document.createElement("br")
+);
+
+
+div.appendChild(button);
+
+
+
+container.appendChild(div);
+
+
+
+
+
+});
+
+
+
+}
+
 
 
 
@@ -1540,8 +1746,10 @@ return;
 
 
 
+ranking.style.display =
+"block";
 
-ranking.style.display="block";
+
 
 
 
@@ -1559,9 +1767,7 @@ try{
 
 
 
-const q =
-
-query(
+const q = query(
 
 collection(db,"scores"),
 
@@ -1579,11 +1785,8 @@ limit(10)
 
 
 
-
 const result =
-
 await getDocs(q);
-
 
 
 
@@ -1601,13 +1804,13 @@ let place=1;
 
 
 
-
 result.forEach(doc=>{
 
 
 
 let data =
 doc.data();
+
 
 
 
@@ -1625,25 +1828,15 @@ li.innerHTML =
 
 
 place
-
 +
-
 " 🐟 "
-
 +
-
 data.pseudo
-
 +
-
 " : "
-
 +
-
 data.score
-
 +
-
 " 🌿";
 
 
@@ -1655,14 +1848,11 @@ list.appendChild(li);
 
 
 
-
 place++;
 
 
 
 });
-
-
 
 
 
@@ -1679,20 +1869,17 @@ catch(error){
 console.log(error);
 
 
-
 list.innerHTML =
 "Erreur classement";
 
 
-
 }
 
 
 
+
+
 }
-
-
-
 
 
 
@@ -1718,10 +1905,8 @@ document.getElementById(
 if(rankingBtn){
 
 
-
 rankingBtn.onclick =
 showRanking;
-
 
 
 }
@@ -1743,10 +1928,8 @@ document.getElementById(
 if(refreshRanking){
 
 
-
 refreshRanking.onclick =
 showRanking;
-
 
 
 }
@@ -1769,12 +1952,46 @@ if(lockerBtn){
 
 
 
-lockerBtn.onclick =
-openLocker;
+lockerBtn.onclick=function(){
+
+
+openLocker();
+
+
+loadLocker();
+
+
+};
 
 
 
 }
+
+
+
+
+
+
+
+let closeLockerBtn =
+document.getElementById(
+"closeLocker"
+);
+
+
+
+if(closeLockerBtn){
+
+
+
+closeLockerBtn.onclick =
+closeLocker;
+
+
+
+}
+
+
 
 
 
@@ -1814,11 +2031,9 @@ location.reload();
 
 
 
-
 // =======================
 // DEMARRAGE
 // =======================
-
 
 
 newAlgae();
