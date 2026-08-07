@@ -225,7 +225,7 @@ function update(){
 
     // APPARITION DU REQUIN APRES 5 ALGUES
 
-    if(score >= 5 && !sharkActive){
+ if(score >= 0 && !sharkActive){
 
 
         sharkActive = true;
