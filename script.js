@@ -657,7 +657,105 @@ box.style.display="block";
 
 
 
+// =======================
+// FONDS OCEAN EVOLUTIFS
+// =======================
 
+function drawOceanBackground(){
+
+    if(score < 15){
+
+        let gradient = ctx.createLinearGradient(0,0,0,500);
+
+        gradient.addColorStop(0,"#4bd3ff");
+        gradient.addColorStop(1,"#ffe29a");
+
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0,0,500,500);
+
+
+        ctx.fillStyle="#e6c477";
+        ctx.fillRect(0,430,500,70);
+
+
+        ctx.font="25px Arial";
+        ctx.fillText("🫧",80,100);
+        ctx.fillText("🫧",350,180);
+
+    }
+
+
+    else if(score < 30){
+
+        let gradient = ctx.createLinearGradient(0,0,0,500);
+
+        gradient.addColorStop(0,"#00e5ff");
+        gradient.addColorStop(1,"#0077be");
+
+        ctx.fillStyle=gradient;
+        ctx.fillRect(0,0,500,500);
+
+
+        ctx.font="45px Arial";
+
+        ctx.fillText("🪸",50,420);
+        ctx.fillText("🪸",400,430);
+
+
+        ctx.font="25px Arial";
+
+        ctx.fillText("🐠",100,120);
+        ctx.fillText("🐠",350,200);
+
+    }
+
+
+    else if(score < 50){
+
+        let gradient = ctx.createLinearGradient(0,0,0,500);
+
+        gradient.addColorStop(0,"#006994");
+        gradient.addColorStop(1,"#00334d");
+
+        ctx.fillStyle=gradient;
+        ctx.fillRect(0,0,500,500);
+
+
+        ctx.font="90px Arial";
+
+        ctx.fillText("🚢",200,350);
+
+
+        ctx.font="30px Arial";
+
+        ctx.fillText("⚓",80,420);
+        ctx.fillText("🫧",350,100);
+
+    }
+
+
+    else{
+
+        ctx.fillStyle="#00152e";
+
+        ctx.fillRect(0,0,500,500);
+
+
+        ctx.font="50px Arial";
+
+        ctx.fillText("✨",70,120);
+        ctx.fillText("✨",380,200);
+        ctx.fillText("💡",250,420);
+
+
+        ctx.font="25px Arial";
+
+        ctx.fillText("🪨",50,450);
+        ctx.fillText("🪨",400,450);
+
+    }
+
+}
 
 
 
@@ -667,11 +765,9 @@ box.style.display="block";
 
 function draw(){
 
-
 ctx.clearRect(0,0,canvas.width,canvas.height);
 
-
-
+drawOceanBackground();
 
 // ALGUE
 
