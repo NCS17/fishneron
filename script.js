@@ -832,3 +832,104 @@ newAlgae();
 
 
 draw();
+// =======================
+// CLASSEMENT FIREBASE
+// =======================
+
+async function showRanking(){
+
+
+    const ranking = document.getElementById("ranking");
+
+    const list = document.getElementById("rankingList");
+
+
+    ranking.style.display = "block";
+
+
+    list.innerHTML = "Chargement...";
+
+
+
+    const q = query(
+
+        collection(db,"scores"),
+
+        orderBy("score","desc"),
+
+        limit(10)
+
+    );
+
+
+
+    const result = await getDocs(q);
+
+
+
+    list.innerHTML = "";
+
+
+    let position = 1;
+
+
+
+    result.forEach((doc)=>{
+
+
+        let data = doc.data();
+
+
+
+        let li = document.createElement("li");
+
+
+
+        li.innerHTML =
+
+        position +
+        " 🐟 " +
+        data.pseudo +
+        " - " +
+        data.score +
+        " algues";
+
+
+
+        list.appendChild(li);
+
+
+
+        position++;
+
+
+    });
+
+
+}
+
+
+
+
+
+
+// OUVRIR CLASSEMENT
+
+document.getElementById("rankingBtn")
+.addEventListener("click",showRanking);
+
+
+
+
+
+
+// FERMER CLASSEMENT
+
+document.getElementById("closeRanking")
+.addEventListener("click",function(){
+
+
+    document.getElementById("ranking").style.display="none";
+
+
+});
