@@ -21,7 +21,21 @@ let fish = {
     direction: "right"
 };
 
+// REQUIN ENNEMI
 
+let shark = {
+    x: 400,
+    y: 200,
+    dx: -3,
+    dy: 0
+};
+
+let sharkImage = new Image();
+sharkImage.src = "fishImages/shark.png";
+
+let sharkActive = false;
+let sharkTimer = 0;
+    
 // IMAGES DES EVOLUTIONS
 
 let fishImages = {
@@ -42,7 +56,7 @@ fishImages.nemo.src = "fishImages/nemo.png";
 fishImages.aile.src = "fishImages/aile.png";
 fishImages.whale.src = "fishImages/whale.png";
 fishImages.octo.src = "fishImages/octo.png";
-
+fishImages.shark.png = "fishImages/shark.png";
 
 
 
@@ -204,6 +218,36 @@ function update(){
     fish.x += fish.dx;
 
     fish.y += fish.dy;
+  // APPARITION DU REQUIN APRES 5 ALGUES
+
+if(score >= 5 && !sharkActive){
+
+    sharkActive = true;
+
+    sharkTimer = Date.now();
+
+    shark.x = canvas.width;
+    shark.y = Math.random() * 400;
+
+}
+
+
+// MOUVEMENT DU REQUIN
+
+if(sharkActive){
+
+    shark.x += shark.dx;
+
+
+    // DISPARITION APRES 6 SECONDES
+
+    if(Date.now() - sharkTimer > 6000){
+
+        sharkActive = false;
+
+    }
+
+}
 
 
 
@@ -264,7 +308,20 @@ function update(){
 
 }
 
+// COLLISION REQUIN
 
+if(sharkActive &&
+
+    Math.abs(fish.x - shark.x) < 50 &&
+    Math.abs(fish.y - shark.y) < 50
+
+){
+
+    alert("GAME OVER 🦈");
+
+    location.reload();
+
+}
 
 
 
@@ -290,8 +347,19 @@ function draw(){
         algae.y + 25
     );
 
+// REQUIN
 
+if(sharkActive){
 
+    ctx.drawImage(
+        sharkImage,
+        shark.x,
+        shark.y,
+        100,
+        70
+    );
+
+}
     // IMAGE DU POISSON
 
     // IMAGE DU POISSON
